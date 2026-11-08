@@ -169,7 +169,9 @@ if(LN_BUILD_TESTS)
         tests/c_api_index_test.cpp
         tests/c_api_items_test.cpp
         tests/c_api_mods_test.cpp
-        tests/c_api_test.cpp)
+        tests/c_api_rename_test.cpp
+        tests/c_api_test.cpp
+        tests/file_lock.cpp)
     target_include_directories(limenamer_api_tests PRIVATE src)
     target_link_libraries(limenamer_api_tests PRIVATE limenamer ln_build_options
         GTest::gtest_main)

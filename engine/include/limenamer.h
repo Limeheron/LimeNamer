@@ -292,6 +292,16 @@ LN_API LN_RESULT ln_undo(LN_SESSION *session);
 LN_API LN_RESULT ln_redo(LN_SESSION *session);
 LN_API LN_RESULT ln_history_state(LN_SESSION *session, uint8_t *can_undo, uint8_t *can_redo);
 
+LN_API LN_RESULT ln_rename(LN_SESSION *session, LN_PROGRESS_FN progress, void *user,
+    LN_REPORT **out);
+LN_API LN_RESULT ln_rename_resolve(LN_SESSION *session, int32_t choice, LN_PROGRESS_FN progress,
+    void *user, LN_REPORT **out);
+LN_API LN_RESULT ln_rename_undo_check(LN_SESSION *session, LN_REPORT **out);
+LN_API LN_RESULT ln_rename_undo(LN_SESSION *session, LN_PROGRESS_FN progress, void *user,
+    LN_REPORT **out);
+LN_API LN_RESULT ln_rename_undo_state(LN_SESSION *session, uint8_t *available,
+    uint32_t *count);
+
 LN_API LN_RESULT ln_index_list_parse(const char *text, uint32_t item_count,
     LN_INDEX_LIST **out);
 LN_API LN_RESULT ln_index_list_format(const uint32_t *indices, size_t count, char **out);

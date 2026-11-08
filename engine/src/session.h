@@ -108,6 +108,7 @@ private:
     SNAPSHOT snapshot() const;
     void restore(SNAPSHOT snapshot);
     void track_folders();
+    void identify_items(RENAME_REPORT &report) const;
     void ensure_idle() const;
     void finish_rename();
     void finish_undo();

@@ -236,11 +236,11 @@ std::optional<RENAME_REPORT> SESSION::rename(const RENAME_EXECUTOR::PROGRESS &pr
     if (requests.empty()) {
         return RENAME_REPORT();
     }
-    const RENAME_REPORT report =
-        executor_.run(requests, planner_.plan(requests, cache_), progress);
+    RENAME_REPORT report = executor_.run(requests, planner_.plan(requests, cache_), progress);
     if (!executor_.pending()) {
         finish_rename();
     }
+    identify_items(report);
     return report;
 }
 
@@ -250,8 +250,9 @@ RENAME_REPORT SESSION::resolve_rename(RESOLVE_CHOICE choice,
     if (!executor_.pending()) {
         throw std::logic_error("no rename is waiting for a choice");
     }
-    const RENAME_REPORT report = executor_.resolve(choice, progress);
+    RENAME_REPORT report = executor_.resolve(choice, progress);
     finish_rename();
+    identify_items(report);
     return report;
 }
 
@@ -272,6 +273,7 @@ RENAME_REPORT SESSION::undo_check() const
     report.total = static_cast<uint32_t>(record_.size());
     report.skipped = static_cast<uint32_t>(check.skipped.size());
     report.problems = check.skipped;
+    identify_items(report);
     return report;
 }
 
@@ -295,6 +297,7 @@ std::optional<RENAME_REPORT> SESSION::undo_rename(const RENAME_EXECUTOR::PROGRES
     report.skipped = static_cast<uint32_t>(check.skipped.size());
     report.problems.insert(report.problems.begin(), check.skipped.begin(), check.skipped.end());
     finish_undo();
+    identify_items(report);
     return report;
 }
 
@@ -329,6 +332,15 @@ void SESSION::track_folders()
     cache_.retain(folders);
     for (const std::filesystem::path &folder : folders) {
         cache_.load(folder);
+    }
+}
+
+void SESSION::identify_items(RENAME_REPORT &report) const
+{
+    for (REPORT_ITEM &item : report.problems) {
+        if (!items_.contains(item.item_id)) {
+            item.item_id = items_.listed_at(item.current).value_or(0);
+        }
     }
 }
 

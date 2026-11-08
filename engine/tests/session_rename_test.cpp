@@ -400,3 +400,22 @@ TEST_F(SESSION_TEST, retries_items_left_at_temporary_names_by_undo)
     EXPECT_EQ(session_->items().find(ids[0])->path, root_ / "x.txt");
     EXPECT_TRUE(session_->record().empty());
 }
+
+TEST_F(SESSION_TEST, reports_items_by_their_listed_ids)
+{
+    session_->add_items(files({U"x.txt", U"y.txt", U"z.txt"}), ADD_MODE::as_items);
+    session_->add_mod(mod(PREFIX));
+    session_->rename({});
+    const std::vector<uint64_t> ids = session_->items().order();
+    session_->remove_items({ids[0], ids[1]});
+    session_->add_items({root_ / "a_y.txt"}, ADD_MODE::as_items);
+    const uint64_t added = session_->items().order().back();
+    fake_->remove(root_ / "a_x.txt");
+    fake_->remove(root_ / "a_y.txt");
+    fake_->remove(root_ / "a_z.txt");
+    const RENAME_REPORT check = session_->undo_check();
+    ASSERT_EQ(check.problems.size(), size_t{3});
+    EXPECT_EQ(check.problems[0].item_id, 0u);
+    EXPECT_EQ(check.problems[1].item_id, added);
+    EXPECT_EQ(check.problems[2].item_id, ids[2]);
+}

@@ -1,5 +1,18 @@
 #include "c_api.h"
 
+namespace
+{
+RENAME_EXECUTOR::PROGRESS progress_of(LN_PROGRESS_FN progress, void *user)
+{
+    if (progress == nullptr) {
+        return {};
+    }
+    return [progress, user](uint32_t done, uint32_t total) {
+        progress(user, done, total);
+    };
+}
+}
+
 LN_RESULT ln_session_create(LN_SESSION **out)
 {
     if (out == nullptr) {
@@ -310,6 +323,90 @@ LN_RESULT ln_history_state(LN_SESSION *session, uint8_t *can_undo, uint8_t *can_
         }
         *can_undo = target.can_undo() ? 1 : 0;
         *can_redo = target.can_redo() ? 1 : 0;
+        return ln_result_ok;
+    });
+}
+
+LN_RESULT ln_rename(LN_SESSION *session, LN_PROGRESS_FN progress, void *user, LN_REPORT **out)
+{
+    if (out != nullptr) {
+        *out = nullptr;
+    }
+    return C_GUARD::run(session, [&](SESSION &target) -> LN_RESULT {
+        if (out == nullptr) {
+            return ln_result_invalid_argument;
+        }
+        const std::optional<RENAME_REPORT> report = target.rename(progress_of(progress, user));
+        if (!report) {
+            return ln_result_not_ready;
+        }
+        *out = C_RESULTS::report(*report);
+        return ln_result_ok;
+    });
+}
+
+LN_RESULT ln_rename_resolve(LN_SESSION *session, int32_t choice, LN_PROGRESS_FN progress,
+    void *user, LN_REPORT **out)
+{
+    if (out != nullptr) {
+        *out = nullptr;
+    }
+    return C_GUARD::run(session, [&](SESSION &target) -> LN_RESULT {
+        const std::optional<RESOLVE_CHOICE> value =
+            C_INPUT::choice(choice, RESOLVE_CHOICE::keep_succeeded);
+        if (out == nullptr || !value) {
+            return ln_result_invalid_argument;
+        }
+        if (!target.rename_pending()) {
+            return ln_result_not_found;
+        }
+        *out = C_RESULTS::report(target.resolve_rename(*value, progress_of(progress, user)));
+        return ln_result_ok;
+    });
+}
+
+LN_RESULT ln_rename_undo_check(LN_SESSION *session, LN_REPORT **out)
+{
+    if (out != nullptr) {
+        *out = nullptr;
+    }
+    return C_GUARD::run(session, [&](SESSION &target) -> LN_RESULT {
+        if (out == nullptr) {
+            return ln_result_invalid_argument;
+        }
+        *out = C_RESULTS::report(target.undo_check());
+        return ln_result_ok;
+    });
+}
+
+LN_RESULT ln_rename_undo(LN_SESSION *session, LN_PROGRESS_FN progress, void *user,
+    LN_REPORT **out)
+{
+    if (out != nullptr) {
+        *out = nullptr;
+    }
+    return C_GUARD::run(session, [&](SESSION &target) -> LN_RESULT {
+        if (out == nullptr) {
+            return ln_result_invalid_argument;
+        }
+        const std::optional<RENAME_REPORT> report =
+            target.undo_rename(progress_of(progress, user));
+        if (!report) {
+            return ln_result_not_ready;
+        }
+        *out = C_RESULTS::report(*report);
+        return ln_result_ok;
+    });
+}
+
+LN_RESULT ln_rename_undo_state(LN_SESSION *session, uint8_t *available, uint32_t *count)
+{
+    return C_GUARD::run(session, [&](SESSION &target) -> LN_RESULT {
+        if (available == nullptr || count == nullptr) {
+            return ln_result_invalid_argument;
+        }
+        *available = target.record().empty() ? 0 : 1;
+        *count = static_cast<uint32_t>(target.record().size());
         return ln_result_ok;
     });
 }
