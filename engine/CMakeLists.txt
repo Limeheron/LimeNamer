@@ -31,7 +31,19 @@ if(WIN32)
         WIN32_LEAN_AND_MEAN NOMINMAX UNICODE _UNICODE _WIN32_WINNT=0x0A00)
 endif()
 
+include(FetchContent)
+FetchContent_Declare(nlohmann_json
+    URL https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz
+    URL_HASH SHA256=42f6e95cad6ec532fd372391373363b62a14af6d771056dbfc86160e6dfff7aa
+    SYSTEM
+    EXCLUDE_FROM_ALL)
+set(JSON_BuildTests OFF CACHE INTERNAL "")
+set(JSON_Install OFF CACHE INTERNAL "")
+FetchContent_MakeAvailable(nlohmann_json)
+
 set(LN_CORE_SOURCES
+    src/mod_checker.cpp
+    src/mod_json.cpp
     src/platform.cpp
     src/session.cpp
     src/utf.cpp)
@@ -48,6 +60,7 @@ endif()
 add_library(limenamer_core OBJECT ${LN_CORE_SOURCES})
 target_include_directories(limenamer_core PUBLIC include src)
 target_link_libraries(limenamer_core PRIVATE ln_build_options)
+target_link_libraries(limenamer_core PUBLIC nlohmann_json::nlohmann_json)
 if(WIN32)
     target_link_libraries(limenamer_core PUBLIC normaliz)
 elseif(APPLE)
@@ -64,7 +77,6 @@ target_include_directories(limenamer PUBLIC include)
 target_link_libraries(limenamer PRIVATE limenamer_core ln_build_options)
 
 if(LN_BUILD_TESTS)
-    include(FetchContent)
     FetchContent_Declare(googletest
         URL https://github.com/google/googletest/releases/download/v1.18.0/googletest-1.18.0.tar.gz
         URL_HASH SHA256=6e3191c1455468b3fc35a417fb565c1c5071aee1b7e7f85e30cf48a98d37d8b5
@@ -83,6 +95,8 @@ if(LN_BUILD_TESTS)
         tests/fake_file_system_test.cpp
         tests/fake_fs_env.cpp
         tests/file_system_test.cpp
+        tests/mod_checker_test.cpp
+        tests/mod_json_test.cpp
         tests/real_fs_env.cpp
         tests/session_test.cpp
         tests/text_service_test.cpp
