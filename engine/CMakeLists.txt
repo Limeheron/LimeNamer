@@ -28,7 +28,8 @@ else()
 endif()
 
 add_library(limenamer_core OBJECT
-    src/session.cpp)
+    src/session.cpp
+    src/utf.cpp)
 target_include_directories(limenamer_core PUBLIC include src)
 target_link_libraries(limenamer_core PRIVATE ln_build_options)
 
@@ -57,7 +58,8 @@ if(LN_BUILD_TESTS)
     include(GoogleTest)
 
     add_executable(limenamer_tests
-        tests/session_test.cpp)
+        tests/session_test.cpp
+        tests/utf_test.cpp)
     target_link_libraries(limenamer_tests PRIVATE limenamer_core ln_build_options
         GTest::gtest_main)
     gtest_discover_tests(limenamer_tests DISCOVERY_MODE PRE_TEST)
