@@ -12,6 +12,7 @@
 
 #include "file_system.h"
 #include "folder_cache.h"
+#include "paths.h"
 #include "rename_failure.h"
 #include "rename_planner.h"
 #include "rename_report.h"
@@ -39,7 +40,6 @@ public:
     const std::vector<RENAME_TRACK> &tracks() const;
 
     static RENAME_FAILURE failure_of(FS_ERROR error);
-    static bool is_under(const std::filesystem::path &path, const std::filesystem::path &base);
 
 private:
     FAILURES execute(const std::vector<RENAME_STEP> &steps, const PROGRESS &progress);

@@ -141,19 +141,6 @@ RENAME_FAILURE RENAME_EXECUTOR::failure_of(FS_ERROR error)
     return RENAME_FAILURE::other;
 }
 
-bool RENAME_EXECUTOR::is_under(const std::filesystem::path &path,
-    const std::filesystem::path &base)
-{
-    auto part = path.begin();
-    for (const std::filesystem::path &component : base) {
-        if (part == path.end() || *part != component) {
-            return false;
-        }
-        ++part;
-    }
-    return part != path.end();
-}
-
 RENAME_EXECUTOR::FAILURES RENAME_EXECUTOR::execute(const std::vector<RENAME_STEP> &steps,
     const PROGRESS &progress)
 {
@@ -207,8 +194,8 @@ FS_STATUS RENAME_EXECUTOR::move(RENAME_TRACK &item, const std::filesystem::path 
     item.current = to;
     if (item.is_dir) {
         for (RENAME_TRACK &other : tracks_) {
-            if (&other != &item && is_under(other.current, from)) {
-                other.current = to / other.current.lexically_relative(from);
+            if (&other != &item && PATHS::is_under(other.current, from)) {
+                other.current = PATHS::moved(other.current, from, to);
             }
         }
     }

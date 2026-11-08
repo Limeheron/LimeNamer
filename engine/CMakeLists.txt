@@ -54,11 +54,13 @@ set(LN_CORE_SOURCES
     src/mod_store.cpp
     src/name_checker.cpp
     src/name_parts.cpp
+    src/paths.cpp
     src/natural_compare.cpp
     src/platform.cpp
     src/preview_builder.cpp
     src/rename_executor.cpp
     src/rename_planner.cpp
+    src/rename_record.cpp
     src/session.cpp
     src/span_finder.cpp
     src/token_formatter.cpp
@@ -129,6 +131,7 @@ if(LN_BUILD_TESTS)
         tests/real_fs_env.cpp
         tests/rename_executor_test.cpp
         tests/rename_planner_test.cpp
+        tests/session_rename_test.cpp
         tests/session_test.cpp
         tests/span_finder_test.cpp
         tests/text_service_test.cpp

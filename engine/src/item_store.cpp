@@ -170,6 +170,35 @@ void ITEM_STORE::prune()
     });
 }
 
+void ITEM_STORE::relocate(uint64_t id, const std::filesystem::path &path)
+{
+    ITEM &item = items_.at(id);
+    const bool listed = contains(id);
+    if (listed) {
+        keys_.erase(item.key);
+    }
+    item.path = path;
+    item.folder = path.parent_path();
+    item.name = text_service_.to_nfc(UTF::path_to_u32(path.filename()).value());
+    item.key = key_of(path).value();
+    if (listed) {
+        keys_.emplace(item.key, id);
+    }
+}
+
+void ITEM_STORE::move_folder(const std::filesystem::path &from, const std::filesystem::path &to)
+{
+    std::vector<uint64_t> moved;
+    for (const auto &[id, item] : items_) {
+        if (PATHS::is_under(item.path, from)) {
+            moved.push_back(id);
+        }
+    }
+    for (const uint64_t id : moved) {
+        relocate(id, PATHS::moved(items_.at(id).path, from, to));
+    }
+}
+
 const std::vector<uint64_t> &ITEM_STORE::order() const
 {
     return order_;

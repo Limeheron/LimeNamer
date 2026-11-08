@@ -156,10 +156,10 @@ TEST_F(RENAME_EXECUTOR_TEST, maps_file_system_errors)
     EXPECT_EQ(RENAME_EXECUTOR::failure_of(FS_ERROR::path_too_long),
         RENAME_FAILURE::path_too_long);
     EXPECT_EQ(RENAME_EXECUTOR::failure_of(FS_ERROR::other), RENAME_FAILURE::other);
-    EXPECT_TRUE(RENAME_EXECUTOR::is_under(std::filesystem::path("a") / "b",
+    EXPECT_TRUE(PATHS::is_under(std::filesystem::path("a") / "b",
         std::filesystem::path("a")));
-    EXPECT_FALSE(RENAME_EXECUTOR::is_under(std::filesystem::path("ab"),
+    EXPECT_FALSE(PATHS::is_under(std::filesystem::path("ab"),
         std::filesystem::path("a")));
-    EXPECT_FALSE(RENAME_EXECUTOR::is_under(std::filesystem::path("a"),
+    EXPECT_FALSE(PATHS::is_under(std::filesystem::path("a"),
         std::filesystem::path("a")));
 }

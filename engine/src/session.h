@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <cstddef>
 #include <cstdint>
 #include <filesystem>
@@ -27,6 +28,13 @@
 #include "options.h"
 #include "preview.h"
 #include "preview_builder.h"
+#include "rename_executor.h"
+#include "rename_planner.h"
+#include "rename_record.h"
+#include "rename_report.h"
+#include "rename_request.h"
+#include "resolve_choice.h"
+#include "session_busy.h"
 #include "snapshot.h"
 #include "sort_key.h"
 #include "sort_state.h"
@@ -77,6 +85,11 @@ public:
     bool can_undo() const;
     bool can_redo() const;
 
+    std::optional<RENAME_REPORT> rename(const RENAME_EXECUTOR::PROGRESS &progress);
+    RENAME_REPORT resolve_rename(RESOLVE_CHOICE choice, const RENAME_EXECUTOR::PROGRESS &progress);
+    bool rename_pending() const;
+    const RENAME_RECORD &record() const;
+
 private:
     template <typename SERVICE>
     static std::unique_ptr<SERVICE> required(std::unique_ptr<SERVICE> service)
@@ -90,10 +103,13 @@ private:
     SNAPSHOT snapshot() const;
     void restore(SNAPSHOT snapshot);
     void track_folders();
+    void ensure_idle() const;
+    void finish_rename();
 
     template <typename BODY>
     auto recorded(BODY &&body)
     {
+        ensure_idle();
         SNAPSHOT before = snapshot();
         if constexpr (std::is_void_v<decltype(body())>) {
             body();
@@ -115,4 +131,7 @@ private:
     HISTORY history_;
     PREVIEW_BUILDER builder_;
     EXAMPLE_FINDER finder_;
+    RENAME_PLANNER planner_;
+    RENAME_EXECUTOR executor_;
+    RENAME_RECORD record_;
 };

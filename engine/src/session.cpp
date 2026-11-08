@@ -9,7 +9,9 @@ SESSION::SESSION(std::unique_ptr<TEXT_SERVICE> text_service,
       mods_(*text_service_),
       cache_(*file_system_, *text_service_),
       builder_(*text_service_, checker_),
-      finder_(builder_, checker_)
+      finder_(builder_, checker_),
+      planner_(*text_service_),
+      executor_(*file_system_, *text_service_)
 {
 }
 
@@ -58,6 +60,7 @@ void SESSION::clear_items()
 std::optional<bool> SESSION::move_items(const std::vector<uint64_t> &ids, uint64_t target_id,
     bool after, bool dry_run)
 {
+    ensure_idle();
     if (dry_run) {
         return items_.move(ids, target_id, after, true);
     }
@@ -80,6 +83,7 @@ const SORT_STATE &SESSION::sort_state() const
 
 void SESSION::refresh_folders()
 {
+    ensure_idle();
     cache_.refresh();
 }
 
@@ -117,6 +121,7 @@ bool SESSION::remove_mod(uint64_t id)
 std::optional<bool> SESSION::move_mod(uint64_t id, uint64_t target_id, bool after,
     bool dry_run)
 {
+    ensure_idle();
     if (dry_run) {
         return mods_.move(id, target_id, after, true);
     }
@@ -141,6 +146,7 @@ void SESSION::set_all_mods_enabled(bool enabled)
 
 std::optional<uint64_t> SESSION::direct_edit(uint64_t item_id, std::u32string new_name)
 {
+    ensure_idle();
     if (!items_.contains(item_id)) {
         return std::nullopt;
     }
@@ -174,6 +180,7 @@ PREVIEW SESSION::preview() const
 
 bool SESSION::undo()
 {
+    ensure_idle();
     std::optional<SNAPSHOT> previous = history_.undo(snapshot());
     if (!previous) {
         return false;
@@ -184,6 +191,7 @@ bool SESSION::undo()
 
 bool SESSION::redo()
 {
+    ensure_idle();
     std::optional<SNAPSHOT> next = history_.redo(snapshot());
     if (!next) {
         return false;
@@ -200,6 +208,60 @@ bool SESSION::can_undo() const
 bool SESSION::can_redo() const
 {
     return history_.can_redo();
+}
+
+std::optional<RENAME_REPORT> SESSION::rename(const RENAME_EXECUTOR::PROGRESS &progress)
+{
+    ensure_idle();
+    cache_.refresh();
+    const PREVIEW current = preview();
+    if (current.error > 0 || current.conflict > 0) {
+        return std::nullopt;
+    }
+    std::vector<RENAME_REQUEST> requests;
+    for (const PREVIEW_ROW &row : current.rows) {
+        if (!row.changed) {
+            continue;
+        }
+        const ITEM &item = *items_.find(row.item_id);
+        RENAME_REQUEST request;
+        request.item_id = item.id;
+        request.path = item.path;
+        request.name = item.name;
+        request.new_name = row.new_name;
+        request.is_dir = item.info.is_dir;
+        requests.push_back(std::move(request));
+    }
+    if (requests.empty()) {
+        return RENAME_REPORT();
+    }
+    const RENAME_REPORT report =
+        executor_.run(requests, planner_.plan(requests, cache_), progress);
+    if (!executor_.pending()) {
+        finish_rename();
+    }
+    return report;
+}
+
+RENAME_REPORT SESSION::resolve_rename(RESOLVE_CHOICE choice,
+    const RENAME_EXECUTOR::PROGRESS &progress)
+{
+    if (!executor_.pending()) {
+        throw std::logic_error("no rename is waiting for a choice");
+    }
+    const RENAME_REPORT report = executor_.resolve(choice, progress);
+    finish_rename();
+    return report;
+}
+
+bool SESSION::rename_pending() const
+{
+    return executor_.pending();
+}
+
+const RENAME_RECORD &SESSION::record() const
+{
+    return record_;
 }
 
 SNAPSHOT SESSION::snapshot() const
@@ -234,4 +296,57 @@ void SESSION::track_folders()
     for (const std::filesystem::path &folder : folders) {
         cache_.load(folder);
     }
+}
+
+void SESSION::ensure_idle() const
+{
+    if (executor_.pending()) {
+        throw SESSION_BUSY();
+    }
+}
+
+void SESSION::finish_rename()
+{
+    std::vector<const RENAME_TRACK *> renamed;
+    for (const RENAME_TRACK &track : executor_.tracks()) {
+        if (!track.failed && !track.reverted && track.current != track.original) {
+            renamed.push_back(&track);
+        }
+    }
+    if (renamed.empty()) {
+        return;
+    }
+
+    std::vector<const RENAME_TRACK *> folders;
+    for (const RENAME_TRACK *track : renamed) {
+        if (track->is_dir) {
+            folders.push_back(track);
+        }
+    }
+    std::stable_sort(folders.begin(), folders.end(),
+        [](const RENAME_TRACK *a, const RENAME_TRACK *b) {
+            return std::distance(a->original.begin(), a->original.end())
+                > std::distance(b->original.begin(), b->original.end());
+        });
+    for (const RENAME_TRACK *folder : folders) {
+        items_.move_folder(folder->original, folder->current);
+    }
+
+    std::vector<RECORD_ENTRY> entries;
+    entries.reserve(renamed.size());
+    for (const RENAME_TRACK *track : renamed) {
+        items_.relocate(track->item_id, track->current);
+        RECORD_ENTRY entry;
+        entry.item_id = track->item_id;
+        entry.before = track->original;
+        entry.after = track->current;
+        file_system_->get_info(track->current, entry.info);
+        entries.push_back(std::move(entry));
+    }
+    record_.set(std::move(entries));
+    mods_.set_all_enabled(false);
+    history_.clear();
+    items_.prune();
+    track_folders();
+    cache_.refresh();
 }

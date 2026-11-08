@@ -13,6 +13,7 @@
 #include "fake_fs_env.h"
 #include "folder_cache.h"
 #include "fs_error_output.h"
+#include "paths.h"
 #include "rename_executor.h"
 #include "rename_planner.h"
 #include "rename_report.h"

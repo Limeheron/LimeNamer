@@ -17,6 +17,7 @@
 #include "file_system.h"
 #include "item.h"
 #include "natural_compare.h"
+#include "paths.h"
 #include "sort_key.h"
 #include "sort_state.h"
 #include "text_service.h"
@@ -35,6 +36,8 @@ public:
     void sort(SORT_KEY key, bool descending);
     void restore(const std::vector<uint64_t> &order, const SORT_STATE &sort_state);
     void prune();
+    void relocate(uint64_t id, const std::filesystem::path &path);
+    void move_folder(const std::filesystem::path &from, const std::filesystem::path &to);
 
     const std::vector<uint64_t> &order() const;
     const SORT_STATE &sort_state() const;
