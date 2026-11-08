@@ -7,12 +7,12 @@ FAKE_FILE_SYSTEM::FAKE_FILE_SYSTEM(const TEXT_SERVICE &text_service)
 
 void FAKE_FILE_SYSTEM::add_folder(const std::filesystem::path &path)
 {
-    add_entry(path, true, 0);
+    add_entry(path, true, 0, false);
 }
 
-void FAKE_FILE_SYSTEM::add_file(const std::filesystem::path &path, int64_t size)
+void FAKE_FILE_SYSTEM::add_file(const std::filesystem::path &path, int64_t size, bool hidden)
 {
-    add_entry(path, false, size);
+    add_entry(path, false, size, hidden);
 }
 
 void FAKE_FILE_SYSTEM::fail_next_rename(const std::filesystem::path &from, FS_ERROR error)
@@ -114,7 +114,8 @@ std::u32string FAKE_FILE_SYSTEM::key_of(const std::filesystem::path &path) const
     return text_service_.fold_key(*text);
 }
 
-void FAKE_FILE_SYSTEM::add_entry(const std::filesystem::path &path, bool is_dir, int64_t size)
+void FAKE_FILE_SYSTEM::add_entry(const std::filesystem::path &path, bool is_dir, int64_t size,
+    bool hidden)
 {
     const std::u32string key = key_of(path);
     if (entries_.contains(key)) {
@@ -131,6 +132,7 @@ void FAKE_FILE_SYSTEM::add_entry(const std::filesystem::path &path, bool is_dir,
         entry.path = parent->second.path / path.filename();
     }
     entry.info.is_dir = is_dir;
+    entry.info.hidden = hidden;
     entry.info.size = is_dir ? 0 : size;
     entry.info.id = {true, 1, 0, next_id_++};
     entries_.emplace(key, std::move(entry));

@@ -50,3 +50,17 @@ TEST(MAC_FILE_SYSTEM, allows_case_only_rename)
     const std::vector<std::filesystem::path> expected = {"A.txt"};
     EXPECT_EQ(names, expected);
 }
+
+TEST(MAC_FILE_SYSTEM, reads_hidden_flag)
+{
+    REAL_FS_ENV env;
+    env.make_file(env.root() / "shown.txt", 1);
+    env.make_file(env.root() / "hidden.txt", 1);
+    ASSERT_EQ(chflags((env.root() / "hidden.txt").c_str(), UF_HIDDEN), 0);
+    FILE_INFO shown;
+    FILE_INFO hidden;
+    ASSERT_TRUE(env.file_system().get_info(env.root() / "shown.txt", shown).ok());
+    ASSERT_TRUE(env.file_system().get_info(env.root() / "hidden.txt", hidden).ok());
+    EXPECT_FALSE(shown.hidden);
+    EXPECT_TRUE(hidden.hidden);
+}

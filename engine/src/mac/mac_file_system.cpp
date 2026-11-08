@@ -7,6 +7,7 @@ FS_STATUS MAC_FILE_SYSTEM::get_info(const std::filesystem::path &path, FILE_INFO
         return from_errno(errno);
     }
     info.is_dir = S_ISDIR(status.st_mode);
+    info.hidden = (status.st_flags & UF_HIDDEN) != 0;
     info.size = info.is_dir ? 0 : static_cast<int64_t>(status.st_size);
     info.modified_ms = to_ms(status.st_mtimespec);
     info.created_ms = to_ms(status.st_birthtimespec);

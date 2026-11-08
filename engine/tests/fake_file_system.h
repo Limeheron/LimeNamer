@@ -20,7 +20,7 @@ public:
     explicit FAKE_FILE_SYSTEM(const TEXT_SERVICE &text_service);
 
     void add_folder(const std::filesystem::path &path);
-    void add_file(const std::filesystem::path &path, int64_t size);
+    void add_file(const std::filesystem::path &path, int64_t size, bool hidden = false);
     void fail_next_rename(const std::filesystem::path &from, FS_ERROR error);
 
     FS_STATUS get_info(const std::filesystem::path &path, FILE_INFO &info) const override;
@@ -34,7 +34,7 @@ private:
         static_cast<char32_t>(std::filesystem::path::preferred_separator);
 
     std::u32string key_of(const std::filesystem::path &path) const;
-    void add_entry(const std::filesystem::path &path, bool is_dir, int64_t size);
+    void add_entry(const std::filesystem::path &path, bool is_dir, int64_t size, bool hidden);
 
     const TEXT_SERVICE &text_service_;
     std::map<std::u32string, FAKE_ENTRY> entries_;

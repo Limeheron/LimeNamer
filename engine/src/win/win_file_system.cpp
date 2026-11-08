@@ -15,6 +15,8 @@ FS_STATUS WIN_FILE_SYSTEM::get_info(const std::filesystem::path &path, FILE_INFO
         return from_error(GetLastError());
     }
     info.is_dir = (basic.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
+    info.hidden =
+        (basic.dwFileAttributes & (FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM)) != 0;
     const uint64_t size = (static_cast<uint64_t>(basic.nFileSizeHigh) << 32) | basic.nFileSizeLow;
     info.size = info.is_dir ? 0 : static_cast<int64_t>(size);
     info.modified_ms = to_ms(basic.ftLastWriteTime);

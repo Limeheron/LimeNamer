@@ -16,6 +16,7 @@ public:
 
     FILE_SYSTEM &file_system();
     FAKE_FILE_SYSTEM &fake();
+    const TEXT_SERVICE &text_service() const;
     const std::filesystem::path &root() const;
     void make_file(const std::filesystem::path &path, int64_t size);
     void make_folder(const std::filesystem::path &path);

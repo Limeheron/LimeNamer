@@ -3,7 +3,11 @@
 FAKE_FS_ENV::FAKE_FS_ENV()
     : text_service_(PLATFORM::create_text_service()),
       file_system_(*text_service_),
+#if defined(_WIN32)
+      root_(L"C:\\fake")
+#else
       root_("/fake")
+#endif
 {
     file_system_.add_folder(root_);
 }
@@ -16,6 +20,11 @@ FILE_SYSTEM &FAKE_FS_ENV::file_system()
 FAKE_FILE_SYSTEM &FAKE_FS_ENV::fake()
 {
     return file_system_;
+}
+
+const TEXT_SERVICE &FAKE_FS_ENV::text_service() const
+{
+    return *text_service_;
 }
 
 const std::filesystem::path &FAKE_FS_ENV::root() const

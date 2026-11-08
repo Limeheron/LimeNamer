@@ -9,6 +9,7 @@ TYPED_TEST(FILE_SYSTEM_TEST, get_info_reads_file)
     FILE_INFO info;
     ASSERT_TRUE(this->fs().get_info(this->at("a.txt"), info).ok());
     EXPECT_FALSE(info.is_dir);
+    EXPECT_FALSE(info.hidden);
     EXPECT_EQ(info.size, 5);
     EXPECT_TRUE(info.id.valid);
 }

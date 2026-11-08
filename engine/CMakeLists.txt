@@ -43,6 +43,7 @@ FetchContent_MakeAvailable(nlohmann_json)
 
 set(LN_CORE_SOURCES
     src/index_list.cpp
+    src/item_store.cpp
     src/mod_applier.cpp
     src/mod_checker.cpp
     src/mod_json.cpp
@@ -102,6 +103,7 @@ if(LN_BUILD_TESTS)
         tests/fake_fs_env.cpp
         tests/file_system_test.cpp
         tests/index_list_test.cpp
+        tests/item_store_test.cpp
         tests/mod_applier_test.cpp
         tests/mod_cases_test.cpp
         tests/mod_checker_test.cpp

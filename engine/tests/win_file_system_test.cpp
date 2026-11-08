@@ -86,3 +86,17 @@ TEST(WIN_FILE_SYSTEM, handles_symlink_itself)
     EXPECT_TRUE(std::filesystem::is_symlink(env.root() / "renamed"));
     EXPECT_TRUE(std::filesystem::is_directory(env.root() / "target"));
 }
+
+TEST(WIN_FILE_SYSTEM, reads_hidden_flag)
+{
+    REAL_FS_ENV env;
+    env.make_file(env.root() / "shown.txt", 1);
+    env.make_file(env.root() / "hidden.txt", 1);
+    ASSERT_TRUE(SetFileAttributesW((env.root() / "hidden.txt").c_str(), FILE_ATTRIBUTE_HIDDEN));
+    FILE_INFO shown;
+    FILE_INFO hidden;
+    ASSERT_TRUE(env.file_system().get_info(env.root() / "shown.txt", shown).ok());
+    ASSERT_TRUE(env.file_system().get_info(env.root() / "hidden.txt", hidden).ok());
+    EXPECT_FALSE(shown.hidden);
+    EXPECT_TRUE(hidden.hidden);
+}
