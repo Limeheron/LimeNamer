@@ -47,6 +47,7 @@ set(LN_CORE_SOURCES
     src/name_parts.cpp
     src/platform.cpp
     src/session.cpp
+    src/span_finder.cpp
     src/utf.cpp)
 if(WIN32)
     list(APPEND LN_CORE_SOURCES
@@ -101,6 +102,7 @@ if(LN_BUILD_TESTS)
         tests/name_parts_test.cpp
         tests/real_fs_env.cpp
         tests/session_test.cpp
+        tests/span_finder_test.cpp
         tests/text_service_test.cpp
         tests/utf_test.cpp)
     if(WIN32)
