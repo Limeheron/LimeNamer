@@ -1,11 +1,7 @@
 #include "real_fs_env.h"
 
 REAL_FS_ENV::REAL_FS_ENV()
-#if defined(_WIN32)
-    : file_system_(std::make_unique<WIN_FILE_SYSTEM>())
-#else
-    : file_system_(std::make_unique<MAC_FILE_SYSTEM>())
-#endif
+    : file_system_(PLATFORM::create_file_system())
 {
     std::random_device random;
     const std::filesystem::path base = std::filesystem::temp_directory_path();

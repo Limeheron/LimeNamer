@@ -8,3 +8,12 @@ std::unique_ptr<TEXT_SERVICE> PLATFORM::create_text_service()
     return std::make_unique<MAC_TEXT_SERVICE>();
 #endif
 }
+
+std::unique_ptr<FILE_SYSTEM> PLATFORM::create_file_system()
+{
+#if defined(_WIN32)
+    return std::make_unique<WIN_FILE_SYSTEM>();
+#else
+    return std::make_unique<MAC_FILE_SYSTEM>();
+#endif
+}
