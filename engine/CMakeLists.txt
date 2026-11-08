@@ -115,6 +115,7 @@ if(LN_BUILD_TESTS)
         tests/fake_file_system.cpp
         tests/fake_file_system_test.cpp
         tests/fake_fs_env.cpp
+        tests/file_lock.cpp
         tests/file_system_test.cpp
         tests/folder_cache_test.cpp
         tests/folder_moves_test.cpp
@@ -134,6 +135,7 @@ if(LN_BUILD_TESTS)
         tests/rename_executor_test.cpp
         tests/rename_planner_test.cpp
         tests/rename_record_test.cpp
+        tests/session_real_fs_test.cpp
         tests/session_rename_test.cpp
         tests/session_test.cpp
         tests/span_finder_test.cpp

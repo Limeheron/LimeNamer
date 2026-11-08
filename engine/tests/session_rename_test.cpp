@@ -310,3 +310,30 @@ TEST_F(SESSION_TEST, follows_restored_folders_for_entries_left_behind)
     EXPECT_EQ(session_->undo_rename({})->succeeded, 1u);
     EXPECT_EQ(session_->items().find(ids[1])->path, root_ / "f" / "b.txt");
 }
+
+TEST_F(SESSION_TEST, undoes_to_the_original_normalization_form)
+{
+    const std::u32string decomposed = U"\u1100\u1161.txt";
+    session_->add_items(files({decomposed}), ADD_MODE::as_items);
+    session_->add_mod(mod(PREFIX));
+    session_->rename({});
+    EXPECT_EQ(item_names(*session_), std::vector<std::u32string>({U"a_\uAC00.txt"}));
+    EXPECT_EQ(session_->undo_rename({})->succeeded, 1u);
+    std::vector<std::filesystem::path> names;
+    ASSERT_TRUE(fake_->list_names(root_, names).ok());
+    EXPECT_EQ(names, std::vector<std::filesystem::path>({UTF::path_from_u32(decomposed)}));
+}
+
+TEST_F(SESSION_TEST, reverts_to_the_original_normalization_form)
+{
+    const std::u32string decomposed = U"\u1100\u1161.txt";
+    session_->add_items(files({decomposed, U"y.txt"}), ADD_MODE::as_items);
+    session_->add_mod(mod(PREFIX));
+    fake_->fail_next_rename(root_ / "y.txt", FS_ERROR::in_use);
+    ASSERT_TRUE(session_->rename({})->needs_choice);
+    session_->resolve_rename(RESOLVE_CHOICE::revert_all, {});
+    std::vector<std::filesystem::path> names;
+    ASSERT_TRUE(fake_->list_names(root_, names).ok());
+    EXPECT_EQ(names, std::vector<std::filesystem::path>({"y.txt",
+        UTF::path_from_u32(decomposed)}));
+}

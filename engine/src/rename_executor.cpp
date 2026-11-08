@@ -84,8 +84,7 @@ RENAME_REPORT RENAME_EXECUTOR::resolve(RESOLVE_CHOICE choice, const PROGRESS &pr
         request.item_id = item.item_id;
         request.path = item.current;
         request.name = text_service_.to_nfc(UTF::path_to_u32(item.current.filename()).value());
-        request.new_name =
-            text_service_.to_nfc(UTF::path_to_u32(item.original.filename()).value());
+        request.new_name = UTF::path_to_u32(item.original.filename()).value();
         request.is_dir = item.is_dir;
         requests.push_back(std::move(request));
         before.emplace(item.item_id, item.current);

@@ -95,8 +95,7 @@ UNDO_CHECK RENAME_RECORD::check(const FILE_SYSTEM &file_system,
         request.path = entry.after;
         request.name = text_service.to_nfc(
             UTF::path_to_u32(entry.after.filename()).value_or(std::u32string()));
-        request.new_name = text_service.to_nfc(
-            UTF::path_to_u32(entry.before.filename()).value_or(std::u32string()));
+        request.new_name = UTF::path_to_u32(entry.before.filename()).value_or(std::u32string());
         request.is_dir = is_dir[index];
         result.requests.push_back(std::move(request));
     }
