@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.28)
 
-project(limenamer LANGUAGES CXX)
+project(limenamer LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -9,6 +9,7 @@ set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 option(LN_BUILD_TESTS "Build tests" ON)
 option(LN_SANITIZE "Enable AddressSanitizer and UndefinedBehaviorSanitizer" OFF)
@@ -104,7 +105,6 @@ if(LN_BUILD_TESTS)
         URL_HASH SHA256=6e3191c1455468b3fc35a417fb565c1c5071aee1b7e7f85e30cf48a98d37d8b5
         SYSTEM
         EXCLUDE_FROM_ALL)
-    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
     set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
     FetchContent_MakeAvailable(googletest)
@@ -176,4 +176,19 @@ if(LN_BUILD_TESTS)
     target_link_libraries(limenamer_api_tests PRIVATE limenamer ln_build_options
         GTest::gtest_main)
     gtest_discover_tests(limenamer_api_tests DISCOVERY_MODE PRE_TEST)
+
+    add_executable(limenamer_c_tests tests/c_header_test.c)
+    set_target_properties(limenamer_c_tests PROPERTIES
+        C_STANDARD 11
+        C_STANDARD_REQUIRED ON
+        C_EXTENSIONS OFF)
+    if(MSVC)
+        target_compile_options(limenamer_c_tests PRIVATE /W4 /WX /utf-8)
+    else()
+        target_compile_options(limenamer_c_tests PRIVATE
+            -Wall -Wextra -Wpedantic -Wshadow -Wconversion -Wstrict-prototypes -Werror)
+    endif()
+    target_link_libraries(limenamer_c_tests PRIVATE limenamer)
+    add_test(NAME limenamer_c_tests
+        COMMAND limenamer_c_tests $<TARGET_FILE:limenamer_c_tests>)
 endif()
