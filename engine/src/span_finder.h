@@ -31,6 +31,7 @@ private:
 
     std::vector<SPAN> find_points(const POSITION &position, std::u32string_view text) const;
     std::vector<SPAN> find_ranges(const POSITION &position, std::u32string_view text) const;
+    std::vector<SPAN> find_between(const POSITION &position, std::u32string_view text) const;
     std::vector<std::u32string> fold_each(std::u32string_view text) const;
 
     const TEXT_SERVICE &text_service_;

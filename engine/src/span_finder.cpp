@@ -129,9 +129,71 @@ std::vector<SPAN> SPAN_FINDER::find_points(const POSITION &position,
 std::vector<SPAN> SPAN_FINDER::find_ranges(const POSITION &position,
     std::u32string_view text) const
 {
-    static_cast<void>(position);
-    static_cast<void>(text);
-    throw std::logic_error("range positions are not supported yet");
+    const size_t length = text.size();
+    switch (position.type) {
+    case POSITION_TYPE::all:
+        return {{0, length}};
+    case POSITION_TYPE::first_n: {
+        const size_t end = std::min<size_t>(position.n, length);
+        return end == 0 ? std::vector<SPAN>() : std::vector<SPAN>{{0, end}};
+    }
+    case POSITION_TYPE::last_n: {
+        const size_t begin = length - std::min<size_t>(position.n, length);
+        return begin == length ? std::vector<SPAN>() : std::vector<SPAN>{{begin, length}};
+    }
+    case POSITION_TYPE::from_nth: {
+        if (position.n == 0 || position.n > length) {
+            return {};
+        }
+        const size_t begin = position.n - 1;
+        const size_t end = begin + std::min<size_t>(position.count, length - begin);
+        return end == begin ? std::vector<SPAN>() : std::vector<SPAN>{{begin, end}};
+    }
+    case POSITION_TYPE::text:
+        return select(matches(text, position.text, position.case_sensitive), position.occurrence,
+            position.occurrence_n);
+    case POSITION_TYPE::between:
+        return find_between(position, text);
+    default:
+        throw std::logic_error("not a range position");
+    }
+}
+
+std::vector<SPAN> SPAN_FINDER::find_between(const POSITION &position,
+    std::u32string_view text) const
+{
+    const bool include = position.include_delimiters;
+    const size_t length = text.size();
+    if (position.from_beginning && position.to_end) {
+        return {{0, length}};
+    }
+    if (position.from_beginning) {
+        const std::vector<SPAN> ends = select(
+            matches(text, position.end_text, position.case_sensitive), position.occurrence,
+            position.occurrence_n);
+        if (ends.empty()) {
+            return {};
+        }
+        return {{0, include ? ends.front().end : ends.front().begin}};
+    }
+
+    const std::vector<SPAN> starts = select(
+        matches(text, position.start_text, position.case_sensitive), position.occurrence,
+        position.occurrence_n);
+    if (starts.empty()) {
+        return {};
+    }
+    const SPAN start = starts.front();
+    if (position.to_end) {
+        return {{include ? start.begin : start.end, length}};
+    }
+    const std::vector<SPAN> ends = matches(text.substr(start.end), position.end_text,
+        position.case_sensitive);
+    if (ends.empty()) {
+        return {};
+    }
+    const SPAN end = {start.end + ends.front().begin, start.end + ends.front().end};
+    return {{include ? start.begin : start.end, include ? end.end : end.begin}};
 }
 
 std::vector<std::u32string> SPAN_FINDER::fold_each(std::u32string_view text) const
