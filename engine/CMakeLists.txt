@@ -103,6 +103,7 @@ if(LN_BUILD_TESTS)
         tests/file_system_test.cpp
         tests/index_list_test.cpp
         tests/mod_applier_test.cpp
+        tests/mod_cases_test.cpp
         tests/mod_checker_test.cpp
         tests/mod_json_test.cpp
         tests/name_parts_test.cpp
@@ -122,6 +123,8 @@ if(LN_BUILD_TESTS)
     endif()
 
     add_executable(limenamer_tests ${LN_TEST_SOURCES})
+    target_compile_definitions(limenamer_tests PRIVATE
+        LN_TESTDATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../testdata")
     target_link_libraries(limenamer_tests PRIVATE limenamer_core ln_build_options
         GTest::gtest_main)
     gtest_discover_tests(limenamer_tests DISCOVERY_MODE PRE_TEST)

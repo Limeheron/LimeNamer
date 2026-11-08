@@ -1,0 +1,205 @@
+[
+    {
+        "name": "spec_photo_series",
+        "mods": [
+            {"kind": "replace", "position": {"type": "all"},
+                "value": [{"text": "여행_"}, {"token": "number"}],
+                "tokens": {"number": {"start": 1, "step": 1, "digits": 3}}}
+        ],
+        "items": [
+            {"name": "IMG_0001.JPG", "expected": "여행_001.JPG"},
+            {"name": "IMG_0002.JPG", "expected": "여행_002.JPG"},
+            {"name": "IMG_0003.JPG", "expected": "여행_003.JPG"}
+        ]
+    },
+    {
+        "name": "spec_prefix_change",
+        "mods": [
+            {"kind": "replace", "position": {"type": "text", "text": "old"},
+                "value": [{"text": "new"}]}
+        ],
+        "items": [
+            {"name": "old_report_old.txt", "expected": "new_report_old.txt"},
+            {"name": "OLD_draft.txt", "expected": "new_draft.txt"},
+            {"name": "notes.txt", "expected": "notes.txt"}
+        ]
+    },
+    {
+        "name": "spec_remove_extension",
+        "mods": [
+            {"kind": "delete", "part": "ext", "position": {"type": "all"}}
+        ],
+        "items": [
+            {"name": "photo.jpg", "expected": "photo"},
+            {"name": "archive.tar.gz", "expected": "archive.tar"},
+            {"name": "README", "expected": "README"},
+            {"name": "data.v1", "is_dir": true, "expected": "data.v1"}
+        ]
+    },
+    {
+        "name": "spec_change_extension",
+        "mods": [
+            {"kind": "replace", "part": "ext", "position": {"type": "all"},
+                "value": [{"text": "jpeg"}]}
+        ],
+        "items": [
+            {"name": "a.jpg", "expected": "a.jpeg"},
+            {"name": "b.JPG", "expected": "b.jpeg"},
+            {"name": "README", "expected": "README.jpeg"},
+            {"name": "pics.old", "is_dir": true, "expected": "pics.old"}
+        ]
+    },
+    {
+        "name": "spec_replace_tar_gz",
+        "mods": [
+            {"kind": "replace", "part": "full", "position": {"type": "last_n", "n": 6},
+                "value": [{"text": "zip"}]}
+        ],
+        "items": [
+            {"name": "backup.tar.gz", "expected": "backup.zip"},
+            {"name": "logs.tar.gz", "expected": "logs.zip"}
+        ]
+    },
+    {
+        "name": "spec_summary_chain",
+        "mods": [
+            {"kind": "replace", "position": {"type": "text", "text": "IMG_"},
+                "value": [{"text": "제주_"}]},
+            {"kind": "format", "part": "ext", "position": {"type": "all"},
+                "format": {"type": "lower"}},
+            {"kind": "format", "position": {"type": "all"},
+                "format": {"type": "pad_digits", "digits": 3}},
+            {"kind": "insert", "position": {"type": "start"}, "value": [{"text": "2024_"}]}
+        ],
+        "items": [
+            {"name": "IMG_7.JPG", "expected": "2024_제주_007.jpg"},
+            {"name": "IMG_123.PNG", "expected": "2024_제주_123.png"},
+            {"name": "DSC_5.JPG", "expected": "2024_DSC_005.jpg"}
+        ]
+    },
+    {
+        "name": "delete_first_four",
+        "mods": [
+            {"kind": "delete", "position": {"type": "first_n", "n": 4}}
+        ],
+        "items": [
+            {"name": "IMG_0001.jpg", "expected": "0001.jpg"},
+            {"name": "abc.txt", "expected": ".txt"}
+        ]
+    },
+    {
+        "name": "tokens_from_item",
+        "mods": [
+            {"kind": "replace", "position": {"type": "all"},
+                "value": [{"token": "parent_folder"}, {"text": "_"}, {"token": "original_name"},
+                    {"text": "_"}, {"token": "size"}],
+                "tokens": {"size": {"unit": "kb"}}}
+        ],
+        "items": [
+            {"name": "a.txt", "parent": "docs", "size": 2048, "expected": "docs_a_2KB.txt"},
+            {"name": "b.final.txt", "parent": "docs", "size": 1536,
+                "expected": "docs_b.final_2KB.txt"},
+            {"name": "photos", "is_dir": true, "parent": "home", "expected": "home_photos_"}
+        ]
+    },
+    {
+        "name": "original_name_after_change",
+        "mods": [
+            {"kind": "replace", "position": {"type": "all"}, "value": [{"text": "x"}]},
+            {"kind": "insert", "position": {"type": "end"},
+                "value": [{"token": "original_name"}]}
+        ],
+        "items": [
+            {"name": "a.txt", "expected": "xa.txt"},
+            {"name": "photo.jpg", "expected": "xphoto.jpg"}
+        ]
+    },
+    {
+        "name": "countdown_numbers",
+        "mods": [
+            {"kind": "insert", "position": {"type": "start"},
+                "value": [{"token": "number"}, {"text": "_"}],
+                "tokens": {"number": {"start": 10, "step": -2, "digits": 2}}}
+        ],
+        "items": [
+            {"name": "a.txt", "expected": "10_a.txt"},
+            {"name": "b.txt", "expected": "08_b.txt"},
+            {"name": "c.txt", "expected": "06_c.txt"},
+            {"name": "d.txt", "expected": "04_d.txt"}
+        ]
+    },
+    {
+        "name": "title_case",
+        "mods": [
+            {"kind": "format", "position": {"type": "all"}, "format": {"type": "title"}}
+        ],
+        "items": [
+            {"name": "hello world_test-case.txt", "expected": "Hello World_Test-Case.txt"},
+            {"name": "iPhone PHOTO.jpg", "expected": "Iphone Photo.jpg"},
+            {"name": "don't stop.mp3", "expected": "Don't Stop.mp3"}
+        ]
+    },
+    {
+        "name": "sentence_case",
+        "mods": [
+            {"kind": "format", "position": {"type": "all"}, "format": {"type": "sentence"}}
+        ],
+        "items": [
+            {"name": "HELLO WORLD.txt", "expected": "Hello world.txt"},
+            {"name": "2024 TRIP.txt", "expected": "2024 trip.txt"}
+        ]
+    },
+    {
+        "name": "remove_bracketed",
+        "mods": [
+            {"kind": "delete", "position": {"type": "between", "start_text": "[",
+                "end_text": "]", "include_delimiters": true}}
+        ],
+        "items": [
+            {"name": "photo[2024]_final.png", "expected": "photo_final.png"},
+            {"name": "a[1][2].txt", "expected": "a[2].txt"},
+            {"name": "plain.txt", "expected": "plain.txt"}
+        ]
+    },
+    {
+        "name": "insert_before_every_underscore",
+        "mods": [
+            {"kind": "insert", "position": {"type": "before_text", "text": "_",
+                "occurrence": "all"}, "value": [{"text": "-"}]}
+        ],
+        "items": [
+            {"name": "a_b_c.txt", "expected": "a-_b-_c.txt"},
+            {"name": "abc.txt", "expected": "abc.txt"}
+        ]
+    },
+    {
+        "name": "folder_names",
+        "mods": [
+            {"kind": "insert", "position": {"type": "end"}, "value": [{"text": "_2024"}]}
+        ],
+        "items": [
+            {"name": "my.folder", "is_dir": true, "expected": "my.folder_2024"},
+            {"name": "my.file", "expected": "my_2024.file"}
+        ]
+    },
+    {
+        "name": "replace_case_sensitive",
+        "mods": [
+            {"kind": "replace", "position": {"type": "text", "text": "a", "case_sensitive": true,
+                "occurrence": "all"}, "value": [{"text": "o"}]}
+        ],
+        "items": [
+            {"name": "banAna.txt", "expected": "bonAno.txt"}
+        ]
+    },
+    {
+        "name": "unicode_insert",
+        "mods": [
+            {"kind": "insert", "position": {"type": "after_nth", "n": 2},
+                "value": [{"text": "😀"}]}
+        ],
+        "items": [
+            {"name": "한글이름.txt", "expected": "한글😀이름.txt"}
+        ]
+    }
+]
