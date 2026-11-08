@@ -344,12 +344,15 @@ void SESSION::finish_rename()
     FOLDER_MOVES folders;
     std::vector<RECORD_ENTRY> entries;
     for (const RENAME_TRACK &track : executor_.tracks()) {
-        if (track.failed || track.reverted || track.current == track.original) {
+        if (track.reverted || track.current == track.original) {
             continue;
         }
         targets.emplace(track.item_id, track.current);
         if (track.is_dir) {
             folders.add(track.original, track.current);
+        }
+        if (track.failed) {
+            continue;
         }
         RECORD_ENTRY entry;
         entry.item_id = track.item_id;
@@ -358,15 +361,20 @@ void SESSION::finish_rename()
         file_system_->get_info(track.current, entry.info);
         entries.push_back(std::move(entry));
     }
-    if (entries.empty()) {
+    if (targets.empty()) {
         return;
     }
 
-    history_.clear();
-    items_.prune();
+    const bool renamed = !entries.empty();
+    if (renamed) {
+        history_.clear();
+        items_.prune();
+    }
     items_.relocate(targets, folders);
-    record_.set(std::move(entries));
-    mods_.set_all_enabled(false);
+    if (renamed) {
+        record_.set(std::move(entries));
+        mods_.set_all_enabled(false);
+    }
     track_folders();
     cache_.refresh();
 }
@@ -374,13 +382,18 @@ void SESSION::finish_rename()
 void SESSION::finish_undo()
 {
     std::unordered_map<uint64_t, std::filesystem::path> targets;
+    std::unordered_map<uint64_t, std::filesystem::path> left;
     std::unordered_set<uint64_t> restored;
     FOLDER_MOVES folders;
     for (const RENAME_TRACK &track : executor_.tracks()) {
-        if (track.failed || track.current == track.original) {
+        if (track.current == track.original) {
             continue;
         }
-        restored.insert(track.item_id);
+        if (track.failed) {
+            left.emplace(track.item_id, track.current);
+        } else {
+            restored.insert(track.item_id);
+        }
         if (track.is_dir) {
             folders.add(track.original, track.current);
         }
@@ -389,12 +402,14 @@ void SESSION::finish_undo()
             targets.emplace(*listed, track.current);
         }
     }
-    if (restored.empty()) {
+    if (restored.empty() && left.empty()) {
         return;
     }
 
-    history_.clear();
-    items_.prune();
+    if (!restored.empty()) {
+        history_.clear();
+        items_.prune();
+    }
     items_.relocate(targets, folders);
     std::vector<RECORD_ENTRY> remaining;
     for (const RECORD_ENTRY &entry : record_.entries()) {
@@ -402,9 +417,14 @@ void SESSION::finish_undo()
             continue;
         }
         RECORD_ENTRY kept = entry;
-        const std::optional<std::filesystem::path> moved = folders.follow(kept.after);
-        if (moved) {
-            kept.after = *moved;
+        const auto current = left.find(entry.item_id);
+        if (current != left.end()) {
+            kept.after = current->second;
+        } else {
+            const std::optional<std::filesystem::path> moved = folders.follow(kept.after);
+            if (moved) {
+                kept.after = *moved;
+            }
         }
         remaining.push_back(std::move(kept));
     }

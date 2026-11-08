@@ -337,3 +337,66 @@ TEST_F(SESSION_TEST, reverts_to_the_original_normalization_form)
     EXPECT_EQ(names, std::vector<std::filesystem::path>({"y.txt",
         UTF::path_from_u32(decomposed)}));
 }
+
+TEST_F(SESSION_TEST, follows_items_left_at_temporary_names)
+{
+    session_->add_items(files({U"x.txt", U"y.txt"}), ADD_MODE::as_items);
+    const std::vector<uint64_t> ids = session_->items().order();
+    session_->direct_edit(ids[0], U"y.txt");
+    session_->direct_edit(ids[1], U"x.txt");
+    const std::filesystem::path temp = root_ / ".limenamer-tmp-1";
+    fake_->fail_next_rename(temp, FS_ERROR::in_use);
+    const std::optional<RENAME_REPORT> report = session_->rename({});
+    ASSERT_TRUE(report.has_value());
+    ASSERT_TRUE(report->needs_choice);
+    ASSERT_EQ(report->problems.size(), size_t{2});
+    EXPECT_EQ(report->problems[1].stage, REPORT_STAGE::revert);
+    EXPECT_EQ(report->problems[1].current, temp);
+
+    session_->resolve_rename(RESOLVE_CHOICE::keep_succeeded, {});
+    EXPECT_EQ(session_->items().find(ids[0])->path, temp);
+    EXPECT_EQ(session_->items().find(ids[1])->path, root_ / "x.txt");
+    EXPECT_TRUE(session_->items().contains(ids[0]));
+    EXPECT_TRUE(session_->items().contains(ids[1]));
+    ASSERT_EQ(session_->record().size(), size_t{1});
+    EXPECT_EQ(session_->record().entries()[0].item_id, ids[1]);
+}
+
+TEST_F(SESSION_TEST, follows_items_left_at_temporary_names_after_a_full_revert)
+{
+    session_->add_items(files({U"x.txt", U"y.txt"}), ADD_MODE::as_items);
+    const std::vector<uint64_t> ids = session_->items().order();
+    session_->direct_edit(ids[0], U"y.txt");
+    session_->direct_edit(ids[1], U"x.txt");
+    const std::filesystem::path temp = root_ / ".limenamer-tmp-1";
+    fake_->fail_next_rename(temp, FS_ERROR::in_use);
+    ASSERT_TRUE(session_->rename({})->needs_choice);
+    session_->resolve_rename(RESOLVE_CHOICE::revert_all, {});
+    EXPECT_EQ(session_->items().find(ids[0])->path, temp);
+    EXPECT_EQ(session_->items().find(ids[1])->path, root_ / "y.txt");
+    EXPECT_TRUE(session_->record().empty());
+    EXPECT_TRUE(session_->mods()[0].enabled);
+}
+
+TEST_F(SESSION_TEST, retries_items_left_at_temporary_names_by_undo)
+{
+    session_->add_items(files({U"x.txt", U"y.txt"}), ADD_MODE::as_items);
+    const std::vector<uint64_t> ids = session_->items().order();
+    session_->direct_edit(ids[0], U"y.txt");
+    session_->direct_edit(ids[1], U"x.txt");
+    session_->rename({});
+    const std::filesystem::path temp = root_ / ".limenamer-tmp-1";
+    fake_->fail_next_rename(temp, FS_ERROR::in_use);
+    const std::optional<RENAME_REPORT> report = session_->undo_rename({});
+    ASSERT_TRUE(report.has_value());
+    EXPECT_EQ(report->succeeded, 1u);
+    EXPECT_EQ(report->failed, 1u);
+    EXPECT_EQ(session_->items().find(ids[0])->path, temp);
+    EXPECT_EQ(session_->items().find(ids[1])->path, root_ / "y.txt");
+    ASSERT_EQ(session_->record().size(), size_t{1});
+    EXPECT_EQ(session_->record().entries()[0].after, temp);
+
+    EXPECT_EQ(session_->undo_rename({})->succeeded, 1u);
+    EXPECT_EQ(session_->items().find(ids[0])->path, root_ / "x.txt");
+    EXPECT_TRUE(session_->record().empty());
+}
