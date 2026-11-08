@@ -42,6 +42,7 @@ set(JSON_Install OFF CACHE INTERNAL "")
 FetchContent_MakeAvailable(nlohmann_json)
 
 set(LN_CORE_SOURCES
+    src/conflict_resolver.cpp
     src/folder_cache.cpp
     src/index_list.cpp
     src/item_store.cpp
@@ -100,6 +101,7 @@ if(LN_BUILD_TESTS)
     include(GoogleTest)
 
     set(LN_TEST_SOURCES
+        tests/conflict_resolver_test.cpp
         tests/fake_file_system.cpp
         tests/fake_file_system_test.cpp
         tests/fake_fs_env.cpp

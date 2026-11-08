@@ -27,10 +27,12 @@ public:
 
     bool has_name(const std::filesystem::path &folder, std::u32string_view name) const;
     const FOLDER_NAMES *find(const std::filesystem::path &folder) const;
+    const FOLDER_NAMES *find_key(const std::u32string &folder_key) const;
     size_t size() const;
 
-private:
     std::optional<std::u32string> key_of(const std::filesystem::path &folder) const;
+
+private:
     FOLDER_NAMES read(const std::filesystem::path &folder) const;
 
     const FILE_SYSTEM &file_system_;

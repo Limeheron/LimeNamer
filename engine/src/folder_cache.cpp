@@ -55,7 +55,12 @@ const FOLDER_NAMES *FOLDER_CACHE::find(const std::filesystem::path &folder) cons
     if (!key) {
         return nullptr;
     }
-    const auto names = folders_.find(*key);
+    return find_key(*key);
+}
+
+const FOLDER_NAMES *FOLDER_CACHE::find_key(const std::u32string &folder_key) const
+{
+    const auto names = folders_.find(folder_key);
     return names == folders_.end() ? nullptr : &names->second;
 }
 
