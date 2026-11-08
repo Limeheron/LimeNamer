@@ -71,3 +71,15 @@ TEST(MOD_CHECKER, reports_problems_in_editor_order)
     EXPECT_EQ(problems_of(R"({"kind":"replace","position":{"type":"text","text":""},
         "value":[],"scope":"items"})"), expected);
 }
+
+TEST(MOD_CHECKER, requires_date_formats_for_used_date_tokens)
+{
+    const std::vector<MOD_PROBLEM> expected = {
+        {MOD_FIELD::modified_date_format, PROBLEM_REASON::required},
+        {MOD_FIELD::created_date_format, PROBLEM_REASON::required}};
+    EXPECT_EQ(problems_of(R"({"kind":"insert","position":{"type":"start"},
+        "value":[{"token":"modified_date"},{"token":"created_date"}],
+        "tokens":{"modified_date":{"format":""},"created_date":{"format":""}}})"), expected);
+    EXPECT_TRUE(problems_of(R"({"kind":"insert","position":{"type":"start"},
+        "value":[{"token":"number"}],"tokens":{"modified_date":{"format":""}}})").empty());
+}

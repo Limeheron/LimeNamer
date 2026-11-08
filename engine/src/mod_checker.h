@@ -14,4 +14,5 @@ public:
 
 private:
     static bool has_value(const std::vector<VALUE_PIECE> &value);
+    static bool uses(const std::vector<VALUE_PIECE> &value, TOKEN_KIND token);
 };

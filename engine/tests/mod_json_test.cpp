@@ -163,6 +163,14 @@ TEST(MOD_JSON, rejects_invalid_input)
         R"({"kind":"delete","position":{"type":"all"},"scope":"items","targets":[-1]})",
         R"({"kind":"delete","position":{"type":"all"},"direct":"true"})",
         "{\"kind\":\"insert\",\"position\":{\"type\":\"start\"},\"value\":[{\"text\":\"\xFF\"}]}",
+        R"({"kind":"insert","position":{"type":"start"},"value":[],
+            "tokens":{"size":{"unit":"tb"}}})",
+        R"({"kind":"insert","position":{"type":"start"},"value":[],
+            "tokens":{"modified_date":{"format":1}}})",
+        R"({"kind":"insert","position":{"type":"start"},"value":[],
+            "tokens":{"created_date":"yyyy"}})",
+        R"({"kind":"insert","position":{"type":"start"},"value":[],"tokens":{"modified_date":
+            {"format":"yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"}}})",
     };
     for (size_t i = 0; i < std::size(samples); ++i) {
         EXPECT_THROW(MOD_JSON::parse(samples[i]), MOD_JSON_ERROR) << "sample " << i;
@@ -175,7 +183,10 @@ TEST(MOD_JSON, writes_canonical_json)
         R"({"kind":"insert","position":{"type":"start"},"value":[{"text":"2024_"}]})");
     const nlohmann::json expected = nlohmann::json::parse(R"({
         "kind": "insert", "part": "name", "position": {"type": "start"},
-        "value": [{"text": "2024_"}], "tokens": {"number": {"start": 1, "step": 1, "digits": 1}},
+        "value": [{"text": "2024_"}],
+        "tokens": {"number": {"start": 1, "step": 1, "digits": 1},
+            "modified_date": {"format": "yyyyMMdd"}, "created_date": {"format": "yyyyMMdd"},
+            "size": {"unit": "auto"}},
         "scope": "all", "direct": false})");
     EXPECT_EQ(nlohmann::json::parse(MOD_JSON::to_json(mod)), expected);
 }
@@ -198,6 +209,9 @@ TEST(MOD_JSON, round_trips)
         R"({"kind":"format","position":{"type":"last_n","n":3},
             "format":{"type":"pad_digits","digits":3}})",
         R"({"kind":"format","position":{"type":"text","text":"ab"},"format":{"type":"title"}})",
+        R"({"kind":"insert","position":{"type":"end"},"value":[{"token":"modified_date"},
+            {"token":"created_date"},{"token":"size"}],"tokens":{"modified_date":
+            {"format":"yyyy-MM-dd"},"created_date":{"format":"HHmmss"},"size":{"unit":"mb"}}})",
     };
     for (size_t i = 0; i < std::size(samples); ++i) {
         const MODIFICATION mod = MOD_JSON::parse(samples[i]);
@@ -211,4 +225,19 @@ TEST(MOD_JSON, writes_utf8_text)
     const MODIFICATION mod = MOD_JSON::parse(
         R"({"kind":"insert","position":{"type":"start"},"value":[{"text":"제주_😀"}]})");
     EXPECT_NE(MOD_JSON::to_json(mod).find("제주_😀"), std::string::npos);
+}
+
+TEST(MOD_JSON, parses_date_and_size_settings)
+{
+    const MODIFICATION defaults = MOD_JSON::parse(
+        R"({"kind":"insert","position":{"type":"start"},"value":[{"token":"size"}]})");
+    EXPECT_EQ(defaults.modified_date.format, U"yyyyMMdd");
+    EXPECT_EQ(defaults.created_date.format, U"yyyyMMdd");
+    EXPECT_EQ(defaults.size.unit, SIZE_UNIT::automatic);
+    const MODIFICATION mod = MOD_JSON::parse(R"({"kind":"insert","position":{"type":"start"},
+        "value":[],"tokens":{"modified_date":{"format":"yyyy-MM-dd"},
+        "created_date":{"format":""},"size":{"unit":"gb"}}})");
+    EXPECT_EQ(mod.modified_date.format, U"yyyy-MM-dd");
+    EXPECT_EQ(mod.created_date.format, U"");
+    EXPECT_EQ(mod.size.unit, SIZE_UNIT::gb);
 }

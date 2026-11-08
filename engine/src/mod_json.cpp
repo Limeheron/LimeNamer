@@ -64,6 +64,16 @@ constexpr const NAME_TABLE<FORMAT_TYPE, 5> FORMAT_NAMES = {{
     {"pad_digits", FORMAT_TYPE::pad_digits},
 }};
 
+constexpr const NAME_TABLE<SIZE_UNIT, 5> SIZE_UNIT_NAMES = {{
+    {"b", SIZE_UNIT::bytes},
+    {"kb", SIZE_UNIT::kb},
+    {"mb", SIZE_UNIT::mb},
+    {"gb", SIZE_UNIT::gb},
+    {"auto", SIZE_UNIT::automatic},
+}};
+
+constexpr const size_t MAX_DATE_FORMAT = 64;
+
 constexpr const NAME_TABLE<MOD_SCOPE, 2> SCOPE_NAMES = {{
     {"all", MOD_SCOPE::all},
     {"items", MOD_SCOPE::items},
@@ -311,6 +321,23 @@ std::vector<VALUE_PIECE> parse_value(const JSON &value)
     return pieces;
 }
 
+void parse_date(const JSON &tokens, std::string_view key, DATE_SETTINGS &date)
+{
+    const JSON *value = find(tokens, key);
+    if (value == nullptr) {
+        return;
+    }
+    require_object(*value, key);
+    const JSON *format = find(*value, "format");
+    if (format == nullptr) {
+        return;
+    }
+    date.format = read_text(*format, "format");
+    if (date.format.size() > MAX_DATE_FORMAT) {
+        fail("field is too long", "format");
+    }
+}
+
 void parse_tokens(const JSON &root, MODIFICATION &mod)
 {
     const JSON *tokens = find(root, "tokens");
@@ -325,6 +352,23 @@ void parse_tokens(const JSON &root, MODIFICATION &mod)
         mod.number.step = read_number(*number, "step", 1);
         mod.number.digits = read_optional_count(*number, "digits", 1, 1, MAX_DIGITS);
     }
+    parse_date(*tokens, "modified_date", mod.modified_date);
+    parse_date(*tokens, "created_date", mod.created_date);
+    const JSON *size = find(*tokens, "size");
+    if (size != nullptr) {
+        require_object(*size, "size");
+        const JSON *unit = find(*size, "unit");
+        if (unit != nullptr) {
+            mod.size.unit = enum_from(SIZE_UNIT_NAMES, read_string(*unit, "unit"), "size unit");
+        }
+    }
+}
+
+JSON date_json(const DATE_SETTINGS &date)
+{
+    JSON object = JSON::object();
+    object["format"] = UTF::encode_utf8(date.format);
+    return object;
 }
 
 FORMAT_SETTINGS parse_format(const JSON &value)
@@ -463,6 +507,9 @@ std::string MOD_JSON::to_json(const MODIFICATION &mod)
         number["step"] = mod.number.step;
         number["digits"] = mod.number.digits;
         root["tokens"]["number"] = std::move(number);
+        root["tokens"]["modified_date"] = date_json(mod.modified_date);
+        root["tokens"]["created_date"] = date_json(mod.created_date);
+        root["tokens"]["size"]["unit"] = enum_name(SIZE_UNIT_NAMES, mod.size.unit);
     }
     if (mod.kind == MOD_KIND::format) {
         root["format"]["type"] = enum_name(FORMAT_NAMES, mod.format.type);
