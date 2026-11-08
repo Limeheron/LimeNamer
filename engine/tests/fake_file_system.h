@@ -22,6 +22,7 @@ public:
     void add_folder(const std::filesystem::path &path);
     void add_file(const std::filesystem::path &path, int64_t size, bool hidden = false);
     void fail_next_rename(const std::filesystem::path &from, FS_ERROR error);
+    void set_modified(const std::filesystem::path &path, int64_t modified_ms);
 
     FS_STATUS get_info(const std::filesystem::path &path, FILE_INFO &info) const override;
     FS_STATUS list_names(const std::filesystem::path &folder,

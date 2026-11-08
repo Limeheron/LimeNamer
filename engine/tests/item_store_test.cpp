@@ -156,3 +156,111 @@ TEST(ITEM_STORE, rejects_names_with_unpaired_surrogates)
     EXPECT_EQ(store.add({env.root()}, ADD_MODE::folder_contents), expected);
 }
 #endif
+
+TEST_F(ITEM_STORE_TEST, moves_an_item_into_a_gap)
+{
+    const std::vector<uint64_t> ids = add_files({U"a", U"b", U"c", U"d"});
+    EXPECT_EQ(store_.move({ids[0]}, ids[2], true, false), true);
+    EXPECT_EQ(names(), std::vector<std::u32string>({U"b", U"c", U"a", U"d"}));
+    EXPECT_EQ(store_.move({ids[3]}, ids[1], false, false), true);
+    EXPECT_EQ(names(), std::vector<std::u32string>({U"d", U"b", U"c", U"a"}));
+}
+
+TEST_F(ITEM_STORE_TEST, moves_selected_items_together)
+{
+    const std::vector<uint64_t> ids = add_files({U"a", U"b", U"c", U"d", U"e"});
+    EXPECT_EQ(store_.move({ids[3], ids[0]}, ids[2], false, false), true);
+    EXPECT_EQ(names(), std::vector<std::u32string>({U"b", U"a", U"d", U"c", U"e"}));
+    EXPECT_EQ(store_.move({ids[1], ids[4]}, ids[0], false, false), true);
+    EXPECT_EQ(names(), std::vector<std::u32string>({U"b", U"e", U"a", U"d", U"c"}));
+}
+
+TEST_F(ITEM_STORE_TEST, moves_onto_a_selected_item)
+{
+    const std::vector<uint64_t> ids = add_files({U"a", U"b", U"c", U"d"});
+    EXPECT_EQ(store_.move({ids[0], ids[2]}, ids[2], true, false), true);
+    EXPECT_EQ(names(), std::vector<std::u32string>({U"b", U"a", U"c", U"d"}));
+}
+
+TEST_F(ITEM_STORE_TEST, reports_gaps_that_change_nothing)
+{
+    const std::vector<uint64_t> ids = add_files({U"a", U"b", U"c"});
+    EXPECT_EQ(store_.move({ids[1]}, ids[0], true, true), false);
+    EXPECT_EQ(store_.move({ids[1]}, ids[1], false, true), false);
+    EXPECT_EQ(store_.move({ids[1]}, ids[1], true, true), false);
+    EXPECT_EQ(store_.move({ids[1]}, ids[2], false, true), false);
+    EXPECT_EQ(store_.move({ids[0], ids[1]}, ids[2], false, true), false);
+    EXPECT_EQ(store_.move({ids[1]}, ids[2], true, true), true);
+    EXPECT_EQ(names(), std::vector<std::u32string>({U"a", U"b", U"c"}));
+    EXPECT_EQ(store_.sort_state(), state(SORT_KEY::added, false));
+}
+
+TEST_F(ITEM_STORE_TEST, rejects_moves_with_unknown_items)
+{
+    const std::vector<uint64_t> ids = add_files({U"a", U"b"});
+    EXPECT_FALSE(store_.move({ids[0]}, 999, true, false).has_value());
+    EXPECT_FALSE(store_.move({999}, ids[1], true, false).has_value());
+    EXPECT_FALSE(store_.move({}, ids[1], true, false).has_value());
+    store_.remove({ids[1]});
+    EXPECT_FALSE(store_.move({ids[0]}, ids[1], true, false).has_value());
+}
+
+TEST_F(ITEM_STORE_TEST, sorts_by_name)
+{
+    add_files({U"file10", U"File2", U"file1", U"b"});
+    store_.sort(SORT_KEY::name_natural, false);
+    EXPECT_EQ(names(), std::vector<std::u32string>({U"b", U"file1", U"File2", U"file10"}));
+    EXPECT_EQ(store_.sort_state(), state(SORT_KEY::name_natural, false));
+    store_.sort(SORT_KEY::name_natural, true);
+    EXPECT_EQ(names(), std::vector<std::u32string>({U"file10", U"File2", U"file1", U"b"}));
+    store_.sort(SORT_KEY::name_ordinal, false);
+    EXPECT_EQ(names(), std::vector<std::u32string>({U"b", U"file1", U"file10", U"File2"}));
+    EXPECT_EQ(store_.sort_state(), state(SORT_KEY::name_ordinal, false));
+}
+
+TEST_F(ITEM_STORE_TEST, sorts_by_modified_time)
+{
+    const std::vector<std::u32string> files = {U"a", U"b", U"c", U"d"};
+    const int64_t times[] = {300, 100, 300, 200};
+    std::vector<std::filesystem::path> paths;
+    for (size_t index = 0; index < files.size(); ++index) {
+        const std::filesystem::path path = env_.root() / UTF::path_from_u32(files[index]);
+        env_.make_file(path, 1);
+        env_.fake().set_modified(path, times[index]);
+        paths.push_back(path);
+    }
+    store_.add(paths, ADD_MODE::as_items);
+    store_.sort(SORT_KEY::modified, false);
+    EXPECT_EQ(names(), std::vector<std::u32string>({U"b", U"d", U"a", U"c"}));
+    store_.sort(SORT_KEY::modified, true);
+    EXPECT_EQ(names(), std::vector<std::u32string>({U"c", U"a", U"d", U"b"}));
+}
+
+TEST_F(ITEM_STORE_TEST, sorts_back_to_added_order)
+{
+    add_files({U"c", U"a", U"b"});
+    store_.sort(SORT_KEY::name_natural, false);
+    store_.sort(SORT_KEY::added, false);
+    EXPECT_EQ(names(), std::vector<std::u32string>({U"c", U"a", U"b"}));
+    store_.sort(SORT_KEY::added, true);
+    EXPECT_EQ(names(), std::vector<std::u32string>({U"b", U"a", U"c"}));
+    EXPECT_THROW(store_.sort(SORT_KEY::custom, false), std::invalid_argument);
+}
+
+TEST_F(ITEM_STORE_TEST, tracks_the_sort_state)
+{
+    const std::vector<uint64_t> ids = add_files({U"b", U"a"});
+    EXPECT_EQ(store_.sort_state(), state(SORT_KEY::added, false));
+    add_files({U"c"});
+    EXPECT_EQ(store_.sort_state(), state(SORT_KEY::added, false));
+    store_.sort(SORT_KEY::name_natural, false);
+    store_.remove({ids[0]});
+    EXPECT_EQ(store_.sort_state(), state(SORT_KEY::name_natural, false));
+    add_files({U"d"});
+    EXPECT_EQ(store_.sort_state(), state(SORT_KEY::custom, false));
+    store_.sort(SORT_KEY::name_natural, false);
+    store_.move({store_.order()[0]}, store_.order()[1], true, false);
+    EXPECT_EQ(store_.sort_state(), state(SORT_KEY::custom, false));
+    store_.clear();
+    EXPECT_EQ(store_.sort_state(), state(SORT_KEY::added, false));
+}

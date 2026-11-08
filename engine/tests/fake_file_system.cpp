@@ -137,3 +137,8 @@ void FAKE_FILE_SYSTEM::add_entry(const std::filesystem::path &path, bool is_dir,
     entry.info.id = {true, 1, 0, next_id_++};
     entries_.emplace(key, std::move(entry));
 }
+
+void FAKE_FILE_SYSTEM::set_modified(const std::filesystem::path &path, int64_t modified_ms)
+{
+    entries_.at(key_of(path)).info.modified_ms = modified_ms;
+}

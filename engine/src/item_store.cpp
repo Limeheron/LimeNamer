@@ -17,6 +17,10 @@ ADD_RESULT ITEM_STORE::add(const std::vector<std::filesystem::path> &paths, ADD_
             add_contents(path, result);
         }
     }
+    const SORT_STATE added_order;
+    if (result.added > 0 && sort_state_ != added_order) {
+        sort_state_ = {SORT_KEY::custom, false};
+    }
     return result;
 }
 
@@ -42,11 +46,115 @@ void ITEM_STORE::clear()
 {
     order_.clear();
     keys_.clear();
+    sort_state_ = SORT_STATE();
+}
+
+std::optional<bool> ITEM_STORE::move(const std::vector<uint64_t> &ids, uint64_t target_id,
+    bool after, bool dry_run)
+{
+    if (ids.empty() || !contains(target_id)) {
+        return std::nullopt;
+    }
+    std::unordered_set<uint64_t> moving;
+    for (const uint64_t id : ids) {
+        if (!contains(id)) {
+            return std::nullopt;
+        }
+        moving.insert(id);
+    }
+
+    const size_t target_index = static_cast<size_t>(
+        std::find(order_.begin(), order_.end(), target_id) - order_.begin());
+    const size_t gap = target_index + (after ? 1 : 0);
+    std::vector<uint64_t> picked;
+    std::vector<uint64_t> rest;
+    size_t insert_at = 0;
+    for (size_t index = 0; index < order_.size(); ++index) {
+        const uint64_t id = order_[index];
+        if (moving.contains(id)) {
+            picked.push_back(id);
+        } else {
+            rest.push_back(id);
+            if (index < gap) {
+                ++insert_at;
+            }
+        }
+    }
+
+    const auto split = rest.begin() + static_cast<std::ptrdiff_t>(insert_at);
+    std::vector<uint64_t> next(rest.begin(), split);
+    next.insert(next.end(), picked.begin(), picked.end());
+    next.insert(next.end(), split, rest.end());
+    const bool changed = next != order_;
+    if (changed && !dry_run) {
+        order_ = std::move(next);
+        sort_state_ = {SORT_KEY::custom, false};
+    }
+    return changed;
+}
+
+void ITEM_STORE::sort(SORT_KEY key, bool descending)
+{
+    if (key == SORT_KEY::custom) {
+        throw std::invalid_argument("custom order cannot be sorted");
+    }
+    std::unordered_map<uint64_t, std::u32string> name_keys;
+    if (key != SORT_KEY::added) {
+        for (const uint64_t id : order_) {
+            name_keys.emplace(id, compare_.key(items_.at(id).name));
+        }
+    }
+    const bool natural = key != SORT_KEY::name_ordinal;
+    const auto by_name = [&](uint64_t a, uint64_t b) {
+        const int result = NATURAL_COMPARE::compare_keys(name_keys.at(a), name_keys.at(b),
+            natural);
+        if (result != 0) {
+            return result < 0;
+        }
+        const int exact = items_.at(a).name.compare(items_.at(b).name);
+        if (exact != 0) {
+            return exact < 0;
+        }
+        return a < b;
+    };
+
+    std::vector<uint64_t> sorted = order_;
+    switch (key) {
+    case SORT_KEY::added:
+        std::sort(sorted.begin(), sorted.end());
+        break;
+    case SORT_KEY::name_natural:
+    case SORT_KEY::name_ordinal:
+        std::sort(sorted.begin(), sorted.end(), by_name);
+        break;
+    case SORT_KEY::modified:
+        std::sort(sorted.begin(), sorted.end(), [&](uint64_t a, uint64_t b) {
+            const int64_t a_time = items_.at(a).info.modified_ms;
+            const int64_t b_time = items_.at(b).info.modified_ms;
+            if (a_time != b_time) {
+                return a_time < b_time;
+            }
+            return by_name(a, b);
+        });
+        break;
+    case SORT_KEY::custom:
+        break;
+    }
+    if (descending) {
+        std::reverse(sorted.begin(), sorted.end());
+    }
+    order_ = std::move(sorted);
+    sort_state_ = {key, descending};
 }
 
 const std::vector<uint64_t> &ITEM_STORE::order() const
 {
     return order_;
+}
+
+const SORT_STATE &ITEM_STORE::sort_state() const
+{
+    return sort_state_;
 }
 
 size_t ITEM_STORE::size() const

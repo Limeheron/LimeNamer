@@ -35,6 +35,26 @@ protected:
         return result;
     }
 
+    std::vector<uint64_t> add_files(const std::vector<std::u32string> &file_names)
+    {
+        std::vector<std::filesystem::path> paths;
+        for (const std::u32string &name : file_names) {
+            const std::filesystem::path path = env_.root() / UTF::path_from_u32(name);
+            env_.make_file(path, 1);
+            paths.push_back(path);
+        }
+        store_.add(paths, ADD_MODE::as_items);
+        return store_.order();
+    }
+
+    static SORT_STATE state(SORT_KEY key, bool descending)
+    {
+        SORT_STATE value;
+        value.key = key;
+        value.descending = descending;
+        return value;
+    }
+
     static ADD_RESULT result(uint32_t added, uint32_t skipped, uint32_t failed)
     {
         ADD_RESULT value;

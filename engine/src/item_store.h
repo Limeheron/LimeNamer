@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <filesystem>
 #include <optional>
+#include <stdexcept>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -16,6 +17,8 @@
 #include "file_system.h"
 #include "item.h"
 #include "natural_compare.h"
+#include "sort_key.h"
+#include "sort_state.h"
 #include "text_service.h"
 #include "utf.h"
 
@@ -27,8 +30,12 @@ public:
     ADD_RESULT add(const std::vector<std::filesystem::path> &paths, ADD_MODE mode);
     size_t remove(const std::vector<uint64_t> &ids);
     void clear();
+    std::optional<bool> move(const std::vector<uint64_t> &ids, uint64_t target_id, bool after,
+        bool dry_run);
+    void sort(SORT_KEY key, bool descending);
 
     const std::vector<uint64_t> &order() const;
+    const SORT_STATE &sort_state() const;
     size_t size() const;
     bool contains(uint64_t id) const;
     const ITEM *find(uint64_t id) const;
@@ -47,5 +54,6 @@ private:
     std::unordered_map<uint64_t, ITEM> items_;
     std::vector<uint64_t> order_;
     std::unordered_map<std::u32string, uint64_t> keys_;
+    SORT_STATE sort_state_;
     uint64_t next_id_ = 1;
 };
