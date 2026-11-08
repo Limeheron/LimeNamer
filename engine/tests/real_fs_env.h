@@ -11,7 +11,9 @@
 
 #include "file_system.h"
 
-#if defined(__APPLE__)
+#if defined(_WIN32)
+#include "win/win_file_system.h"
+#else
 #include "mac/mac_file_system.h"
 #endif
 

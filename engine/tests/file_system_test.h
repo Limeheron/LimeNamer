@@ -12,10 +12,7 @@
 #include "file_system.h"
 #include "fs_error_output.h"
 #include "fs_status.h"
-
-#if defined(__APPLE__)
 #include "real_fs_env.h"
-#endif
 
 template <typename ENV>
 class FILE_SYSTEM_TEST : public testing::Test

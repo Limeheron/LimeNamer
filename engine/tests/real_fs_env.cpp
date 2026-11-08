@@ -1,7 +1,11 @@
 #include "real_fs_env.h"
 
 REAL_FS_ENV::REAL_FS_ENV()
+#if defined(_WIN32)
+    : file_system_(std::make_unique<WIN_FILE_SYSTEM>())
+#else
     : file_system_(std::make_unique<MAC_FILE_SYSTEM>())
+#endif
 {
     std::random_device random;
     const std::filesystem::path base = std::filesystem::temp_directory_path();
@@ -19,7 +23,11 @@ REAL_FS_ENV::REAL_FS_ENV()
 REAL_FS_ENV::~REAL_FS_ENV()
 {
     std::error_code error;
+#if defined(_WIN32)
+    std::filesystem::remove_all(std::filesystem::path(L"\\\\?\\" + root_.native()), error);
+#else
     std::filesystem::remove_all(root_, error);
+#endif
 }
 
 FILE_SYSTEM &REAL_FS_ENV::file_system()

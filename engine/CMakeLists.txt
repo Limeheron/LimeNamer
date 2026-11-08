@@ -37,6 +37,7 @@ set(LN_CORE_SOURCES
     src/utf.cpp)
 if(WIN32)
     list(APPEND LN_CORE_SOURCES
+        src/win/win_file_system.cpp
         src/win/win_text_service.cpp)
 elseif(APPLE)
     list(APPEND LN_CORE_SOURCES
@@ -82,13 +83,16 @@ if(LN_BUILD_TESTS)
         tests/fake_file_system_test.cpp
         tests/fake_fs_env.cpp
         tests/file_system_test.cpp
+        tests/real_fs_env.cpp
         tests/session_test.cpp
         tests/text_service_test.cpp
         tests/utf_test.cpp)
-    if(APPLE)
+    if(WIN32)
         list(APPEND LN_TEST_SOURCES
-            tests/mac_file_system_test.cpp
-            tests/real_fs_env.cpp)
+            tests/win_file_system_test.cpp)
+    elseif(APPLE)
+        list(APPEND LN_TEST_SOURCES
+            tests/mac_file_system_test.cpp)
     endif()
 
     add_executable(limenamer_tests ${LN_TEST_SOURCES})
