@@ -17,7 +17,7 @@ void FAKE_FILE_SYSTEM::add_file(const std::filesystem::path &path, int64_t size,
 
 void FAKE_FILE_SYSTEM::fail_next_rename(const std::filesystem::path &from, FS_ERROR error)
 {
-    rename_failures_[key_of(from)] = error;
+    rename_failures_[key_of(from)].push_back(error);
 }
 
 FS_STATUS FAKE_FILE_SYSTEM::get_info(const std::filesystem::path &path, FILE_INFO &info) const
@@ -54,8 +54,11 @@ FS_STATUS FAKE_FILE_SYSTEM::rename(const std::filesystem::path &from,
     const std::u32string from_key = key_of(from);
     const auto failure = rename_failures_.find(from_key);
     if (failure != rename_failures_.end()) {
-        const FS_STATUS status {failure->second, 0};
-        rename_failures_.erase(failure);
+        const FS_STATUS status {failure->second.front(), 0};
+        failure->second.pop_front();
+        if (failure->second.empty()) {
+            rename_failures_.erase(failure);
+        }
         return status;
     }
     const auto source = entries_.find(from_key);

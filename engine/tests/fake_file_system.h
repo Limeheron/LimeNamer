@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <deque>
 #include <filesystem>
 #include <map>
 #include <optional>
@@ -39,6 +40,6 @@ private:
 
     const TEXT_SERVICE &text_service_;
     std::map<std::u32string, FAKE_ENTRY> entries_;
-    std::map<std::u32string, FS_ERROR> rename_failures_;
+    std::map<std::u32string, std::deque<FS_ERROR>> rename_failures_;
     uint64_t next_id_ = 1;
 };

@@ -10,4 +10,5 @@ struct RENAME_REQUEST
     std::filesystem::path path;
     std::u32string name;
     std::u32string new_name;
+    bool is_dir = false;
 };

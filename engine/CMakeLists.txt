@@ -57,6 +57,7 @@ set(LN_CORE_SOURCES
     src/natural_compare.cpp
     src/platform.cpp
     src/preview_builder.cpp
+    src/rename_executor.cpp
     src/rename_planner.cpp
     src/session.cpp
     src/span_finder.cpp
@@ -126,6 +127,7 @@ if(LN_BUILD_TESTS)
         tests/natural_compare_test.cpp
         tests/preview_builder_test.cpp
         tests/real_fs_env.cpp
+        tests/rename_executor_test.cpp
         tests/rename_planner_test.cpp
         tests/session_test.cpp
         tests/span_finder_test.cpp
