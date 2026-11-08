@@ -18,6 +18,12 @@
 class PLATFORM
 {
 public:
+#if defined(_WIN32)
+    static constexpr const bool WINDOWS_HOST = true;
+#else
+    static constexpr const bool WINDOWS_HOST = false;
+#endif
+
     static std::unique_ptr<TEXT_SERVICE> create_text_service();
     static std::unique_ptr<FILE_SYSTEM> create_file_system();
 };

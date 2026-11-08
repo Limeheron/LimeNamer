@@ -28,7 +28,8 @@ LN_RESULT ln_session_create(LN_SESSION **out)
     *out = nullptr;
     return guard([out]() -> LN_RESULT {
         std::unique_ptr<SESSION> session = std::make_unique<SESSION>(
-            PLATFORM::create_text_service(), PLATFORM::create_file_system());
+            PLATFORM::create_text_service(), PLATFORM::create_file_system(),
+            PLATFORM::WINDOWS_HOST);
         *out = reinterpret_cast<LN_SESSION *>(session.release());
         return ln_result_ok;
     });
