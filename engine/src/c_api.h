@@ -6,6 +6,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "add_mode.h"
@@ -13,6 +14,8 @@
 #include "c_input.h"
 #include "c_results.h"
 #include "example.h"
+#include "index_list.h"
+#include "index_list_result.h"
 #include "limenamer.h"
 #include "ln_session.h"
 #include "mod_checker.h"
@@ -23,3 +26,4 @@
 #include "session.h"
 #include "sort_key.h"
 #include "sort_state.h"
+#include "utf.h"

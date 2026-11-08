@@ -288,6 +288,14 @@ LN_API LN_RESULT ln_options_set(LN_SESSION *session, const char *json);
 
 LN_API LN_RESULT ln_preview(LN_SESSION *session, LN_PREVIEW **out);
 
+LN_API LN_RESULT ln_undo(LN_SESSION *session);
+LN_API LN_RESULT ln_redo(LN_SESSION *session);
+LN_API LN_RESULT ln_history_state(LN_SESSION *session, uint8_t *can_undo, uint8_t *can_redo);
+
+LN_API LN_RESULT ln_index_list_parse(const char *text, uint32_t item_count,
+    LN_INDEX_LIST **out);
+LN_API LN_RESULT ln_index_list_format(const uint32_t *indices, size_t count, char **out);
+
 LN_API void ln_string_free(char *text);
 LN_API void ln_problems_free(LN_PROBLEMS *problems);
 LN_API void ln_example_free(LN_EXAMPLE *example);

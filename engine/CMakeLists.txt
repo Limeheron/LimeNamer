@@ -165,6 +165,8 @@ if(LN_BUILD_TESTS)
     gtest_discover_tests(limenamer_tests DISCOVERY_MODE PRE_TEST)
 
     add_executable(limenamer_api_tests
+        tests/c_api_history_test.cpp
+        tests/c_api_index_test.cpp
         tests/c_api_items_test.cpp
         tests/c_api_mods_test.cpp
         tests/c_api_test.cpp)

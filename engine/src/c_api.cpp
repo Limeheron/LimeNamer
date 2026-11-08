@@ -288,6 +288,70 @@ LN_RESULT ln_preview(LN_SESSION *session, LN_PREVIEW **out)
     });
 }
 
+LN_RESULT ln_undo(LN_SESSION *session)
+{
+    return C_GUARD::run(session, [](SESSION &target) -> LN_RESULT {
+        return target.undo() ? ln_result_ok : ln_result_not_found;
+    });
+}
+
+LN_RESULT ln_redo(LN_SESSION *session)
+{
+    return C_GUARD::run(session, [](SESSION &target) -> LN_RESULT {
+        return target.redo() ? ln_result_ok : ln_result_not_found;
+    });
+}
+
+LN_RESULT ln_history_state(LN_SESSION *session, uint8_t *can_undo, uint8_t *can_redo)
+{
+    return C_GUARD::run(session, [&](SESSION &target) -> LN_RESULT {
+        if (can_undo == nullptr || can_redo == nullptr) {
+            return ln_result_invalid_argument;
+        }
+        *can_undo = target.can_undo() ? 1 : 0;
+        *can_redo = target.can_redo() ? 1 : 0;
+        return ln_result_ok;
+    });
+}
+
+LN_RESULT ln_index_list_parse(const char *text, uint32_t item_count, LN_INDEX_LIST **out)
+{
+    if (out != nullptr) {
+        *out = nullptr;
+    }
+    return C_GUARD::run([&]() -> LN_RESULT {
+        const std::optional<std::u32string> value = C_INPUT::text(text);
+        if (!value || out == nullptr) {
+            return ln_result_invalid_argument;
+        }
+        *out = C_RESULTS::index_list(INDEX_LIST::parse(*value, item_count));
+        return ln_result_ok;
+    });
+}
+
+LN_RESULT ln_index_list_format(const uint32_t *indices, size_t count, char **out)
+{
+    if (out != nullptr) {
+        *out = nullptr;
+    }
+    return C_GUARD::run([&]() -> LN_RESULT {
+        if (out == nullptr || (indices == nullptr && count > 0)) {
+            return ln_result_invalid_argument;
+        }
+        std::vector<uint32_t> values;
+        if (count > 0) {
+            values.assign(indices, indices + count);
+        }
+        for (const uint32_t value : values) {
+            if (value == 0) {
+                return ln_result_invalid_argument;
+            }
+        }
+        *out = C_RESULTS::string(UTF::encode_utf8(INDEX_LIST::format(std::move(values))));
+        return ln_result_ok;
+    });
+}
+
 void ln_string_free(char *text)
 {
     C_RESULTS::release(text);
