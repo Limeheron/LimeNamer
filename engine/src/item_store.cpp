@@ -170,32 +170,43 @@ void ITEM_STORE::prune()
     });
 }
 
-void ITEM_STORE::relocate(uint64_t id, const std::filesystem::path &path)
+void ITEM_STORE::relocate(const std::unordered_map<uint64_t, std::filesystem::path> &targets,
+    const FOLDER_MOVES &folders)
 {
-    ITEM &item = items_.at(id);
-    const bool listed = contains(id);
-    if (listed) {
-        keys_.erase(item.key);
-    }
-    item.path = path;
-    item.folder = path.parent_path();
-    item.name = text_service_.to_nfc(UTF::path_to_u32(path.filename()).value());
-    item.key = key_of(path).value();
-    if (listed) {
-        keys_.emplace(item.key, id);
-    }
-}
-
-void ITEM_STORE::move_folder(const std::filesystem::path &from, const std::filesystem::path &to)
-{
-    std::vector<uint64_t> moved;
+    std::vector<std::pair<uint64_t, std::filesystem::path>> moves;
     for (const auto &[id, item] : items_) {
-        if (PATHS::is_under(item.path, from)) {
-            moved.push_back(id);
+        const auto target = targets.find(id);
+        if (target != targets.end()) {
+            moves.emplace_back(id, target->second);
+            continue;
+        }
+        std::optional<std::filesystem::path> moved = folders.follow(item.path);
+        if (moved) {
+            moves.emplace_back(id, std::move(*moved));
         }
     }
-    for (const uint64_t id : moved) {
-        relocate(id, PATHS::moved(items_.at(id).path, from, to));
+
+    std::vector<bool> listed;
+    listed.reserve(moves.size());
+    for (size_t index = 0; index < moves.size(); ++index) {
+        listed.push_back(contains(moves[index].first));
+    }
+    for (size_t index = 0; index < moves.size(); ++index) {
+        if (listed[index]) {
+            keys_.erase(items_.at(moves[index].first).key);
+        }
+    }
+    for (size_t index = 0; index < moves.size(); ++index) {
+        const uint64_t id = moves[index].first;
+        const std::filesystem::path &path = moves[index].second;
+        ITEM &item = items_.at(id);
+        item.path = path;
+        item.folder = path.parent_path();
+        item.name = text_service_.to_nfc(UTF::path_to_u32(path.filename()).value());
+        item.key = key_of(path).value();
+        if (listed[index]) {
+            keys_.emplace(item.key, id);
+        }
     }
 }
 
@@ -222,6 +233,19 @@ bool ITEM_STORE::contains(uint64_t id) const
     }
     const auto key = keys_.find(item->key);
     return key != keys_.end() && key->second == id;
+}
+
+std::optional<uint64_t> ITEM_STORE::listed_at(const std::filesystem::path &path) const
+{
+    const std::optional<std::u32string> key = key_of(path);
+    if (!key) {
+        return std::nullopt;
+    }
+    const auto found = keys_.find(*key);
+    if (found == keys_.end()) {
+        return std::nullopt;
+    }
+    return found->second;
 }
 
 const ITEM *ITEM_STORE::find(uint64_t id) const

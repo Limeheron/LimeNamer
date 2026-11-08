@@ -33,7 +33,8 @@ public:
     RENAME_EXECUTOR(FILE_SYSTEM &file_system, const TEXT_SERVICE &text_service);
 
     RENAME_REPORT run(const std::vector<RENAME_REQUEST> &requests,
-        const std::vector<RENAME_STEP> &steps, const PROGRESS &progress);
+        const std::vector<RENAME_STEP> &steps, const PROGRESS &progress,
+        bool allow_choice = true);
     RENAME_REPORT resolve(RESOLVE_CHOICE choice, const PROGRESS &progress);
 
     bool pending() const;

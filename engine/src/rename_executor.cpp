@@ -8,7 +8,7 @@ RENAME_EXECUTOR::RENAME_EXECUTOR(FILE_SYSTEM &file_system, const TEXT_SERVICE &t
 }
 
 RENAME_REPORT RENAME_EXECUTOR::run(const std::vector<RENAME_REQUEST> &requests,
-    const std::vector<RENAME_STEP> &steps, const PROGRESS &progress)
+    const std::vector<RENAME_STEP> &steps, const PROGRESS &progress, bool allow_choice)
 {
     tracks_.clear();
     index_.clear();
@@ -59,7 +59,7 @@ RENAME_REPORT RENAME_EXECUTOR::run(const std::vector<RENAME_REQUEST> &requests,
             problems_.push_back(restore->second);
         }
     }
-    pending_ = !problems_.empty() && any_succeeded;
+    pending_ = allow_choice && !problems_.empty() && any_succeeded;
     return report();
 }
 

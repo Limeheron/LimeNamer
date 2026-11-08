@@ -9,6 +9,7 @@
 #include <stdexcept>
 #include <string>
 #include <type_traits>
+#include <unordered_map>
 #include <unordered_set>
 #include <utility>
 #include <vector>
@@ -19,6 +20,7 @@
 #include "example_finder.h"
 #include "file_system.h"
 #include "folder_cache.h"
+#include "folder_moves.h"
 #include "history.h"
 #include "item_store.h"
 #include "mod_entry.h"
@@ -39,6 +41,7 @@
 #include "sort_key.h"
 #include "sort_state.h"
 #include "text_service.h"
+#include "undo_check.h"
 
 class SESSION
 {
@@ -90,6 +93,7 @@ public:
     bool rename_pending() const;
     const RENAME_RECORD &record() const;
     RENAME_REPORT undo_check() const;
+    std::optional<RENAME_REPORT> undo_rename(const RENAME_EXECUTOR::PROGRESS &progress);
 
 private:
     template <typename SERVICE>
@@ -106,6 +110,7 @@ private:
     void track_folders();
     void ensure_idle() const;
     void finish_rename();
+    void finish_undo();
 
     template <typename BODY>
     auto recorded(BODY &&body)

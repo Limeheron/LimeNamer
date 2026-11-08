@@ -157,3 +157,156 @@ TEST_F(SESSION_TEST, checks_the_record_before_undoing)
     FILE_INFO info;
     EXPECT_TRUE(fake_->get_info(root_ / "a_y.txt", info).ok());
 }
+
+TEST_F(SESSION_TEST, undoes_the_last_rename)
+{
+    session_->add_items(files({U"x.txt", U"y.txt"}), ADD_MODE::as_items);
+    session_->add_mod(mod(PREFIX));
+    session_->rename({});
+    std::vector<uint32_t> progress;
+    const std::optional<RENAME_REPORT> report =
+        session_->undo_rename([&](uint32_t done, uint32_t) { progress.push_back(done); });
+    ASSERT_TRUE(report.has_value());
+    EXPECT_EQ(report->total, 2u);
+    EXPECT_EQ(report->succeeded, 2u);
+    EXPECT_TRUE(report->problems.empty());
+    EXPECT_FALSE(report->needs_choice);
+    EXPECT_EQ(progress, std::vector<uint32_t>({1, 2}));
+    EXPECT_EQ(item_names(*session_), std::vector<std::u32string>({U"x.txt", U"y.txt"}));
+    FILE_INFO info;
+    EXPECT_TRUE(fake_->get_info(root_ / "x.txt", info).ok());
+    EXPECT_TRUE(session_->record().empty());
+    EXPECT_FALSE(session_->mods()[0].enabled);
+    EXPECT_FALSE(session_->can_undo());
+    EXPECT_FALSE(session_->undo_rename({}).has_value());
+}
+
+TEST_F(SESSION_TEST, undoes_by_the_record_after_list_changes)
+{
+    session_->add_items(files({U"x.txt", U"y.txt", U"z.txt"}), ADD_MODE::as_items);
+    session_->add_mod(mod(PREFIX));
+    session_->rename({});
+    const std::vector<uint64_t> ids = session_->items().order();
+    session_->remove_items({ids[0]});
+    session_->move_items({ids[2]}, ids[1], false, false);
+    const uint64_t later = session_->add_mod(mod(PREFIX));
+    EXPECT_EQ(session_->undo_rename({})->succeeded, 3u);
+    FILE_INFO info;
+    EXPECT_TRUE(fake_->get_info(root_ / "x.txt", info).ok());
+    EXPECT_EQ(item_names(*session_), std::vector<std::u32string>({U"z.txt", U"y.txt"}));
+    EXPECT_TRUE(session_->mods().back().enabled);
+    EXPECT_EQ(session_->mods().back().id, later);
+}
+
+TEST_F(SESSION_TEST, skips_and_keeps_entries_that_cannot_be_undone)
+{
+    session_->add_items(files({U"x.txt", U"y.txt"}), ADD_MODE::as_items);
+    session_->add_mod(mod(PREFIX));
+    session_->rename({});
+    fake_->remove(root_ / "a_x.txt");
+    const std::optional<RENAME_REPORT> report = session_->undo_rename({});
+    ASSERT_TRUE(report.has_value());
+    EXPECT_EQ(report->succeeded, 1u);
+    EXPECT_EQ(report->skipped, 1u);
+    ASSERT_EQ(report->problems.size(), size_t{1});
+    EXPECT_EQ(report->problems[0].stage, REPORT_STAGE::check);
+    ASSERT_EQ(session_->record().size(), size_t{1});
+    EXPECT_FALSE(session_->undo_rename({}).has_value());
+}
+
+TEST_F(SESSION_TEST, retries_entries_that_failed_to_undo)
+{
+    session_->add_items(files({U"x.txt", U"y.txt"}), ADD_MODE::as_items);
+    session_->add_mod(mod(PREFIX));
+    session_->rename({});
+    fake_->fail_next_rename(root_ / "a_y.txt", FS_ERROR::in_use);
+    const std::optional<RENAME_REPORT> report = session_->undo_rename({});
+    ASSERT_TRUE(report.has_value());
+    EXPECT_EQ(report->succeeded, 1u);
+    EXPECT_EQ(report->failed, 1u);
+    EXPECT_FALSE(report->needs_choice);
+    EXPECT_FALSE(session_->rename_pending());
+    ASSERT_EQ(session_->record().size(), size_t{1});
+    EXPECT_EQ(session_->undo_rename({})->succeeded, 1u);
+    EXPECT_TRUE(session_->record().empty());
+    EXPECT_EQ(item_names(*session_), std::vector<std::u32string>({U"x.txt", U"y.txt"}));
+}
+
+TEST_F(SESSION_TEST, undoes_swaps)
+{
+    session_->add_items(files({U"x.txt", U"y.txt"}), ADD_MODE::as_items);
+    const std::vector<uint64_t> ids = session_->items().order();
+    session_->direct_edit(ids[0], U"y.txt");
+    session_->direct_edit(ids[1], U"x.txt");
+    session_->rename({});
+    EXPECT_EQ(item_names(*session_), std::vector<std::u32string>({U"y.txt", U"x.txt"}));
+    EXPECT_TRUE(session_->items().contains(ids[0]));
+    EXPECT_TRUE(session_->items().contains(ids[1]));
+    EXPECT_EQ(session_->undo_rename({})->succeeded, 2u);
+    EXPECT_EQ(item_names(*session_), std::vector<std::u32string>({U"x.txt", U"y.txt"}));
+    EXPECT_TRUE(session_->items().contains(ids[0]));
+    EXPECT_TRUE(session_->items().contains(ids[1]));
+}
+
+TEST_F(SESSION_TEST, moves_items_of_swapped_folders_once)
+{
+    fake_->add_folder(root_ / "a");
+    fake_->add_folder(root_ / "b");
+    fake_->add_file(root_ / "a" / "x.txt", 1);
+    fake_->add_file(root_ / "b" / "x.txt", 2);
+    session_->add_items({root_ / "a", root_ / "b", root_ / "a" / "x.txt", root_ / "b" / "x.txt"},
+        ADD_MODE::as_items);
+    const std::vector<uint64_t> ids = session_->items().order();
+    session_->direct_edit(ids[0], U"b");
+    session_->direct_edit(ids[1], U"a");
+    EXPECT_EQ(session_->rename({})->succeeded, 2u);
+    EXPECT_EQ(session_->items().find(ids[2])->path, root_ / "b" / "x.txt");
+    EXPECT_EQ(session_->items().find(ids[3])->path, root_ / "a" / "x.txt");
+    EXPECT_EQ(session_->items().find(ids[2])->info.size, 1u);
+    for (const uint64_t id : ids) {
+        EXPECT_TRUE(session_->items().contains(id));
+    }
+    EXPECT_EQ(session_->undo_rename({})->succeeded, 2u);
+    EXPECT_EQ(session_->items().find(ids[2])->path, root_ / "a" / "x.txt");
+    EXPECT_EQ(session_->items().find(ids[3])->path, root_ / "b" / "x.txt");
+    for (const uint64_t id : ids) {
+        EXPECT_TRUE(session_->items().contains(id));
+    }
+}
+
+TEST_F(SESSION_TEST, undoes_folders_and_their_items)
+{
+    fake_->add_folder(root_ / "f");
+    fake_->add_file(root_ / "f" / "keep.txt", 1);
+    fake_->add_file(root_ / "f" / "b.txt", 1);
+    session_->add_items({root_ / "f", root_ / "f" / "keep.txt", root_ / "f" / "b.txt"},
+        ADD_MODE::as_items);
+    const std::vector<uint64_t> ids = session_->items().order();
+    session_->direct_edit(ids[0], U"g");
+    session_->direct_edit(ids[2], U"b2.txt");
+    session_->rename({});
+    EXPECT_EQ(session_->undo_rename({})->succeeded, 2u);
+    EXPECT_EQ(session_->items().find(ids[0])->path, root_ / "f");
+    EXPECT_EQ(session_->items().find(ids[1])->path, root_ / "f" / "keep.txt");
+    EXPECT_EQ(session_->items().find(ids[2])->path, root_ / "f" / "b.txt");
+    FILE_INFO info;
+    EXPECT_TRUE(fake_->get_info(root_ / "f" / "b.txt", info).ok());
+}
+
+TEST_F(SESSION_TEST, follows_restored_folders_for_entries_left_behind)
+{
+    fake_->add_folder(root_ / "f");
+    fake_->add_file(root_ / "f" / "b.txt", 1);
+    session_->add_items({root_ / "f", root_ / "f" / "b.txt"}, ADD_MODE::as_items);
+    const std::vector<uint64_t> ids = session_->items().order();
+    session_->direct_edit(ids[0], U"g");
+    session_->direct_edit(ids[1], U"b2.txt");
+    session_->rename({});
+    fake_->fail_next_rename(root_ / "g" / "b2.txt", FS_ERROR::in_use);
+    EXPECT_EQ(session_->undo_rename({})->succeeded, 1u);
+    ASSERT_EQ(session_->record().size(), size_t{1});
+    EXPECT_EQ(session_->record().entries()[0].after, root_ / "f" / "b2.txt");
+    EXPECT_EQ(session_->items().find(ids[1])->path, root_ / "f" / "b2.txt");
+    EXPECT_EQ(session_->undo_rename({})->succeeded, 1u);
+    EXPECT_EQ(session_->items().find(ids[1])->path, root_ / "f" / "b.txt");
+}

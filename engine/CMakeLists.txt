@@ -45,6 +45,7 @@ set(LN_CORE_SOURCES
     src/conflict_resolver.cpp
     src/example_finder.cpp
     src/folder_cache.cpp
+    src/folder_moves.cpp
     src/history.cpp
     src/index_list.cpp
     src/item_store.cpp
@@ -116,6 +117,7 @@ if(LN_BUILD_TESTS)
         tests/fake_fs_env.cpp
         tests/file_system_test.cpp
         tests/folder_cache_test.cpp
+        tests/folder_moves_test.cpp
         tests/history_test.cpp
         tests/index_list_test.cpp
         tests/item_store_test.cpp
