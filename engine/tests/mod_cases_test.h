@@ -3,23 +3,25 @@
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
-#include <memory>
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 #include <gtest/gtest.h>
 #include <nlohmann/json.hpp>
 
-#include "mod_applier.h"
+#include "fake_fs_env.h"
+#include "folder_cache.h"
+#include "item_store.h"
 #include "mod_checker.h"
 #include "mod_json.h"
-#include "modification.h"
-#include "platform.h"
-#include "text_service.h"
-#include "token_context.h"
-#include "token_formatter.h"
+#include "mod_store.h"
+#include "name_checker.h"
+#include "options.h"
+#include "preview.h"
+#include "preview_builder.h"
 #include "utf.h"
 
 class MOD_CASES_TEST : public testing::Test
@@ -38,11 +40,14 @@ protected:
         return nlohmann::json::parse(content.str());
     }
 
-    static std::u32string text(const std::string &value)
+    static std::filesystem::path path_of(const std::string &text)
     {
-        return UTF::decode_utf8(value).value();
+        return UTF::path_from_utf8(text).value();
     }
 
-    std::unique_ptr<TEXT_SERVICE> text_service_ = PLATFORM::create_text_service();
-    MOD_APPLIER applier_{*text_service_};
+#if defined(_WIN32)
+    static constexpr const bool WINDOWS_HOST = true;
+#else
+    static constexpr const bool WINDOWS_HOST = false;
+#endif
 };

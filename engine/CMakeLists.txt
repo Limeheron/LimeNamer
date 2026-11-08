@@ -54,6 +54,7 @@ set(LN_CORE_SOURCES
     src/name_parts.cpp
     src/natural_compare.cpp
     src/platform.cpp
+    src/preview_builder.cpp
     src/session.cpp
     src/span_finder.cpp
     src/token_formatter.cpp
@@ -118,6 +119,7 @@ if(LN_BUILD_TESTS)
         tests/name_checker_test.cpp
         tests/name_parts_test.cpp
         tests/natural_compare_test.cpp
+        tests/preview_builder_test.cpp
         tests/real_fs_env.cpp
         tests/session_test.cpp
         tests/span_finder_test.cpp
