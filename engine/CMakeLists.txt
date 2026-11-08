@@ -26,12 +26,31 @@ else()
     target_compile_options(ln_build_options INTERFACE
         -Wall -Wextra -Wpedantic -Wshadow -Wconversion -Werror)
 endif()
+if(WIN32)
+    target_compile_definitions(ln_build_options INTERFACE
+        WIN32_LEAN_AND_MEAN NOMINMAX UNICODE _UNICODE _WIN32_WINNT=0x0A00)
+endif()
 
-add_library(limenamer_core OBJECT
+set(LN_CORE_SOURCES
+    src/platform.cpp
     src/session.cpp
     src/utf.cpp)
+if(WIN32)
+    list(APPEND LN_CORE_SOURCES
+        src/win/win_text_service.cpp)
+elseif(APPLE)
+    list(APPEND LN_CORE_SOURCES
+        src/mac/mac_text_service.cpp)
+endif()
+
+add_library(limenamer_core OBJECT ${LN_CORE_SOURCES})
 target_include_directories(limenamer_core PUBLIC include src)
 target_link_libraries(limenamer_core PRIVATE ln_build_options)
+if(WIN32)
+    target_link_libraries(limenamer_core PUBLIC normaliz)
+elseif(APPLE)
+    target_link_libraries(limenamer_core PUBLIC "-framework CoreFoundation")
+endif()
 
 if(WIN32)
     add_library(limenamer SHARED src/c_api.cpp)
@@ -59,6 +78,7 @@ if(LN_BUILD_TESTS)
 
     add_executable(limenamer_tests
         tests/session_test.cpp
+        tests/text_service_test.cpp
         tests/utf_test.cpp)
     target_link_libraries(limenamer_tests PRIVATE limenamer_core ln_build_options
         GTest::gtest_main)
