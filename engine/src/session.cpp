@@ -264,6 +264,16 @@ const RENAME_RECORD &SESSION::record() const
     return record_;
 }
 
+RENAME_REPORT SESSION::undo_check() const
+{
+    const UNDO_CHECK check = record_.check(*file_system_, *text_service_);
+    RENAME_REPORT report;
+    report.total = static_cast<uint32_t>(record_.size());
+    report.skipped = static_cast<uint32_t>(check.skipped.size());
+    report.problems = check.skipped;
+    return report;
+}
+
 SNAPSHOT SESSION::snapshot() const
 {
     SNAPSHOT current;

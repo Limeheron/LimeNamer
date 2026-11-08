@@ -131,6 +131,7 @@ if(LN_BUILD_TESTS)
         tests/real_fs_env.cpp
         tests/rename_executor_test.cpp
         tests/rename_planner_test.cpp
+        tests/rename_record_test.cpp
         tests/session_rename_test.cpp
         tests/session_test.cpp
         tests/span_finder_test.cpp

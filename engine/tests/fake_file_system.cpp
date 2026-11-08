@@ -145,3 +145,12 @@ void FAKE_FILE_SYSTEM::set_modified(const std::filesystem::path &path, int64_t m
 {
     entries_.at(key_of(path)).info.modified_ms = modified_ms;
 }
+
+void FAKE_FILE_SYSTEM::remove(const std::filesystem::path &path)
+{
+    const std::u32string key = key_of(path);
+    const std::u32string prefix = key + SEPARATOR;
+    std::erase_if(entries_, [&](const auto &entry) {
+        return entry.first == key || entry.first.starts_with(prefix);
+    });
+}

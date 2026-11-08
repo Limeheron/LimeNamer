@@ -142,3 +142,18 @@ TEST_F(SESSION_TEST, updates_items_inside_renamed_folders)
     EXPECT_EQ(session_->record().entries()[1].after, root_ / "g" / "b2.txt");
     EXPECT_EQ(session_->add_items({root_ / "g" / "keep.txt"}, ADD_MODE::as_items).skipped, 1u);
 }
+
+TEST_F(SESSION_TEST, checks_the_record_before_undoing)
+{
+    session_->add_items(files({U"x.txt", U"y.txt"}), ADD_MODE::as_items);
+    session_->add_mod(mod(PREFIX));
+    session_->rename({});
+    fake_->remove(root_ / "a_x.txt");
+    const RENAME_REPORT report = session_->undo_check();
+    EXPECT_EQ(report.total, 2u);
+    EXPECT_EQ(report.skipped, 1u);
+    ASSERT_EQ(report.problems.size(), size_t{1});
+    EXPECT_EQ(report.problems[0].failure, RENAME_FAILURE::not_found);
+    FILE_INFO info;
+    EXPECT_TRUE(fake_->get_info(root_ / "a_y.txt", info).ok());
+}

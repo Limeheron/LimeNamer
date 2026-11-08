@@ -89,6 +89,7 @@ public:
     RENAME_REPORT resolve_rename(RESOLVE_CHOICE choice, const RENAME_EXECUTOR::PROGRESS &progress);
     bool rename_pending() const;
     const RENAME_RECORD &record() const;
+    RENAME_REPORT undo_check() const;
 
 private:
     template <typename SERVICE>
