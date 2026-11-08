@@ -92,6 +92,29 @@ protected:
         return values;
     }
 
+    std::vector<std::string> new_names()
+    {
+        std::vector<std::string> values;
+        LN_PREVIEW *preview = nullptr;
+        EXPECT_EQ(ln_preview(session_, &preview), ln_result_ok);
+        if (preview != nullptr) {
+            for (size_t index = 0; index < preview->count; ++index) {
+                values.push_back(preview->rows[index].new_name);
+            }
+        }
+        ln_preview_free(preview);
+        return values;
+    }
+
+    std::string mods_json()
+    {
+        char *json = nullptr;
+        EXPECT_EQ(ln_mods_get(session_, &json), ln_result_ok);
+        const std::string text = json == nullptr ? std::string() : std::string(json);
+        ln_string_free(json);
+        return text;
+    }
+
     std::vector<uint64_t> ids()
     {
         std::vector<uint64_t> values;

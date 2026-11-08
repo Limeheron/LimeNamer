@@ -270,6 +270,22 @@ LN_API LN_RESULT ln_items_sort(LN_SESSION *session, int32_t key, uint8_t descend
 LN_API LN_RESULT ln_items_sort_state(LN_SESSION *session, int32_t *key, uint8_t *descending);
 LN_API LN_RESULT ln_folders_refresh(LN_SESSION *session);
 
+LN_API LN_RESULT ln_mods_get(LN_SESSION *session, char **json);
+LN_API LN_RESULT ln_mod_add(LN_SESSION *session, const char *json, uint64_t *id);
+LN_API LN_RESULT ln_mod_update(LN_SESSION *session, uint64_t id, const char *json);
+LN_API LN_RESULT ln_mod_remove(LN_SESSION *session, uint64_t id);
+LN_API LN_RESULT ln_mod_move(LN_SESSION *session, uint64_t id, uint64_t target_id,
+    uint8_t after, uint8_t dry_run, uint8_t *changed);
+LN_API LN_RESULT ln_mod_set_enabled(LN_SESSION *session, uint64_t id, uint8_t enabled);
+LN_API LN_RESULT ln_mods_set_all_enabled(LN_SESSION *session, uint8_t enabled);
+LN_API LN_RESULT ln_mod_direct_edit(LN_SESSION *session, uint64_t item_id,
+    const char *new_name);
+LN_API LN_RESULT ln_mod_check(LN_SESSION *session, const char *json, LN_PROBLEMS **out);
+LN_API LN_RESULT ln_mod_example(LN_SESSION *session, const char *json, uint64_t before_mod_id,
+    LN_EXAMPLE **out);
+LN_API LN_RESULT ln_options_get(LN_SESSION *session, char **json);
+LN_API LN_RESULT ln_options_set(LN_SESSION *session, const char *json);
+
 LN_API LN_RESULT ln_preview(LN_SESSION *session, LN_PREVIEW **out);
 
 LN_API void ln_string_free(char *text);

@@ -117,6 +117,163 @@ LN_RESULT ln_folders_refresh(LN_SESSION *session)
     });
 }
 
+LN_RESULT ln_mods_get(LN_SESSION *session, char **json)
+{
+    if (json != nullptr) {
+        *json = nullptr;
+    }
+    return C_GUARD::run(session, [&](SESSION &target) -> LN_RESULT {
+        if (json == nullptr) {
+            return ln_result_invalid_argument;
+        }
+        *json = C_RESULTS::string(MOD_JSON::entries_to_json(target.mods()));
+        return ln_result_ok;
+    });
+}
+
+LN_RESULT ln_mod_add(LN_SESSION *session, const char *json, uint64_t *id)
+{
+    return C_GUARD::run(session, [&](SESSION &target) -> LN_RESULT {
+        if (json == nullptr || id == nullptr) {
+            return ln_result_invalid_argument;
+        }
+        *id = target.add_mod(MOD_JSON::parse(json));
+        return ln_result_ok;
+    });
+}
+
+LN_RESULT ln_mod_update(LN_SESSION *session, uint64_t id, const char *json)
+{
+    return C_GUARD::run(session, [&](SESSION &target) -> LN_RESULT {
+        if (json == nullptr) {
+            return ln_result_invalid_argument;
+        }
+        return target.update_mod(id, MOD_JSON::parse(json)) ? ln_result_ok : ln_result_not_found;
+    });
+}
+
+LN_RESULT ln_mod_remove(LN_SESSION *session, uint64_t id)
+{
+    return C_GUARD::run(session, [&](SESSION &target) -> LN_RESULT {
+        return target.remove_mod(id) ? ln_result_ok : ln_result_not_found;
+    });
+}
+
+LN_RESULT ln_mod_move(LN_SESSION *session, uint64_t id, uint64_t target_id, uint8_t after,
+    uint8_t dry_run, uint8_t *changed)
+{
+    return C_GUARD::run(session, [&](SESSION &target) -> LN_RESULT {
+        const std::optional<bool> after_target = C_INPUT::flag(after);
+        const std::optional<bool> only_check = C_INPUT::flag(dry_run);
+        if (changed == nullptr || !after_target || !only_check) {
+            return ln_result_invalid_argument;
+        }
+        const std::optional<bool> moved =
+            target.move_mod(id, target_id, *after_target, *only_check);
+        if (!moved) {
+            return ln_result_not_found;
+        }
+        *changed = *moved ? 1 : 0;
+        return ln_result_ok;
+    });
+}
+
+LN_RESULT ln_mod_set_enabled(LN_SESSION *session, uint64_t id, uint8_t enabled)
+{
+    return C_GUARD::run(session, [&](SESSION &target) -> LN_RESULT {
+        const std::optional<bool> value = C_INPUT::flag(enabled);
+        if (!value) {
+            return ln_result_invalid_argument;
+        }
+        return target.set_mod_enabled(id, *value) ? ln_result_ok : ln_result_not_found;
+    });
+}
+
+LN_RESULT ln_mods_set_all_enabled(LN_SESSION *session, uint8_t enabled)
+{
+    return C_GUARD::run(session, [&](SESSION &target) -> LN_RESULT {
+        const std::optional<bool> value = C_INPUT::flag(enabled);
+        if (!value) {
+            return ln_result_invalid_argument;
+        }
+        target.set_all_mods_enabled(*value);
+        return ln_result_ok;
+    });
+}
+
+LN_RESULT ln_mod_direct_edit(LN_SESSION *session, uint64_t item_id, const char *new_name)
+{
+    return C_GUARD::run(session, [&](SESSION &target) -> LN_RESULT {
+        std::optional<std::u32string> name = C_INPUT::text(new_name);
+        if (!name) {
+            return ln_result_invalid_argument;
+        }
+        if (!target.direct_edit(item_id, std::move(*name))) {
+            return ln_result_not_found;
+        }
+        return ln_result_ok;
+    });
+}
+
+LN_RESULT ln_mod_check(LN_SESSION *session, const char *json, LN_PROBLEMS **out)
+{
+    if (out != nullptr) {
+        *out = nullptr;
+    }
+    return C_GUARD::run(session, [&](SESSION &) -> LN_RESULT {
+        if (json == nullptr || out == nullptr) {
+            return ln_result_invalid_argument;
+        }
+        *out = C_RESULTS::problems(MOD_CHECKER::check(MOD_JSON::parse(json)));
+        return ln_result_ok;
+    });
+}
+
+LN_RESULT ln_mod_example(LN_SESSION *session, const char *json, uint64_t before_mod_id,
+    LN_EXAMPLE **out)
+{
+    if (out != nullptr) {
+        *out = nullptr;
+    }
+    return C_GUARD::run(session, [&](SESSION &target) -> LN_RESULT {
+        if (json == nullptr || out == nullptr) {
+            return ln_result_invalid_argument;
+        }
+        const std::optional<EXAMPLE> example =
+            target.example(MOD_JSON::parse(json), before_mod_id);
+        if (!example) {
+            return ln_result_not_found;
+        }
+        *out = C_RESULTS::example(*example);
+        return ln_result_ok;
+    });
+}
+
+LN_RESULT ln_options_get(LN_SESSION *session, char **json)
+{
+    if (json != nullptr) {
+        *json = nullptr;
+    }
+    return C_GUARD::run(session, [&](SESSION &target) -> LN_RESULT {
+        if (json == nullptr) {
+            return ln_result_invalid_argument;
+        }
+        *json = C_RESULTS::string(MOD_JSON::options_to_json(target.options()));
+        return ln_result_ok;
+    });
+}
+
+LN_RESULT ln_options_set(LN_SESSION *session, const char *json)
+{
+    return C_GUARD::run(session, [&](SESSION &target) -> LN_RESULT {
+        if (json == nullptr) {
+            return ln_result_invalid_argument;
+        }
+        target.set_options(MOD_JSON::parse_options(json));
+        return ln_result_ok;
+    });
+}
+
 LN_RESULT ln_preview(LN_SESSION *session, LN_PREVIEW **out)
 {
     if (out != nullptr) {

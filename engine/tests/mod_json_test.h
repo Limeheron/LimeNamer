@@ -10,6 +10,7 @@
 #include <gtest/gtest.h>
 #include <nlohmann/json.hpp>
 
+#include "mod_entry.h"
 #include "mod_json.h"
 #include "mod_json_error.h"
 #include "modification.h"

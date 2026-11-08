@@ -99,6 +99,7 @@ const std::vector<MOD_ENTRY> &SESSION::mods() const
 
 uint64_t SESSION::add_mod(MODIFICATION mod)
 {
+    mod.direct = false;
     return recorded([&]() {
         return mods_.add(std::move(mod));
     });

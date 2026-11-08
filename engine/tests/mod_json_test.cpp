@@ -177,6 +177,30 @@ TEST(MOD_JSON, rejects_invalid_input)
     }
 }
 
+TEST(MOD_JSON, writes_entries_with_ids_and_states)
+{
+    const char *const text =
+        R"({"kind":"insert","position":{"type":"start"},"value":[{"text":"a_"}]})";
+    MOD_ENTRY first;
+    first.id = 3;
+    first.mod = MOD_JSON::parse(text);
+    first.enabled = false;
+    MOD_ENTRY second;
+    second.id = 7;
+    second.mod = MOD_JSON::parse(R"({"kind":"delete","position":{"type":"all"}})");
+    const nlohmann::json result =
+        nlohmann::json::parse(MOD_JSON::entries_to_json({first, second}));
+    ASSERT_EQ(result.size(), size_t{2});
+    nlohmann::json expected = nlohmann::json::parse(MOD_JSON::to_json(first.mod));
+    expected["id"] = 3;
+    expected["enabled"] = false;
+    EXPECT_EQ(result[0], expected);
+    EXPECT_EQ(result[1]["id"], 7);
+    EXPECT_EQ(result[1]["enabled"], true);
+    EXPECT_EQ(result[1]["kind"], "delete");
+    EXPECT_EQ(MOD_JSON::entries_to_json({}), "[]");
+}
+
 TEST(MOD_JSON, writes_canonical_json)
 {
     const MODIFICATION mod = MOD_JSON::parse(

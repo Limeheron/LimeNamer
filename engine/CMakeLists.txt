@@ -166,6 +166,7 @@ if(LN_BUILD_TESTS)
 
     add_executable(limenamer_api_tests
         tests/c_api_items_test.cpp
+        tests/c_api_mods_test.cpp
         tests/c_api_test.cpp)
     target_include_directories(limenamer_api_tests PRIVATE src)
     target_link_libraries(limenamer_api_tests PRIVATE limenamer ln_build_options

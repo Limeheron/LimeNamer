@@ -179,3 +179,10 @@ TEST_F(SESSION_TEST, previews_ten_thousand_items_quickly)
     EXPECT_LT(ms(built, done), 2000);
 #endif
 }
+
+TEST_F(SESSION_TEST, adds_mods_as_regular_mods)
+{
+    session_->add_mod(mod(R"({"kind":"replace","position":{"type":"all"},
+        "value":[{"text":"abc"}],"scope":"items","targets":[1],"direct":true})"));
+    EXPECT_FALSE(session_->mods()[0].mod.direct);
+}

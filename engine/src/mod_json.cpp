@@ -460,6 +460,47 @@ JSON position_json(const POSITION &position)
     }
     return object;
 }
+
+JSON mod_object(const MODIFICATION &mod)
+{
+    JSON root = JSON::object();
+    root["kind"] = enum_name(KIND_NAMES, mod.kind);
+    root["part"] = enum_name(PART_NAMES, mod.part);
+    root["position"] = position_json(mod.position);
+    if (has_value(mod.kind)) {
+        JSON value = JSON::array();
+        for (const VALUE_PIECE &piece : mod.value) {
+            JSON object = JSON::object();
+            if (const std::u32string *text = std::get_if<std::u32string>(&piece)) {
+                object["text"] = UTF::encode_utf8(*text);
+            } else {
+                object["token"] = enum_name(TOKEN_NAMES, std::get<TOKEN_KIND>(piece));
+            }
+            value.push_back(std::move(object));
+        }
+        root["value"] = std::move(value);
+        JSON number = JSON::object();
+        number["start"] = mod.number.start;
+        number["step"] = mod.number.step;
+        number["digits"] = mod.number.digits;
+        root["tokens"]["number"] = std::move(number);
+        root["tokens"]["modified_date"] = date_json(mod.modified_date);
+        root["tokens"]["created_date"] = date_json(mod.created_date);
+        root["tokens"]["size"]["unit"] = enum_name(SIZE_UNIT_NAMES, mod.size.unit);
+    }
+    if (mod.kind == MOD_KIND::format) {
+        root["format"]["type"] = enum_name(FORMAT_NAMES, mod.format.type);
+        if (mod.format.type == FORMAT_TYPE::pad_digits) {
+            root["format"]["digits"] = mod.format.digits;
+        }
+    }
+    root["scope"] = enum_name(SCOPE_NAMES, mod.scope);
+    if (mod.scope == MOD_SCOPE::items) {
+        root["targets"] = mod.targets;
+    }
+    root["direct"] = mod.direct;
+    return root;
+}
 }
 
 MODIFICATION MOD_JSON::parse(std::string_view text)
@@ -499,42 +540,18 @@ MODIFICATION MOD_JSON::parse(std::string_view text)
 
 std::string MOD_JSON::to_json(const MODIFICATION &mod)
 {
-    JSON root = JSON::object();
-    root["kind"] = enum_name(KIND_NAMES, mod.kind);
-    root["part"] = enum_name(PART_NAMES, mod.part);
-    root["position"] = position_json(mod.position);
-    if (has_value(mod.kind)) {
-        JSON value = JSON::array();
-        for (const VALUE_PIECE &piece : mod.value) {
-            JSON object = JSON::object();
-            if (const std::u32string *text = std::get_if<std::u32string>(&piece)) {
-                object["text"] = UTF::encode_utf8(*text);
-            } else {
-                object["token"] = enum_name(TOKEN_NAMES, std::get<TOKEN_KIND>(piece));
-            }
-            value.push_back(std::move(object));
-        }
-        root["value"] = std::move(value);
-        JSON number = JSON::object();
-        number["start"] = mod.number.start;
-        number["step"] = mod.number.step;
-        number["digits"] = mod.number.digits;
-        root["tokens"]["number"] = std::move(number);
-        root["tokens"]["modified_date"] = date_json(mod.modified_date);
-        root["tokens"]["created_date"] = date_json(mod.created_date);
-        root["tokens"]["size"]["unit"] = enum_name(SIZE_UNIT_NAMES, mod.size.unit);
+    return mod_object(mod).dump();
+}
+
+std::string MOD_JSON::entries_to_json(const std::vector<MOD_ENTRY> &entries)
+{
+    JSON root = JSON::array();
+    for (const MOD_ENTRY &entry : entries) {
+        JSON object = mod_object(entry.mod);
+        object["id"] = entry.id;
+        object["enabled"] = entry.enabled;
+        root.push_back(std::move(object));
     }
-    if (mod.kind == MOD_KIND::format) {
-        root["format"]["type"] = enum_name(FORMAT_NAMES, mod.format.type);
-        if (mod.format.type == FORMAT_TYPE::pad_digits) {
-            root["format"]["digits"] = mod.format.digits;
-        }
-    }
-    root["scope"] = enum_name(SCOPE_NAMES, mod.scope);
-    if (mod.scope == MOD_SCOPE::items) {
-        root["targets"] = mod.targets;
-    }
-    root["direct"] = mod.direct;
     return root.dump();
 }
 
