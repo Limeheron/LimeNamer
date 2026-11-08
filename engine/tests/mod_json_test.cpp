@@ -31,7 +31,7 @@ TEST(MOD_JSON, parses_text_position_with_options)
     EXPECT_TRUE(mod.position.case_sensitive);
     EXPECT_EQ(mod.position.occurrence, OCCURRENCE::nth);
     EXPECT_EQ(mod.position.occurrence_n, uint32_t{2});
-    const std::vector<VALUE_PIECE> value = {std::u32string(U"제주_"), TOKEN_TYPE::number};
+    const std::vector<VALUE_PIECE> value = {std::u32string(U"제주_"), TOKEN_KIND::number};
     EXPECT_EQ(mod.value, value);
     EXPECT_EQ(mod.number.start, 0);
     EXPECT_EQ(mod.number.step, -1);

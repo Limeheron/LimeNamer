@@ -47,13 +47,13 @@ constexpr const NAME_TABLE<OCCURRENCE, 5> OCCURRENCE_NAMES = {{
     {"all", OCCURRENCE::all},
 }};
 
-constexpr const NAME_TABLE<TOKEN_TYPE, 6> TOKEN_NAMES = {{
-    {"number", TOKEN_TYPE::number},
-    {"original_name", TOKEN_TYPE::original_name},
-    {"modified_date", TOKEN_TYPE::modified_date},
-    {"created_date", TOKEN_TYPE::created_date},
-    {"size", TOKEN_TYPE::size},
-    {"parent_folder", TOKEN_TYPE::parent_folder},
+constexpr const NAME_TABLE<TOKEN_KIND, 6> TOKEN_NAMES = {{
+    {"number", TOKEN_KIND::number},
+    {"original_name", TOKEN_KIND::original_name},
+    {"modified_date", TOKEN_KIND::modified_date},
+    {"created_date", TOKEN_KIND::created_date},
+    {"size", TOKEN_KIND::size},
+    {"parent_folder", TOKEN_KIND::parent_folder},
 }};
 
 constexpr const NAME_TABLE<FORMAT_TYPE, 5> FORMAT_NAMES = {{
@@ -453,7 +453,7 @@ std::string MOD_JSON::to_json(const MODIFICATION &mod)
             if (const std::u32string *text = std::get_if<std::u32string>(&piece)) {
                 object["text"] = UTF::encode_utf8(*text);
             } else {
-                object["token"] = enum_name(TOKEN_NAMES, std::get<TOKEN_TYPE>(piece));
+                object["token"] = enum_name(TOKEN_NAMES, std::get<TOKEN_KIND>(piece));
             }
             value.push_back(std::move(object));
         }

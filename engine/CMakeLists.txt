@@ -42,6 +42,7 @@ set(JSON_Install OFF CACHE INTERNAL "")
 FetchContent_MakeAvailable(nlohmann_json)
 
 set(LN_CORE_SOURCES
+    src/mod_applier.cpp
     src/mod_checker.cpp
     src/mod_json.cpp
     src/name_parts.cpp
@@ -97,6 +98,7 @@ if(LN_BUILD_TESTS)
         tests/fake_file_system_test.cpp
         tests/fake_fs_env.cpp
         tests/file_system_test.cpp
+        tests/mod_applier_test.cpp
         tests/mod_checker_test.cpp
         tests/mod_json_test.cpp
         tests/name_parts_test.cpp

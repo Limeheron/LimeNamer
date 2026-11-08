@@ -1,6 +1,6 @@
 #pragma once
 
-enum class TOKEN_TYPE
+enum class TOKEN_KIND
 {
     number,
     original_name,

@@ -3,6 +3,6 @@
 #include <string>
 #include <variant>
 
-#include "token_type.h"
+#include "token_kind.h"
 
-using VALUE_PIECE = std::variant<std::u32string, TOKEN_TYPE>;
+using VALUE_PIECE = std::variant<std::u32string, TOKEN_KIND>;
