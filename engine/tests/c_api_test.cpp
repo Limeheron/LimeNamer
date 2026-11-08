@@ -48,3 +48,13 @@ TEST(C_API, session_destroy_accepts_null)
 {
     ln_session_destroy(nullptr);
 }
+
+TEST(C_API, free_functions_accept_null)
+{
+    ln_string_free(nullptr);
+    ln_problems_free(nullptr);
+    ln_example_free(nullptr);
+    ln_preview_free(nullptr);
+    ln_report_free(nullptr);
+    ln_index_list_free(nullptr);
+}
