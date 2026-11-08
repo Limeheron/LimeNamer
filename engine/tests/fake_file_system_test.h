@@ -7,4 +7,5 @@
 
 #include "fake_fs_env.h"
 #include "file_info.h"
+#include "fs_error_output.h"
 #include "fs_status.h"

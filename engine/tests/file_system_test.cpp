@@ -1,6 +1,10 @@
 #include "file_system_test.h"
 
+#if defined(__APPLE__)
+using FILE_SYSTEM_ENVS = testing::Types<FAKE_FS_ENV, REAL_FS_ENV>;
+#else
 using FILE_SYSTEM_ENVS = testing::Types<FAKE_FS_ENV>;
+#endif
 TYPED_TEST_SUITE(FILE_SYSTEM_TEST, FILE_SYSTEM_ENVS);
 
 TYPED_TEST(FILE_SYSTEM_TEST, get_info_reads_file)

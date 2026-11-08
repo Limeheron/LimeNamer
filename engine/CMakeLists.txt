@@ -40,6 +40,7 @@ if(WIN32)
         src/win/win_text_service.cpp)
 elseif(APPLE)
     list(APPEND LN_CORE_SOURCES
+        src/mac/mac_file_system.cpp
         src/mac/mac_text_service.cpp)
 endif()
 
@@ -76,7 +77,7 @@ if(LN_BUILD_TESTS)
     enable_testing()
     include(GoogleTest)
 
-    add_executable(limenamer_tests
+    set(LN_TEST_SOURCES
         tests/fake_file_system.cpp
         tests/fake_file_system_test.cpp
         tests/fake_fs_env.cpp
@@ -84,6 +85,13 @@ if(LN_BUILD_TESTS)
         tests/session_test.cpp
         tests/text_service_test.cpp
         tests/utf_test.cpp)
+    if(APPLE)
+        list(APPEND LN_TEST_SOURCES
+            tests/mac_file_system_test.cpp
+            tests/real_fs_env.cpp)
+    endif()
+
+    add_executable(limenamer_tests ${LN_TEST_SOURCES})
     target_link_libraries(limenamer_tests PRIVATE limenamer_core ln_build_options
         GTest::gtest_main)
     gtest_discover_tests(limenamer_tests DISCOVERY_MODE PRE_TEST)
