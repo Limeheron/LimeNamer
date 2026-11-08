@@ -77,6 +77,10 @@ if(LN_BUILD_TESTS)
     include(GoogleTest)
 
     add_executable(limenamer_tests
+        tests/fake_file_system.cpp
+        tests/fake_file_system_test.cpp
+        tests/fake_fs_env.cpp
+        tests/file_system_test.cpp
         tests/session_test.cpp
         tests/text_service_test.cpp
         tests/utf_test.cpp)
