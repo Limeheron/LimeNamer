@@ -49,6 +49,7 @@ set(LN_CORE_SOURCES
     src/mod_applier.cpp
     src/mod_checker.cpp
     src/mod_json.cpp
+    src/mod_store.cpp
     src/name_checker.cpp
     src/name_parts.cpp
     src/natural_compare.cpp
@@ -113,6 +114,7 @@ if(LN_BUILD_TESTS)
         tests/mod_cases_test.cpp
         tests/mod_checker_test.cpp
         tests/mod_json_test.cpp
+        tests/mod_store_test.cpp
         tests/name_checker_test.cpp
         tests/name_parts_test.cpp
         tests/natural_compare_test.cpp
