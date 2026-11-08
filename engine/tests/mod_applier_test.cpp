@@ -89,3 +89,74 @@ TEST_F(MOD_APPLIER_TEST, keeps_the_result_in_nfc)
     EXPECT_EQ(apply(R"({"kind":"insert","position":{"type":"end"},"value":[]})",
         U"cafe.txt", U"́"), U"café.txt");
 }
+
+TEST_F(MOD_APPLIER_TEST, formats_upper_and_lower_case)
+{
+    EXPECT_EQ(apply(R"({"kind":"format","position":{"type":"all"},"format":{"type":"upper"}})",
+        U"Photo_é.jpg", U""), U"PHOTO_É.jpg");
+    EXPECT_EQ(apply(R"({"kind":"format","part":"ext","position":{"type":"all"},
+        "format":{"type":"lower"}})", U"IMG_0001.JPG", U""), U"IMG_0001.jpg");
+    EXPECT_EQ(apply(R"({"kind":"format","part":"full","position":{"type":"all"},
+        "format":{"type":"upper"}})", U"a.b", U""), U"A.B");
+}
+
+TEST_F(MOD_APPLIER_TEST, formats_each_word)
+{
+    const char *json =
+        R"({"kind":"format","position":{"type":"all"},"format":{"type":"title"}})";
+    EXPECT_EQ(apply(json, U"hello world_test-case.txt", U""), U"Hello World_Test-Case.txt");
+    EXPECT_EQ(apply(json, U"iPhone PHOTO.jpg", U""), U"Iphone Photo.jpg");
+    EXPECT_EQ(apply(json, U"don't stop.mp3", U""), U"Don't Stop.mp3");
+    EXPECT_EQ(apply(json, U"don’t stop.mp3", U""), U"Don’t Stop.mp3");
+    EXPECT_EQ(apply(json, U"rock 'n' roll.mp3", U""), U"Rock 'N' Roll.mp3");
+    EXPECT_EQ(apply(json, U"2nd place.txt", U""), U"2nd Place.txt");
+    EXPECT_EQ(apply(json, U"élan vital.txt", U""), U"Élan Vital.txt");
+    EXPECT_EQ(apply(json, U"한글 file.txt", U""), U"한글 File.txt");
+    EXPECT_EQ(apply(json, U"(draft) memo.txt", U""), U"(Draft) Memo.txt");
+}
+
+TEST_F(MOD_APPLIER_TEST, formats_the_first_word_only)
+{
+    const char *json =
+        R"({"kind":"format","position":{"type":"all"},"format":{"type":"sentence"}})";
+    EXPECT_EQ(apply(json, U"HELLO WORLD. AGAIN.txt", U""), U"Hello world. again.txt");
+    EXPECT_EQ(apply(json, U"2024 TRIP.txt", U""), U"2024 trip.txt");
+    EXPECT_EQ(apply(json, U"_hello World.txt", U""), U"_Hello world.txt");
+}
+
+TEST_F(MOD_APPLIER_TEST, pads_digits)
+{
+    const char *json = R"({"kind":"format","position":{"type":"all"},
+        "format":{"type":"pad_digits","digits":3}})";
+    EXPECT_EQ(apply(json, U"IMG_1_23_4567.jpg", U""), U"IMG_001_023_4567.jpg");
+    EXPECT_EQ(apply(json, U"photo.jpg", U""), U"photo.jpg");
+    EXPECT_EQ(apply(json, U"7.mp3", U""), U"007.mp3");
+    EXPECT_EQ(apply(json, U"track１.mp3", U""), U"track１.mp3");
+    EXPECT_EQ(apply(R"({"kind":"format","position":{"type":"all"},
+        "format":{"type":"pad_digits","digits":1}})", U"a1.txt", U""), U"a1.txt");
+}
+
+TEST_F(MOD_APPLIER_TEST, formats_only_the_position)
+{
+    EXPECT_EQ(apply(R"({"kind":"format","position":{"type":"text","text":"img",
+        "occurrence":"all"},"format":{"type":"upper"}})", U"img_x_img.png", U""),
+        U"IMG_x_IMG.png");
+    EXPECT_EQ(apply(R"({"kind":"format","position":{"type":"first_n","n":3},
+        "format":{"type":"pad_digits","digits":2}})", U"1a23.txt", U""), U"01a23.txt");
+    EXPECT_EQ(apply(R"({"kind":"format","position":{"type":"first_n","n":3},
+        "format":{"type":"pad_digits","digits":3}})", U"1a23.txt", U""), U"001a023.txt");
+    EXPECT_EQ(apply(R"({"kind":"format","position":{"type":"last_n","n":2},
+        "format":{"type":"pad_digits","digits":5}})", U"123.txt", U""), U"123.txt");
+    EXPECT_EQ(apply(R"({"kind":"format","position":{"type":"from_nth","n":2,"count":2},
+        "format":{"type":"pad_digits","digits":7}})", U"a12345.txt", U""), U"a0012345.txt");
+    EXPECT_EQ(apply(R"({"kind":"format","position":{"type":"between","start_text":"[",
+        "end_text":"]"},"format":{"type":"upper"}})", U"a[bc]d.txt", U""), U"a[BC]d.txt");
+}
+
+TEST_F(MOD_APPLIER_TEST, skips_extension_format_for_folders)
+{
+    EXPECT_EQ(apply(R"({"kind":"format","part":"ext","position":{"type":"all"},
+        "format":{"type":"upper"}})", U"my.folder", U"", true), U"my.folder");
+    EXPECT_EQ(apply(R"({"kind":"format","position":{"type":"all"},"format":{"type":"upper"}})",
+        U"my.folder", U"", true), U"MY.FOLDER");
+}
