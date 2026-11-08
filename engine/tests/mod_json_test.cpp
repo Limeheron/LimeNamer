@@ -241,3 +241,40 @@ TEST(MOD_JSON, parses_date_and_size_settings)
     EXPECT_EQ(mod.created_date.format, U"");
     EXPECT_EQ(mod.size.unit, SIZE_UNIT::gb);
 }
+
+TEST(MOD_JSON, parses_options)
+{
+    EXPECT_EQ(MOD_JSON::parse_options("{}"), OPTIONS());
+    const OPTIONS defaults = MOD_JSON::parse_options(R"({"duplicate":{"enabled":true}})");
+    EXPECT_TRUE(defaults.duplicate.enabled);
+    EXPECT_EQ(defaults.duplicate.format, DUPLICATE_FORMAT::paren);
+    EXPECT_EQ(defaults.duplicate.mode, DUPLICATE_MODE::keep_first);
+    const OPTIONS custom = MOD_JSON::parse_options(R"({"duplicate":{"enabled":false,
+        "format":"custom","custom_text":" v","mode":"number_all"}})");
+    EXPECT_FALSE(custom.duplicate.enabled);
+    EXPECT_EQ(custom.duplicate.format, DUPLICATE_FORMAT::custom);
+    EXPECT_EQ(custom.duplicate.custom_text, U" v");
+    EXPECT_EQ(custom.duplicate.mode, DUPLICATE_MODE::number_all);
+    EXPECT_EQ(MOD_JSON::parse_options(MOD_JSON::options_to_json(custom)), custom);
+    const OPTIONS dash = MOD_JSON::parse_options(R"({"duplicate":{"format":"dash",
+        "custom_text":"ignored"}})");
+    EXPECT_TRUE(dash.duplicate.custom_text.empty());
+    EXPECT_EQ(MOD_JSON::parse_options(MOD_JSON::options_to_json(dash)), dash);
+}
+
+TEST(MOD_JSON, rejects_invalid_options)
+{
+    const std::string_view samples[] = {
+        "[]",
+        R"({"duplicate":true})",
+        R"({"duplicate":{"enabled":"yes"}})",
+        R"({"duplicate":{"format":"space"}})",
+        R"({"duplicate":{"format":"custom"}})",
+        R"({"duplicate":{"format":"custom","custom_text":""}})",
+        R"({"duplicate":{"format":"custom","custom_text":"123456789012345678901234567890123"}})",
+        R"({"duplicate":{"mode":"first"}})",
+    };
+    for (size_t i = 0; i < std::size(samples); ++i) {
+        EXPECT_THROW(MOD_JSON::parse_options(samples[i]), MOD_JSON_ERROR) << "sample " << i;
+    }
+}

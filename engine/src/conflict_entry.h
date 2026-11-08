@@ -11,4 +11,5 @@ struct CONFLICT_ENTRY
     std::u32string current_name;
     std::u32string new_name;
     bool changed = false;
+    bool is_dir = false;
 };

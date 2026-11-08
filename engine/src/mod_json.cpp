@@ -73,6 +73,19 @@ constexpr const NAME_TABLE<SIZE_UNIT, 5> SIZE_UNIT_NAMES = {{
 }};
 
 constexpr const size_t MAX_DATE_FORMAT = 64;
+constexpr const size_t MAX_CUSTOM_TEXT = 32;
+
+constexpr const NAME_TABLE<DUPLICATE_FORMAT, 4> DUPLICATE_FORMAT_NAMES = {{
+    {"paren", DUPLICATE_FORMAT::paren},
+    {"underscore", DUPLICATE_FORMAT::underscore},
+    {"dash", DUPLICATE_FORMAT::dash},
+    {"custom", DUPLICATE_FORMAT::custom},
+}};
+
+constexpr const NAME_TABLE<DUPLICATE_MODE, 2> DUPLICATE_MODE_NAMES = {{
+    {"keep_first", DUPLICATE_MODE::keep_first},
+    {"number_all", DUPLICATE_MODE::number_all},
+}};
 
 constexpr const NAME_TABLE<MOD_SCOPE, 2> SCOPE_NAMES = {{
     {"all", MOD_SCOPE::all},
@@ -522,5 +535,57 @@ std::string MOD_JSON::to_json(const MODIFICATION &mod)
         root["targets"] = mod.targets;
     }
     root["direct"] = mod.direct;
+    return root.dump();
+}
+
+OPTIONS MOD_JSON::parse_options(std::string_view text)
+{
+    JSON root;
+    try {
+        root = JSON::parse(text.begin(), text.end());
+    } catch (const JSON::exception &error) {
+        throw MOD_JSON_ERROR(std::string("invalid JSON: ") + error.what());
+    }
+    require_object(root, "options");
+
+    OPTIONS options;
+    const JSON *duplicate = find(root, "duplicate");
+    if (duplicate == nullptr) {
+        return options;
+    }
+    require_object(*duplicate, "duplicate");
+    DUPLICATE_OPTIONS &value = options.duplicate;
+    value.enabled = read_bool(*duplicate, "enabled", false);
+    const JSON *format = find(*duplicate, "format");
+    if (format != nullptr) {
+        value.format = enum_from(DUPLICATE_FORMAT_NAMES, read_string(*format, "format"),
+            "duplicate format");
+    }
+    if (value.format == DUPLICATE_FORMAT::custom) {
+        value.custom_text = read_text(require(*duplicate, "custom_text"), "custom_text");
+        if (value.custom_text.empty() || value.custom_text.size() > MAX_CUSTOM_TEXT) {
+            fail("field is out of range", "custom_text");
+        }
+    }
+    const JSON *mode = find(*duplicate, "mode");
+    if (mode != nullptr) {
+        value.mode = enum_from(DUPLICATE_MODE_NAMES, read_string(*mode, "mode"),
+            "duplicate mode");
+    }
+    return options;
+}
+
+std::string MOD_JSON::options_to_json(const OPTIONS &options)
+{
+    const DUPLICATE_OPTIONS &value = options.duplicate;
+    JSON duplicate = JSON::object();
+    duplicate["enabled"] = value.enabled;
+    duplicate["format"] = enum_name(DUPLICATE_FORMAT_NAMES, value.format);
+    if (value.format == DUPLICATE_FORMAT::custom) {
+        duplicate["custom_text"] = UTF::encode_utf8(value.custom_text);
+    }
+    duplicate["mode"] = enum_name(DUPLICATE_MODE_NAMES, value.mode);
+    JSON root = JSON::object();
+    root["duplicate"] = std::move(duplicate);
     return root.dump();
 }

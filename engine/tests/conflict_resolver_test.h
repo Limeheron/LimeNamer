@@ -1,7 +1,9 @@
 #pragma once
 
+#include <cstddef>
 #include <cstdint>
 #include <filesystem>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -11,6 +13,7 @@
 #include "conflict.h"
 #include "conflict_entry.h"
 #include "conflict_resolver.h"
+#include "duplicate_options.h"
 #include "fake_fs_env.h"
 #include "folder_cache.h"
 
@@ -45,6 +48,32 @@ protected:
         cache_.load(env_.root() / "a");
         cache_.load(env_.root() / "b");
         return resolver_.find(entries, cache_);
+    }
+
+    std::vector<std::u32string> adjust(const std::vector<CONFLICT_ENTRY> &entries,
+        DUPLICATE_MODE mode = DUPLICATE_MODE::keep_first,
+        DUPLICATE_FORMAT format = DUPLICATE_FORMAT::paren, std::u32string custom_text = U"")
+    {
+        cache_.load(env_.root() / "a");
+        cache_.load(env_.root() / "b");
+        DUPLICATE_OPTIONS options;
+        options.enabled = true;
+        options.mode = mode;
+        options.format = format;
+        options.custom_text = std::move(custom_text);
+        const std::vector<std::optional<std::u32string>> adjusted =
+            resolver_.adjust(entries, cache_, options);
+        std::vector<std::u32string> names;
+        std::vector<CONFLICT_ENTRY> after = entries;
+        for (size_t index = 0; index < entries.size(); ++index) {
+            names.push_back(adjusted[index].value_or(entries[index].new_name));
+            after[index].new_name = names.back();
+            after[index].changed = after[index].current_name != after[index].new_name;
+        }
+        for (const CONFLICT &conflict : resolver_.find(after, cache_)) {
+            EXPECT_EQ(conflict, none());
+        }
+        return names;
     }
 
     static CONFLICT none()

@@ -17,6 +17,7 @@
 
 #include "mod_json_error.h"
 #include "modification.h"
+#include "options.h"
 #include "utf.h"
 
 class MOD_JSON
@@ -24,4 +25,7 @@ class MOD_JSON
 public:
     static MODIFICATION parse(std::string_view text);
     static std::string to_json(const MODIFICATION &mod);
+
+    static OPTIONS parse_options(std::string_view text);
+    static std::string options_to_json(const OPTIONS &options);
 };
