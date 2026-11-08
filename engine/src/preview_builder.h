@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
@@ -39,8 +40,12 @@ public:
         const std::vector<const MODIFICATION *> &mods) const;
     std::u32string apply(const ITEM &item, uint64_t list_index,
         const std::vector<MOD_PLAN> &plans) const;
+    std::u32string apply_from(const ITEM &item, std::u32string name, uint64_t list_index,
+        const std::vector<MOD_PLAN> &plans) const;
 
     static std::vector<const MODIFICATION *> enabled(const std::vector<MOD_ENTRY> &mods);
+    static std::pair<uint32_t, uint32_t> common_lengths(std::u32string_view before,
+        std::u32string_view after);
 
 private:
     static void highlight(PREVIEW_ROW &row);

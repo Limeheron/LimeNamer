@@ -43,6 +43,7 @@ FetchContent_MakeAvailable(nlohmann_json)
 
 set(LN_CORE_SOURCES
     src/conflict_resolver.cpp
+    src/example_finder.cpp
     src/folder_cache.cpp
     src/index_list.cpp
     src/item_store.cpp
@@ -104,6 +105,7 @@ if(LN_BUILD_TESTS)
 
     set(LN_TEST_SOURCES
         tests/conflict_resolver_test.cpp
+        tests/example_finder_test.cpp
         tests/fake_file_system.cpp
         tests/fake_file_system_test.cpp
         tests/fake_fs_env.cpp

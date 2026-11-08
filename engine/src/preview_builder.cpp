@@ -92,6 +92,12 @@ std::vector<MOD_PLAN> PREVIEW_BUILDER::plan(const ITEM_STORE &items,
 std::u32string PREVIEW_BUILDER::apply(const ITEM &item, uint64_t list_index,
     const std::vector<MOD_PLAN> &plans) const
 {
+    return apply_from(item, item.name, list_index, plans);
+}
+
+std::u32string PREVIEW_BUILDER::apply_from(const ITEM &item, std::u32string name,
+    uint64_t list_index, const std::vector<MOD_PLAN> &plans) const
+{
     TOKEN_CONTEXT context;
     context.original_name = item.name;
     const std::optional<std::u32string> parent = UTF::path_to_u32(item.folder.filename());
@@ -101,7 +107,6 @@ std::u32string PREVIEW_BUILDER::apply(const ITEM &item, uint64_t list_index,
     context.modified_ms = item.info.modified_ms;
     context.created_ms = item.info.created_ms;
 
-    std::u32string name = item.name;
     for (const MOD_PLAN &plan : plans) {
         const MODIFICATION &mod = *plan.mod;
         if (mod.scope == MOD_SCOPE::items) {
@@ -131,10 +136,9 @@ std::vector<const MODIFICATION *> PREVIEW_BUILDER::enabled(const std::vector<MOD
     return result;
 }
 
-void PREVIEW_BUILDER::highlight(PREVIEW_ROW &row)
+std::pair<uint32_t, uint32_t> PREVIEW_BUILDER::common_lengths(std::u32string_view before,
+    std::u32string_view after)
 {
-    const std::u32string &before = row.name;
-    const std::u32string &after = row.new_name;
     size_t prefix = 0;
     while (prefix < before.size() && prefix < after.size() && before[prefix] == after[prefix]) {
         ++prefix;
@@ -144,8 +148,14 @@ void PREVIEW_BUILDER::highlight(PREVIEW_ROW &row)
         && before[before.size() - 1 - suffix] == after[after.size() - 1 - suffix]) {
         ++suffix;
     }
-    row.prefix_len = static_cast<uint32_t>(prefix);
-    row.suffix_len = static_cast<uint32_t>(suffix);
+    return {static_cast<uint32_t>(prefix), static_cast<uint32_t>(suffix)};
+}
+
+void PREVIEW_BUILDER::highlight(PREVIEW_ROW &row)
+{
+    const std::pair<uint32_t, uint32_t> lengths = common_lengths(row.name, row.new_name);
+    row.prefix_len = lengths.first;
+    row.suffix_len = lengths.second;
 }
 
 void PREVIEW_BUILDER::finish(PREVIEW &preview, const std::vector<CONFLICT_ENTRY> &entries,
