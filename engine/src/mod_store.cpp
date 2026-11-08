@@ -101,6 +101,16 @@ uint64_t MOD_STORE::direct_edit(uint64_t item_id, std::u32string new_name)
     return add(std::move(mod));
 }
 
+void MOD_STORE::restore(std::vector<MOD_ENTRY> entries)
+{
+    for (const MOD_ENTRY &entry : entries) {
+        if (entry.id == 0 || entry.id >= next_id_) {
+            throw std::invalid_argument("restored modification has an unknown id");
+        }
+    }
+    entries_ = std::move(entries);
+}
+
 const std::vector<MOD_ENTRY> &MOD_STORE::entries() const
 {
     return entries_;

@@ -130,3 +130,18 @@ TEST_F(MOD_STORE_TEST, keeps_the_direct_flag_when_updating)
     EXPECT_TRUE(store_.update(direct, edited));
     EXPECT_TRUE(store_.find(direct)->mod.direct);
 }
+
+TEST_F(MOD_STORE_TEST, restores_earlier_entries)
+{
+    const uint64_t a = add(INSERT_A);
+    const std::vector<MOD_ENTRY> saved = store_.entries();
+    const uint64_t b = add(INSERT_B);
+    store_.remove(a);
+    store_.restore(saved);
+    EXPECT_EQ(ids(), std::vector<uint64_t>({a}));
+    const uint64_t c = add(DELETE_ALL);
+    EXPECT_GT(c, b);
+    std::vector<MOD_ENTRY> unknown = store_.entries();
+    unknown[0].id = 999;
+    EXPECT_THROW(store_.restore(unknown), std::invalid_argument);
+}

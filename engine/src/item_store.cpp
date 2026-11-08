@@ -147,6 +147,29 @@ void ITEM_STORE::sort(SORT_KEY key, bool descending)
     sort_state_ = {key, descending};
 }
 
+void ITEM_STORE::restore(const std::vector<uint64_t> &order, const SORT_STATE &sort_state)
+{
+    for (const uint64_t id : order) {
+        if (!items_.contains(id)) {
+            throw std::invalid_argument("restored order has an unknown item");
+        }
+    }
+    order_ = order;
+    keys_.clear();
+    for (const uint64_t id : order_) {
+        keys_.emplace(items_.at(id).key, id);
+    }
+    sort_state_ = sort_state;
+}
+
+void ITEM_STORE::prune()
+{
+    const std::unordered_set<uint64_t> listed(order_.begin(), order_.end());
+    std::erase_if(items_, [&listed](const auto &entry) {
+        return !listed.contains(entry.first);
+    });
+}
+
 const std::vector<uint64_t> &ITEM_STORE::order() const
 {
     return order_;

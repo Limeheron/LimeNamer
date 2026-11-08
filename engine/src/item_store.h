@@ -33,6 +33,8 @@ public:
     std::optional<bool> move(const std::vector<uint64_t> &ids, uint64_t target_id, bool after,
         bool dry_run);
     void sort(SORT_KEY key, bool descending);
+    void restore(const std::vector<uint64_t> &order, const SORT_STATE &sort_state);
+    void prune();
 
     const std::vector<uint64_t> &order() const;
     const SORT_STATE &sort_state() const;

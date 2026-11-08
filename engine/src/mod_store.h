@@ -26,6 +26,7 @@ public:
     bool set_enabled(uint64_t id, bool enabled);
     void set_all_enabled(bool enabled);
     uint64_t direct_edit(uint64_t item_id, std::u32string new_name);
+    void restore(std::vector<MOD_ENTRY> entries);
 
     const std::vector<MOD_ENTRY> &entries() const;
     const MOD_ENTRY *find(uint64_t id) const;
