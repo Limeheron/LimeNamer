@@ -44,6 +44,7 @@ FetchContent_MakeAvailable(nlohmann_json)
 set(LN_CORE_SOURCES
     src/mod_checker.cpp
     src/mod_json.cpp
+    src/name_parts.cpp
     src/platform.cpp
     src/session.cpp
     src/utf.cpp)
@@ -97,6 +98,7 @@ if(LN_BUILD_TESTS)
         tests/file_system_test.cpp
         tests/mod_checker_test.cpp
         tests/mod_json_test.cpp
+        tests/name_parts_test.cpp
         tests/real_fs_env.cpp
         tests/session_test.cpp
         tests/text_service_test.cpp
