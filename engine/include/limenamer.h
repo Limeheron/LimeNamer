@@ -260,6 +260,18 @@ LN_API LN_RESULT ln_session_create(LN_SESSION **out);
 LN_API void ln_session_destroy(LN_SESSION *session);
 LN_API const char *ln_version(void);
 
+LN_API LN_RESULT ln_items_add(LN_SESSION *session, const char *const *paths, size_t count,
+    int32_t mode, LN_ADD_RESULT *out);
+LN_API LN_RESULT ln_items_remove(LN_SESSION *session, const uint64_t *ids, size_t count);
+LN_API LN_RESULT ln_items_clear(LN_SESSION *session);
+LN_API LN_RESULT ln_items_move(LN_SESSION *session, const uint64_t *ids, size_t count,
+    uint64_t target_id, uint8_t after, uint8_t dry_run, uint8_t *changed);
+LN_API LN_RESULT ln_items_sort(LN_SESSION *session, int32_t key, uint8_t descending);
+LN_API LN_RESULT ln_items_sort_state(LN_SESSION *session, int32_t *key, uint8_t *descending);
+LN_API LN_RESULT ln_folders_refresh(LN_SESSION *session);
+
+LN_API LN_RESULT ln_preview(LN_SESSION *session, LN_PREVIEW **out);
+
 LN_API void ln_string_free(char *text);
 LN_API void ln_problems_free(LN_PROBLEMS *problems);
 LN_API void ln_example_free(LN_EXAMPLE *example);
