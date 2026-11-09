@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net10.0-windows</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <AssemblyName>LimeNamer</AssemblyName>
+        <RollForward>Major</RollForward>
+        <EnableDefaultApplicationDefinition>false</EnableDefaultApplicationDefinition>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Page Remove="app.xaml" />
+        <ApplicationDefinition Include="app.xaml" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\view_model\limenamer_view_model.csproj" />
+    </ItemGroup>
+</Project>

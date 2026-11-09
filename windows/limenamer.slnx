@@ -1,0 +1,5 @@
+<Solution>
+    <Project Path="app/limenamer_app.csproj" />
+    <Project Path="tests/limenamer_tests.csproj" />
+    <Project Path="view_model/limenamer_view_model.csproj" />
+</Solution>

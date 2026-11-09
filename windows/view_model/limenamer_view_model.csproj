@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <AssemblyName>limenamer_view_model</AssemblyName>
+        <EngineBinDir Condition="'$(EngineBinDir)' == ''">$(MSBuildThisFileDirectory)..\..\engine\build\win-$(Configuration.ToLowerInvariant())\bin</EngineBinDir>
+        <EngineDll>$([MSBuild]::EnsureTrailingSlash('$(EngineBinDir)'))limenamer_engine.dll</EngineDll>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="$(EngineDll)" Link="limenamer_engine.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+    </ItemGroup>
+
+    <Target Name="check_engine_dll" BeforeTargets="PrepareForBuild" Condition="!Exists('$(EngineDll)')">
+        <Error Text="Engine DLL not found: $(EngineDll). Build the engine first." />
+    </Target>
+</Project>

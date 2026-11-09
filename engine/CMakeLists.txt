@@ -91,13 +91,13 @@ elseif(APPLE)
 endif()
 
 if(WIN32)
-    add_library(limenamer SHARED src/c_api.cpp)
-    target_compile_definitions(limenamer PRIVATE LN_BUILDING)
+    add_library(limenamer_engine SHARED src/c_api.cpp)
+    target_compile_definitions(limenamer_engine PRIVATE LN_BUILDING)
 else()
-    add_library(limenamer STATIC src/c_api.cpp)
+    add_library(limenamer_engine STATIC src/c_api.cpp)
 endif()
-target_include_directories(limenamer PUBLIC include)
-target_link_libraries(limenamer PRIVATE limenamer_core ln_build_options)
+target_include_directories(limenamer_engine PUBLIC include)
+target_link_libraries(limenamer_engine PRIVATE limenamer_core ln_build_options)
 
 if(LN_BUILD_TESTS)
     FetchContent_Declare(googletest
@@ -173,7 +173,7 @@ if(LN_BUILD_TESTS)
         tests/c_api_test.cpp
         tests/file_lock.cpp)
     target_include_directories(limenamer_api_tests PRIVATE src)
-    target_link_libraries(limenamer_api_tests PRIVATE limenamer ln_build_options
+    target_link_libraries(limenamer_api_tests PRIVATE limenamer_engine ln_build_options
         GTest::gtest_main)
     gtest_discover_tests(limenamer_api_tests DISCOVERY_MODE PRE_TEST)
 
@@ -188,7 +188,7 @@ if(LN_BUILD_TESTS)
         target_compile_options(limenamer_c_tests PRIVATE
             -Wall -Wextra -Wpedantic -Wshadow -Wconversion -Wstrict-prototypes -Werror)
     endif()
-    target_link_libraries(limenamer_c_tests PRIVATE limenamer)
+    target_link_libraries(limenamer_c_tests PRIVATE limenamer_engine)
     add_test(NAME limenamer_c_tests
         COMMAND limenamer_c_tests $<TARGET_FILE:limenamer_c_tests>)
 endif()
