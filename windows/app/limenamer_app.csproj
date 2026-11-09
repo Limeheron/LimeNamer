@@ -6,6 +6,7 @@
         <AssemblyName>LimeNamer</AssemblyName>
         <RollForward>Major</RollForward>
         <EnableDefaultApplicationDefinition>false</EnableDefaultApplicationDefinition>
+        <NoWarn>$(NoWarn);WPF0001</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>

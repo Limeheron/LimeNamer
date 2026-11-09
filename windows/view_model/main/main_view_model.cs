@@ -128,7 +128,13 @@ public sealed class MAIN_VIEW_MODEL : OBSERVABLE
             }
             settings.panel_open = value;
             notify(nameof(panel_open));
+            notify(nameof(shows_panel_badge));
         }
+    }
+
+    public bool shows_panel_badge
+    {
+        get { return !settings.panel_open && mods.enabled_count > 0; }
     }
 
     public bool duplicate_enabled
@@ -141,6 +147,11 @@ public sealed class MAIN_VIEW_MODEL : OBSERVABLE
     {
         get { return duplicate_.format; }
         set { apply_duplicate(duplicate_ with { format = value }); }
+    }
+
+    public bool duplicate_is_custom
+    {
+        get { return duplicate_.format == DUPLICATE_FORMAT.custom; }
     }
 
     public DUPLICATE_MODE duplicate_mode
@@ -174,6 +185,7 @@ public sealed class MAIN_VIEW_MODEL : OBSERVABLE
         notify(nameof(sort_descending));
         notify(nameof(duplicate_enabled));
         notify(nameof(duplicate_format));
+        notify(nameof(duplicate_is_custom));
         notify(nameof(duplicate_mode));
         notify(nameof(duplicate_custom_text));
         refresh_commands();
@@ -602,6 +614,8 @@ public sealed class MAIN_VIEW_MODEL : OBSERVABLE
     {
         if (args.PropertyName == nameof(MOD_LIST_VIEW_MODEL.is_editing)) {
             notify(nameof(is_editing));
+        } else if (args.PropertyName == nameof(MOD_LIST_VIEW_MODEL.enabled_count)) {
+            notify(nameof(shows_panel_badge));
         }
     }
 

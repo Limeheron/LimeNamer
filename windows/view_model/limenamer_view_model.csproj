@@ -19,6 +19,7 @@
             <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
             <StronglyTypedNamespace>limenamer</StronglyTypedNamespace>
             <StronglyTypedClassName>STRINGS</StronglyTypedClassName>
+            <PublicClass>true</PublicClass>
         </EmbeddedResource>
     </ItemGroup>
 

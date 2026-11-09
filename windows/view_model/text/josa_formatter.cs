@@ -4,13 +4,13 @@ using System.Text;
 
 namespace limenamer;
 
-internal sealed class JOSA_FORMATTER : IFormatProvider, ICustomFormatter
+public sealed class JOSA_FORMATTER : IFormatProvider, ICustomFormatter
 {
     private const int RIEUL = 8;
     private static readonly int[] DIGIT_FINALS = [21, 8, 0, 16, 0, 0, 1, 8, 8, 0];
     private static readonly JOSA_FORMATTER INSTANCE = new();
 
-    internal static string format(string template, params object[] args)
+    public static string format(string template, params object[] args)
     {
         return string.Format(INSTANCE, template, args);
     }

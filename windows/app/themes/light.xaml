@@ -1,0 +1,51 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Color x:Key="SystemAccentColor">#9CCF45</Color>
+    <Color x:Key="SystemAccentColorLight1">#9CCF45</Color>
+    <Color x:Key="SystemAccentColorLight2">#9CCF45</Color>
+    <Color x:Key="SystemAccentColorLight3">#4B7A10</Color>
+    <Color x:Key="SystemAccentColorDark1">#9CCF45</Color>
+    <Color x:Key="SystemAccentColorDark2">#4B7A10</Color>
+    <Color x:Key="SystemAccentColorDark3">#4B7A10</Color>
+
+    <SolidColorBrush x:Key="AccentFillColorDefaultBrush" Color="#9CCF45" />
+    <SolidColorBrush x:Key="AccentFillColorSecondaryBrush" Color="#9CCF45" Opacity="0.9" />
+    <SolidColorBrush x:Key="AccentFillColorTertiaryBrush" Color="#9CCF45" Opacity="0.8" />
+    <SolidColorBrush x:Key="AccentFillColorSelectedTextBackgroundBrush" Color="#9CCF45" />
+    <SolidColorBrush x:Key="AccentButtonBackground" Color="#9CCF45" />
+    <SolidColorBrush x:Key="AccentButtonBackgroundPointerOver" Color="#9CCF45" Opacity="0.9" />
+    <SolidColorBrush x:Key="AccentButtonBackgroundPressed" Color="#9CCF45" Opacity="0.8" />
+    <SolidColorBrush x:Key="AccentButtonForeground" Color="#17210A" />
+    <SolidColorBrush x:Key="AccentButtonForegroundPointerOver" Color="#17210A" />
+    <SolidColorBrush x:Key="AccentButtonForegroundPressed" Color="#17210A" />
+    <SolidColorBrush x:Key="AccentTextFillColorPrimaryBrush" Color="#4B7A10" />
+    <SolidColorBrush x:Key="AccentTextFillColorSecondaryBrush" Color="#4B7A10" />
+    <SolidColorBrush x:Key="AccentTextFillColorTertiaryBrush" Color="#4B7A10" />
+    <SolidColorBrush x:Key="TextOnAccentFillColorPrimaryBrush" Color="#17210A" />
+    <SolidColorBrush x:Key="TextOnAccentFillColorSecondaryBrush" Color="#17210A" Opacity="0.7" />
+    <LinearGradientBrush x:Key="TextControlElevationBorderFocusedBrush" MappingMode="Absolute"
+                         StartPoint="0,0" EndPoint="0,2">
+        <LinearGradientBrush.RelativeTransform>
+            <ScaleTransform CenterY="0.5" ScaleY="-1" />
+        </LinearGradientBrush.RelativeTransform>
+        <GradientStop Offset="1.0" Color="#4B7A10" />
+        <GradientStop Offset="1.0" Color="#0F000000" />
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="accent_text_brush" Color="#4B7A10" />
+    <SolidColorBrush x:Key="accent_fill_brush" Color="#9CCF45" />
+    <SolidColorBrush x:Key="accent_on_brush" Color="#17210A" />
+    <SolidColorBrush x:Key="accent_soft_brush" Color="#EEF6DF" />
+    <SolidColorBrush x:Key="status_ok_brush" Color="#2F7A3A" />
+    <SolidColorBrush x:Key="status_ok_back_brush" Color="#E2F1E3" />
+    <SolidColorBrush x:Key="status_warning_brush" Color="#8F5600" />
+    <SolidColorBrush x:Key="status_warning_back_brush" Color="#FBECD0" />
+    <SolidColorBrush x:Key="status_error_brush" Color="#B42318" />
+    <SolidColorBrush x:Key="status_error_back_brush" Color="#FBE1DD" />
+    <SolidColorBrush x:Key="status_conflict_brush" Color="#6A3FC4" />
+    <SolidColorBrush x:Key="status_conflict_back_brush" Color="#ECE5FB" />
+    <SolidColorBrush x:Key="folder_tag_brush" Color="#22678E" />
+    <SolidColorBrush x:Key="folder_tag_back_brush" Color="#DFEDF5" />
+    <SolidColorBrush x:Key="mark_back_brush" Color="#F1E3A0" />
+    <SolidColorBrush x:Key="delete_back_brush" Color="#F7D9D4" />
+</ResourceDictionary>

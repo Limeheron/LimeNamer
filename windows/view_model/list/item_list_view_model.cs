@@ -38,8 +38,14 @@ public sealed class ITEM_LIST_VIEW_MODEL : OBSERVABLE
         set {
             if (assign(ref filter_, value)) {
                 apply_filter();
+                notify(nameof(filter_label));
             }
         }
+    }
+
+    public string filter_label
+    {
+        get { return filter_name(filter_); }
     }
 
     public int count_all

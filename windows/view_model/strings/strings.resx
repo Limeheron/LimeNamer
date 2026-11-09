@@ -801,4 +801,130 @@
     <data name="line_current" xml:space="preserve">
         <value>지금 경로: {0}</value>
     </data>
+    <data name="toolbar_add" xml:space="preserve">
+        <value>파일 추가</value>
+    </data>
+    <data name="toolbar_add_menu" xml:space="preserve">
+        <value>추가 메뉴</value>
+    </data>
+    <data name="add_files" xml:space="preserve">
+        <value>파일 추가...</value>
+    </data>
+    <data name="add_folders" xml:space="preserve">
+        <value>폴더 추가...</value>
+    </data>
+    <data name="add_folder_contents" xml:space="preserve">
+        <value>폴더 안의 파일 추가...</value>
+    </data>
+    <data name="toolbar_remove" xml:space="preserve">
+        <value>빼기</value>
+    </data>
+    <data name="toolbar_clear" xml:space="preserve">
+        <value>비우기</value>
+    </data>
+    <data name="toolbar_undo" xml:space="preserve">
+        <value>실행 취소</value>
+    </data>
+    <data name="toolbar_redo" xml:space="preserve">
+        <value>다시 실행</value>
+    </data>
+    <data name="toolbar_sort" xml:space="preserve">
+        <value>정렬</value>
+    </data>
+    <data name="toolbar_filter" xml:space="preserve">
+        <value>보기 필터</value>
+    </data>
+    <data name="toolbar_columns" xml:space="preserve">
+        <value>열</value>
+    </data>
+    <data name="toolbar_duplicate" xml:space="preserve">
+        <value>중복 자동 조정</value>
+    </data>
+    <data name="toolbar_theme" xml:space="preserve">
+        <value>테마</value>
+    </data>
+    <data name="toolbar_theme_menu" xml:space="preserve">
+        <value>화면 모드 메뉴</value>
+    </data>
+    <data name="toolbar_info" xml:space="preserve">
+        <value>정보</value>
+    </data>
+    <data name="toolbar_panel" xml:space="preserve">
+        <value>수정 패널</value>
+    </data>
+    <data name="sort_title" xml:space="preserve">
+        <value>정렬 기준</value>
+    </data>
+    <data name="sort_ascending" xml:space="preserve">
+        <value>오름차순</value>
+    </data>
+    <data name="sort_descending" xml:space="preserve">
+        <value>내림차순</value>
+    </data>
+    <data name="filter_title" xml:space="preserve">
+        <value>보기 필터</value>
+    </data>
+    <data name="filter_item" xml:space="preserve">
+        <value>{0} ({1})</value>
+    </data>
+    <data name="columns_title" xml:space="preserve">
+        <value>보여 줄 열</value>
+    </data>
+    <data name="column_index" xml:space="preserve">
+        <value>순번</value>
+    </data>
+    <data name="column_status" xml:space="preserve">
+        <value>상태</value>
+    </data>
+    <data name="column_current" xml:space="preserve">
+        <value>현재 이름</value>
+    </data>
+    <data name="column_new" xml:space="preserve">
+        <value>변경 이름</value>
+    </data>
+    <data name="column_folder" xml:space="preserve">
+        <value>폴더</value>
+    </data>
+    <data name="column_modified" xml:space="preserve">
+        <value>수정일</value>
+    </data>
+    <data name="column_created" xml:space="preserve">
+        <value>생성일</value>
+    </data>
+    <data name="column_size" xml:space="preserve">
+        <value>크기</value>
+    </data>
+    <data name="duplicate_on" xml:space="preserve">
+        <value>켜기</value>
+    </data>
+    <data name="duplicate_on_tip" xml:space="preserve">
+        <value>같은 폴더에서 이름이 겹치면 번호를 붙여 피합니다.</value>
+    </data>
+    <data name="duplicate_format_title" xml:space="preserve">
+        <value>번호 형식</value>
+    </data>
+    <data name="duplicate_mode_title" xml:space="preserve">
+        <value>첫 항목</value>
+    </data>
+    <data name="duplicate_custom_hint" xml:space="preserve">
+        <value>번호 앞에 붙일 텍스트</value>
+    </data>
+    <data name="theme_title" xml:space="preserve">
+        <value>화면 모드</value>
+    </data>
+    <data name="button_rename" xml:space="preserve">
+        <value>이름 바꾸기</value>
+    </data>
+    <data name="button_rename_undo" xml:space="preserve">
+        <value>이름 되돌리기</value>
+    </data>
+    <data name="panel_title" xml:space="preserve">
+        <value>수정</value>
+    </data>
+    <data name="panel_add" xml:space="preserve">
+        <value>수정 추가</value>
+    </data>
+    <data name="info_text" xml:space="preserve">
+        <value>LimeNamer {0}</value>
+    </data>
 </root>
