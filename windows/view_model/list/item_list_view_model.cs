@@ -171,6 +171,12 @@ public sealed class ITEM_LIST_VIEW_MODEL : OBSERVABLE
         notify(nameof(header_text));
     }
 
+    public void clear_selection()
+    {
+        set_selection([]);
+        selection_requested?.Invoke(selected_ids_);
+    }
+
     public void reveal(ulong item_id)
     {
         if (!rows_.Any(row => row.item_id == item_id)) {

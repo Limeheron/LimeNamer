@@ -579,4 +579,226 @@
     <data name="apply_failed_more" xml:space="preserve">
         <value> 빨간 칸 {0}개를 확인하세요.</value>
     </data>
+    <data name="edit_block" xml:space="preserve">
+        <value>편집 중인 수정을 적용하거나 취소한 뒤 다시 하세요.</value>
+    </data>
+    <data name="blocked_undo" xml:space="preserve">
+        <value>실행 취소를 할 수 없습니다. {0}</value>
+    </data>
+    <data name="blocked_redo" xml:space="preserve">
+        <value>다시 실행을 할 수 없습니다. {0}</value>
+    </data>
+    <data name="blocked_rename" xml:space="preserve">
+        <value>이름을 바꿀 수 없습니다. {0}</value>
+    </data>
+    <data name="blocked_rename_undo" xml:space="preserve">
+        <value>이름을 되돌릴 수 없습니다. {0}</value>
+    </data>
+    <data name="blocked_panel" xml:space="preserve">
+        <value>수정 패널을 닫을 수 없습니다. {0}</value>
+    </data>
+    <data name="blocked_direct" xml:space="preserve">
+        <value>수정을 편집하는 동안에는 이름을 직접 고칠 수 없습니다. 적용하거나 취소한 뒤 다시 하세요.</value>
+    </data>
+    <data name="undone" xml:space="preserve">
+        <value>마지막 작업을 실행 취소했습니다.</value>
+    </data>
+    <data name="redone" xml:space="preserve">
+        <value>실행 취소한 작업을 다시 실행했습니다.</value>
+    </data>
+    <data name="items_added" xml:space="preserve">
+        <value>{0}개를 목록에 추가했습니다.</value>
+    </data>
+    <data name="items_added_skipped" xml:space="preserve">
+        <value> 이미 목록에 있는 {0}개는 건너뛰었습니다.</value>
+    </data>
+    <data name="items_added_failed" xml:space="preserve">
+        <value> {0}개는 추가하지 못했습니다.</value>
+    </data>
+    <data name="items_removed" xml:space="preserve">
+        <value>{0}개 항목을 목록에서 뺐습니다. 실행 취소로 되돌릴 수 있습니다.</value>
+    </data>
+    <data name="items_cleared" xml:space="preserve">
+        <value>목록을 비웠습니다. 실행 취소로 되돌릴 수 있습니다.</value>
+    </data>
+    <data name="items_moved" xml:space="preserve">
+        <value>순서를 바꿨습니다. 정렬은 사용자 지정이 됩니다.</value>
+    </data>
+    <data name="items_moved_many" xml:space="preserve">
+        <value>{0}개 항목의 순서를 바꿨습니다. 정렬은 사용자 지정이 됩니다.</value>
+    </data>
+    <data name="direct_edited" xml:space="preserve">
+        <value>{0}번 항목을 직접 수정했습니다. 수정 목록 맨 아래에 직접 수정으로 들어갑니다.</value>
+    </data>
+    <data name="row_problems" xml:space="preserve">
+        <value>{0}번 항목: {1}</value>
+    </data>
+    <data name="location_missing" xml:space="preserve">
+        <value>항목을 찾을 수 없습니다.</value>
+    </data>
+    <data name="theme_changed" xml:space="preserve">
+        <value>화면 모드를 {0:으로/로} 바꿨습니다.</value>
+    </data>
+    <data name="theme_system" xml:space="preserve">
+        <value>시스템 설정 따름</value>
+    </data>
+    <data name="theme_light" xml:space="preserve">
+        <value>밝게</value>
+    </data>
+    <data name="theme_dark" xml:space="preserve">
+        <value>어둡게</value>
+    </data>
+    <data name="sort_added" xml:space="preserve">
+        <value>추가순</value>
+    </data>
+    <data name="sort_name_natural" xml:space="preserve">
+        <value>이름순 (자연 정렬)</value>
+    </data>
+    <data name="sort_name_ordinal" xml:space="preserve">
+        <value>이름순 (문자 순)</value>
+    </data>
+    <data name="sort_modified" xml:space="preserve">
+        <value>수정일순</value>
+    </data>
+    <data name="sort_custom" xml:space="preserve">
+        <value>사용자 지정</value>
+    </data>
+    <data name="duplicate_paren" xml:space="preserve">
+        <value>이름 (1)</value>
+    </data>
+    <data name="duplicate_underscore" xml:space="preserve">
+        <value>이름_1</value>
+    </data>
+    <data name="duplicate_dash" xml:space="preserve">
+        <value>이름-1</value>
+    </data>
+    <data name="duplicate_custom" xml:space="preserve">
+        <value>직접 입력</value>
+    </data>
+    <data name="duplicate_keep_first" xml:space="preserve">
+        <value>첫 항목은 그대로</value>
+    </data>
+    <data name="duplicate_number_all" xml:space="preserve">
+        <value>모두 번호 붙이기</value>
+    </data>
+    <data name="rename_problems" xml:space="preserve">
+        <value>이름을 바꾸지 않았습니다. {0:을/를} 해결해야 합니다. 첫 번째 문제는 {1}번 항목입니다.</value>
+    </data>
+    <data name="rename_count_error" xml:space="preserve">
+        <value>오류 {0}개</value>
+    </data>
+    <data name="rename_count_conflict" xml:space="preserve">
+        <value>충돌 {0}개</value>
+    </data>
+    <data name="list_joiner" xml:space="preserve">
+        <value>, </value>
+    </data>
+    <data name="rename_not_ready" xml:space="preserve">
+        <value>폴더 내용이 바뀌어 다시 검사했습니다. 오류나 충돌을 해결한 뒤 다시 하세요.</value>
+    </data>
+    <data name="rename_nothing" xml:space="preserve">
+        <value>바뀔 항목이 없습니다.</value>
+    </data>
+    <data name="renamed" xml:space="preserve">
+        <value>{0}개 항목의 이름을 바꿨습니다.</value>
+    </data>
+    <data name="renamed_note" xml:space="preserve">
+        <value> 같은 수정이 다시 적용되지 않도록 수정을 모두 껐습니다.</value>
+    </data>
+    <data name="renamed_partly" xml:space="preserve">
+        <value>{0}개 항목의 이름을 바꿨습니다. 실패한 {1}개는 그대로 있습니다.</value>
+    </data>
+    <data name="rename_choice_prompt" xml:space="preserve">
+        <value>{0}개 중 {1}개 항목의 이름을 바꾸지 못했습니다. 처리 방식을 고르세요.</value>
+    </data>
+    <data name="reverted_all" xml:space="preserve">
+        <value>모든 항목을 실행 전 이름으로 되돌렸습니다.</value>
+    </data>
+    <data name="rename_failed_all" xml:space="preserve">
+        <value>{0}개 항목의 이름을 바꾸지 못했습니다.</value>
+    </data>
+    <data name="progress_renaming" xml:space="preserve">
+        <value>이름 바꾸는 중</value>
+    </data>
+    <data name="progress_reverting" xml:space="preserve">
+        <value>이름 되돌리는 중</value>
+    </data>
+    <data name="undo_nothing" xml:space="preserve">
+        <value>되돌릴 수 있는 항목이 없습니다.</value>
+    </data>
+    <data name="undo_done" xml:space="preserve">
+        <value>{0}개 항목을 실행 전 이름으로 되돌렸습니다.</value>
+    </data>
+    <data name="undo_done_skipped" xml:space="preserve">
+        <value> 건너뛴 {0}개는 되돌리지 않았습니다.</value>
+    </data>
+    <data name="undo_done_failed" xml:space="preserve">
+        <value> 실패한 {0}개는 그대로 있습니다.</value>
+    </data>
+    <data name="dialog_warning_title" xml:space="preserve">
+        <value>경고가 있는 항목이 있습니다</value>
+    </data>
+    <data name="dialog_warning_message" xml:space="preserve">
+        <value>경고 {0}개를 포함해 {1}개 항목의 이름을 바꿉니다.</value>
+    </data>
+    <data name="dialog_rename" xml:space="preserve">
+        <value>이름 바꾸기</value>
+    </data>
+    <data name="dialog_cancel" xml:space="preserve">
+        <value>취소</value>
+    </data>
+    <data name="dialog_ok" xml:space="preserve">
+        <value>확인</value>
+    </data>
+    <data name="dialog_choice_title" xml:space="preserve">
+        <value>일부 항목의 이름을 바꾸지 못했습니다</value>
+    </data>
+    <data name="dialog_choice_message" xml:space="preserve">
+        <value>{0}개 중 {1}개를 바꿨고 {2}개는 바꾸지 못했습니다. 처리 방식을 고르세요.</value>
+    </data>
+    <data name="dialog_choice_note" xml:space="preserve">
+        <value>임시 이름 상태로 남은 항목은 이미 원래 이름으로 되돌렸습니다.</value>
+    </data>
+    <data name="dialog_revert_all" xml:space="preserve">
+        <value>전체 되돌리기</value>
+    </data>
+    <data name="dialog_keep" xml:space="preserve">
+        <value>성공한 항목 유지</value>
+    </data>
+    <data name="dialog_failed_title" xml:space="preserve">
+        <value>이름을 바꾸지 못했습니다</value>
+    </data>
+    <data name="dialog_failed_message" xml:space="preserve">
+        <value>{0}개 항목의 이름을 바꾸지 못했습니다.</value>
+    </data>
+    <data name="dialog_revert_failed_title" xml:space="preserve">
+        <value>일부 항목을 원래 이름으로 돌려놓지 못했습니다</value>
+    </data>
+    <data name="dialog_revert_failed_message" xml:space="preserve">
+        <value>아래 항목은 지금 경로에 남아 있습니다.</value>
+    </data>
+    <data name="dialog_undo_title" xml:space="preserve">
+        <value>마지막으로 바꾼 이름을 되돌릴까요?</value>
+    </data>
+    <data name="dialog_undo_message" xml:space="preserve">
+        <value>{0}개 항목을 바꾸기 전 이름으로 돌립니다. 그 뒤에 목록을 고쳤더라도 마지막 실행 기록을 기준으로 되돌립니다.</value>
+    </data>
+    <data name="dialog_undo_skipped" xml:space="preserve">
+        <value> 아래 {0}개는 되돌릴 수 없어 건너뜁니다.</value>
+    </data>
+    <data name="dialog_undo_action" xml:space="preserve">
+        <value>이름 되돌리기</value>
+    </data>
+    <data name="dialog_undo_result_title" xml:space="preserve">
+        <value>일부 항목을 되돌리지 못했습니다</value>
+    </data>
+    <data name="dialog_undo_result_message" xml:space="preserve">
+        <value>{0}개 항목을 되돌렸습니다. 건너뛴 항목 {1}개, 실패한 항목 {2}개는 아래와 같습니다.</value>
+    </data>
+    <data name="dialog_line" xml:space="preserve">
+        <value>{0} → {1}</value>
+    </data>
+    <data name="line_current" xml:space="preserve">
+        <value>지금 경로: {0}</value>
+    </data>
 </root>

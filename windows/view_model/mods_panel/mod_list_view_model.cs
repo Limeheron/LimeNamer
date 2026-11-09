@@ -13,7 +13,6 @@ public sealed class MOD_LIST_VIEW_MODEL : OBSERVABLE
     private MOD_PAGE page_ = MOD_PAGE.list;
     private IReadOnlyList<MOD_CARD> cards_ = [];
     private PART add_part_ = PART.name;
-    private bool panel_open_ = true;
 
     public MOD_LIST_VIEW_MODEL(ENGINE engine, ITEM_LIST_VIEW_MODEL list)
     {
@@ -62,12 +61,6 @@ public sealed class MOD_LIST_VIEW_MODEL : OBSERVABLE
     public int enabled_count
     {
         get { return cards_.Count(card => card.enabled); }
-    }
-
-    public bool panel_open
-    {
-        get { return panel_open_; }
-        set { assign(ref panel_open_, value); }
     }
 
     public PART add_part

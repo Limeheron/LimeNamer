@@ -11,7 +11,8 @@ public sealed class STATUS_BAR_VIEW_MODEL_TESTS
     public void posts_messages_with_time()
     {
         using LIST_SCENARIO scenario = new();
-        STATUS_BAR_VIEW_MODEL status = new(scenario.list, () => new DateTime(2026, 11, 9, 15, 42, 10));
+        DateTime now = new(2026, 11, 9, 15, 42, 10);
+        STATUS_BAR_VIEW_MODEL status = new(scenario.list, () => now);
 
         status.post("8번 항목을 직접 수정했습니다.");
 

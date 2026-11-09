@@ -109,7 +109,7 @@ public sealed class ENGINE_ITEMS_TESTS
         using TEMP_FOLDER temp = new();
         using ENGINE engine = new();
         engine.items_add([temp.file("a.txt")], ADD_MODE.as_items);
-        engine.mod_add("""{"kind":"insert","position":{"type":"start"},"value":[{"text":"new_"}]}""");
+        engine.mod_add(LIST_SCENARIO.INSERT_NEW);
         temp.file("new_a.txt");
 
         STATUS before = engine.preview().rows[0].status;

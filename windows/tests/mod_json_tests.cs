@@ -52,7 +52,8 @@ public sealed class MOD_JSON_TESTS
         Assert.AreEqual(POSITION_TYPE.end, mod.position.type);
         Assert.AreEqual("_", mod.value![0].text);
         Assert.AreEqual(TOKEN_KIND.number, mod.value[1].token);
-        Assert.AreEqual(new NUMBER_SETTINGS { start = 5, step = 2, digits = 3 }, mod.tokens!.number);
+        Assert.AreEqual(new NUMBER_SETTINGS { start = 5, step = 2, digits = 3 },
+            mod.tokens!.number);
         Assert.AreEqual("yyyyMMdd", mod.tokens.modified_date!.format);
         Assert.AreEqual(SIZE_UNIT.auto, mod.tokens.size!.unit);
         Assert.AreEqual(SCOPE.all, mod.scope);

@@ -28,4 +28,15 @@ public static class MOD_JSON
     {
         return JsonSerializer.Serialize(mod, OPTIONS);
     }
+
+    public static ENGINE_OPTIONS parse_options(string json)
+    {
+        return JsonSerializer.Deserialize<ENGINE_OPTIONS>(json, OPTIONS)
+            ?? throw new JsonException("Options JSON is null");
+    }
+
+    public static string write_options(ENGINE_OPTIONS options)
+    {
+        return JsonSerializer.Serialize(options, OPTIONS);
+    }
 }
