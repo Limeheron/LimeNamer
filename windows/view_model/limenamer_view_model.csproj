@@ -2,9 +2,14 @@
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
         <AssemblyName>limenamer_view_model</AssemblyName>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <EngineBinDir Condition="'$(EngineBinDir)' == ''">$(MSBuildThisFileDirectory)..\..\engine\build\win-$(Configuration.ToLowerInvariant())\bin</EngineBinDir>
         <EngineDll>$([MSBuild]::EnsureTrailingSlash('$(EngineBinDir)'))limenamer_engine.dll</EngineDll>
     </PropertyGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="limenamer_tests" />
+    </ItemGroup>
 
     <ItemGroup>
         <None Include="$(EngineDll)" Link="limenamer_engine.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
