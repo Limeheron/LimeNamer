@@ -58,6 +58,23 @@ public sealed class ITEM_LIST_VIEW_MODEL_TESTS
     }
 
     [TestMethod]
+    public void reports_empty_states()
+    {
+        using LIST_SCENARIO empty = new();
+        using LIST_SCENARIO scenario = new("a.txt");
+
+        bool empty_list = empty.list.shows_empty_list;
+        bool filled = scenario.list.shows_empty_list || scenario.list.shows_empty_filter;
+        scenario.list.filter = VIEW_FILTER.error;
+
+        Assert.IsTrue(empty_list);
+        Assert.IsFalse(empty.list.shows_empty_filter);
+        Assert.IsFalse(filled);
+        Assert.IsTrue(scenario.list.shows_empty_filter);
+        Assert.AreEqual("오류 항목이 없습니다", scenario.list.empty_filter_title);
+    }
+
+    [TestMethod]
     public void keeps_selection_across_loads()
     {
         using LIST_SCENARIO scenario = new("a.txt", "b.txt");

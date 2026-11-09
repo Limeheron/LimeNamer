@@ -241,7 +241,7 @@
                                    FontSize="12"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
                     </Border>
-                    <Grid x:Name="list_host" />
+                    <local:ITEM_LIST_VIEW x:Name="list_view" />
                 </DockPanel>
             </Border>
 

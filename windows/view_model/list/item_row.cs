@@ -49,6 +49,12 @@ public sealed class ITEM_ROW : OBSERVABLE
     public bool is_dir { get; }
     public IReadOnlyList<string> problems { get; }
     public string problem_text { get; }
+
+    public bool has_problems
+    {
+        get { return problems.Count > 0; }
+    }
+
     public string modified_text { get; }
     public string created_text { get; }
     public string size_text { get; }

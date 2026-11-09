@@ -927,4 +927,40 @@
     <data name="info_text" xml:space="preserve">
         <value>LimeNamer {0}</value>
     </data>
+    <data name="empty_list_title" xml:space="preserve">
+        <value>목록이 비어 있습니다</value>
+    </data>
+    <data name="empty_list_text" xml:space="preserve">
+        <value>파일이나 폴더를 여기에 끌어 놓거나 추가하세요.</value>
+    </data>
+    <data name="empty_filter_title" xml:space="preserve">
+        <value>{0} 항목이 없습니다</value>
+    </data>
+    <data name="show_all" xml:space="preserve">
+        <value>전체 보기</value>
+    </data>
+    <data name="drop_title" xml:space="preserve">
+        <value>여기에 놓으면 목록에 추가합니다</value>
+    </data>
+    <data name="drop_text" xml:space="preserve">
+        <value>파일과 폴더를 함께 놓을 수 있습니다.</value>
+    </data>
+    <data name="row_direct_edit" xml:space="preserve">
+        <value>이름 직접 수정</value>
+    </data>
+    <data name="row_remove" xml:space="preserve">
+        <value>목록에서 빼기</value>
+    </data>
+    <data name="row_open_location" xml:space="preserve">
+        <value>탐색기에서 위치 열기</value>
+    </data>
+    <data name="check_all_tip" xml:space="preserve">
+        <value>목록 전체를 체크하거나 해제합니다.</value>
+    </data>
+    <data name="grip_tip" xml:space="preserve">
+        <value>끌어서 순서를 바꿉니다.</value>
+    </data>
+    <data name="drag_count" xml:space="preserve">
+        <value>{0}개 항목</value>
+    </data>
 </root>

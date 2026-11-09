@@ -43,6 +43,21 @@ public sealed class ITEM_LIST_VIEW_MODEL : OBSERVABLE
         }
     }
 
+    public bool shows_empty_list
+    {
+        get { return all_rows_.Length == 0; }
+    }
+
+    public bool shows_empty_filter
+    {
+        get { return all_rows_.Length > 0 && rows_.Count == 0; }
+    }
+
+    public string empty_filter_title
+    {
+        get { return JOSA_FORMATTER.format(STRINGS.empty_filter_title, filter_name(filter_)); }
+    }
+
     public string filter_label
     {
         get { return filter_name(filter_); }
@@ -334,6 +349,9 @@ public sealed class ITEM_LIST_VIEW_MODEL : OBSERVABLE
             : all_rows_.Where(row => matches(row, filter_)).ToArray();
         notify(nameof(can_drag));
         notify(nameof(header_text));
+        notify(nameof(shows_empty_list));
+        notify(nameof(shows_empty_filter));
+        notify(nameof(empty_filter_title));
     }
 
     private static bool matches(ITEM_ROW row, VIEW_FILTER filter)

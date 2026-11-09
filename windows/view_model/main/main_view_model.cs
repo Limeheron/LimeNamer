@@ -279,6 +279,18 @@ public sealed class MAIN_VIEW_MODEL : OBSERVABLE
             : STRINGS.items_moved);
     }
 
+    public bool can_start_direct_edit()
+    {
+        if (running_) {
+            return false;
+        }
+        if (mods.is_editing) {
+            status.post(STRINGS.blocked_direct);
+            return false;
+        }
+        return true;
+    }
+
     public void direct_edit(ulong item_id, string new_name)
     {
         if (running_) {

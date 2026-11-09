@@ -25,6 +25,8 @@ public partial class MAIN_WINDOW : Window
         main_ = new MAIN_VIEW_MODEL(engine, settings, new MESSAGE_BOX_DIALOGS(this),
             () => DateTime.Now);
         DataContext = main_;
+        list_view.attach(main_);
+        list_view.add_requested += () => add_files_click(this, new RoutedEventArgs());
         progress_timer_ = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(50) };
         progress_timer_.Tick += (_, _) => main_.status.poll_progress();
         main_.PropertyChanged += on_main_changed;
@@ -195,23 +197,23 @@ public partial class MAIN_WINDOW : Window
     private void sort_menu_opened(object sender, RoutedEventArgs args)
     {
         sort_menu.Items.Clear();
-        sort_menu.Items.Add(title_item(STRINGS.sort_title));
+        sort_menu.Items.Add(MENUS.title_item(STRINGS.sort_title));
         bool custom = main_.sort_key == SORT_KEY.custom;
         foreach (CHOICE<SORT_KEY> choice in MAIN_VIEW_MODEL.sort_choices) {
-            sort_menu.Items.Add(menu_item(choice.label, main_.sort_key == choice.value,
+            sort_menu.Items.Add(MENUS.menu_item(choice.label, main_.sort_key == choice.value,
                 () => main_.sort(choice.value, main_.sort_descending && !custom)));
         }
         if (custom) {
-            MenuItem item = menu_item(STRINGS.sort_custom, true, () => { });
+            MenuItem item = MENUS.menu_item(STRINGS.sort_custom, true, () => { });
             item.IsEnabled = false;
             sort_menu.Items.Add(item);
         }
         sort_menu.Items.Add(new Separator());
         SORT_KEY key = custom ? SORT_KEY.added : main_.sort_key;
-        MenuItem ascending = menu_item(STRINGS.sort_ascending, !custom && !main_.sort_descending,
-            () => main_.sort(key, false));
-        MenuItem descending = menu_item(STRINGS.sort_descending, !custom && main_.sort_descending,
-            () => main_.sort(key, true));
+        MenuItem ascending = MENUS.menu_item(STRINGS.sort_ascending,
+            !custom && !main_.sort_descending, () => main_.sort(key, false));
+        MenuItem descending = MENUS.menu_item(STRINGS.sort_descending,
+            !custom && main_.sort_descending, () => main_.sort(key, true));
         ascending.IsEnabled = !custom;
         descending.IsEnabled = !custom;
         sort_menu.Items.Add(ascending);
@@ -221,7 +223,7 @@ public partial class MAIN_WINDOW : Window
     private void filter_menu_opened(object sender, RoutedEventArgs args)
     {
         filter_menu.Items.Clear();
-        filter_menu.Items.Add(title_item(STRINGS.filter_title));
+        filter_menu.Items.Add(MENUS.title_item(STRINGS.filter_title));
         ITEM_LIST_VIEW_MODEL list = main_.list;
         (VIEW_FILTER filter, long count)[] filters = [
             (VIEW_FILTER.all, list.count_all),
@@ -233,36 +235,22 @@ public partial class MAIN_WINDOW : Window
         foreach ((VIEW_FILTER filter, long count) in filters) {
             string label = JOSA_FORMATTER.format(STRINGS.filter_item,
                 ITEM_LIST_VIEW_MODEL.filter_name(filter), count);
-            filter_menu.Items.Add(menu_item(label, list.filter == filter,
+            filter_menu.Items.Add(MENUS.menu_item(label, list.filter == filter,
                 () => list.filter = filter));
         }
     }
 
     private void columns_menu_opened(object sender, RoutedEventArgs args)
     {
-        SETTINGS settings = main_.settings;
-        columns_menu.Items.Clear();
-        columns_menu.Items.Add(title_item(STRINGS.columns_title));
-        columns_menu.Items.Add(check_item(STRINGS.column_index, settings.show_index,
-            value => settings.show_index = value));
-        columns_menu.Items.Add(check_item(STRINGS.column_status, settings.show_status,
-            value => settings.show_status = value));
-        columns_menu.Items.Add(check_item(STRINGS.column_folder, settings.show_folder,
-            value => settings.show_folder = value));
-        columns_menu.Items.Add(check_item(STRINGS.column_modified, settings.show_modified,
-            value => settings.show_modified = value));
-        columns_menu.Items.Add(check_item(STRINGS.column_created, settings.show_created,
-            value => settings.show_created = value));
-        columns_menu.Items.Add(check_item(STRINGS.column_size, settings.show_size,
-            value => settings.show_size = value));
+        MENUS.fill_columns(columns_menu, main_.settings);
     }
 
     private void theme_menu_opened(object sender, RoutedEventArgs args)
     {
         theme_menu.Items.Clear();
-        theme_menu.Items.Add(title_item(STRINGS.theme_title));
+        theme_menu.Items.Add(MENUS.title_item(STRINGS.theme_title));
         foreach (CHOICE<THEME_MODE> choice in MAIN_VIEW_MODEL.theme_choices) {
-            theme_menu.Items.Add(menu_item(choice.label,
+            theme_menu.Items.Add(MENUS.menu_item(choice.label,
                 main_.settings.theme_mode == choice.value, () => main_.set_theme(choice.value)));
         }
     }
@@ -281,28 +269,5 @@ public partial class MAIN_WINDOW : Window
     {
         MessageBox.Show(this, JOSA_FORMATTER.format(STRINGS.info_text, ENGINE.version()),
             "LimeNamer");
-    }
-
-    private static MenuItem title_item(string text)
-    {
-        return new MenuItem {
-            Header = text,
-            IsEnabled = false,
-            FontSize = 12,
-        };
-    }
-
-    private static MenuItem menu_item(string text, bool selected, Action action)
-    {
-        MenuItem item = new() { Header = text, IsChecked = selected };
-        item.Click += (_, _) => action();
-        return item;
-    }
-
-    private static MenuItem check_item(string text, bool selected, Action<bool> action)
-    {
-        MenuItem item = new() { Header = text, IsCheckable = true, IsChecked = selected };
-        item.Click += (_, _) => action(item.IsChecked);
-        return item;
     }
 }
