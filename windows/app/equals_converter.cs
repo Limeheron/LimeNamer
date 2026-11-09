@@ -16,9 +16,9 @@ public sealed class EQUALS_CONVERTER : IValueConverter
         return equal;
     }
 
-    public object ConvertBack(object? value, Type target_type, object? parameter,
+    public object? ConvertBack(object? value, Type target_type, object? parameter,
         CultureInfo culture)
     {
-        throw new NotSupportedException();
+        return value is true ? parameter : Binding.DoNothing;
     }
 }

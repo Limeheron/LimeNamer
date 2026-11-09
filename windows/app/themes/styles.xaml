@@ -112,6 +112,42 @@
         </Setter>
     </Style>
 
+    <Style x:Key="token_button" TargetType="Button">
+        <Setter Property="Height" Value="28" />
+        <Setter Property="Margin" Value="0,0,6,6" />
+        <Setter Property="Padding" Value="8,0,10,0" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+        <Setter Property="Background" Value="{DynamicResource ControlFillColorDefaultBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="back" CornerRadius="14" BorderThickness="1"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Padding="{TemplateBinding Padding}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource icon_text}" FontSize="10"
+                                       Margin="0,0,4,0" Text="&#xE710;" />
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="back" Property="Background"
+                                    Value="{DynamicResource ControlFillColorSecondaryBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="back" Property="Background"
+                                    Value="{DynamicResource ControlFillColorTertiaryBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="card" TargetType="Border">
         <Setter Property="Background"
                 Value="{DynamicResource CardBackgroundFillColorDefaultBrush}" />

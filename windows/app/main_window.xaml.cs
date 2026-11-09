@@ -26,6 +26,7 @@ public partial class MAIN_WINDOW : Window
             () => DateTime.Now);
         DataContext = main_;
         list_view.attach(main_);
+        panel_view.attach(main_);
         list_view.add_requested += () => add_files_click(this, new RoutedEventArgs());
         progress_timer_ = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(50) };
         progress_timer_.Tick += (_, _) => main_.status.poll_progress();

@@ -259,22 +259,7 @@
 
             <Border x:Name="panel" Grid.Column="2" Style="{StaticResource card}"
                     Background="{DynamicResource LayerFillColorDefaultBrush}">
-                <DockPanel>
-                    <Border DockPanel.Dock="Top" Height="44" Padding="12,0,8,0"
-                            BorderThickness="0,0,0,1"
-                            BorderBrush="{DynamicResource DividerStrokeColorDefaultBrush}">
-                        <DockPanel>
-                            <Button DockPanel.Dock="Right" Style="{StaticResource toolbar_button}"
-                                    Padding="7,0" ToolTip="{x:Static vm:STRINGS.panel_add}">
-                                <TextBlock Style="{StaticResource icon_text}" Text="&#xE710;" />
-                            </Button>
-                            <TextBlock Text="{x:Static vm:STRINGS.panel_title}"
-                                       FontWeight="SemiBold"
-                                       VerticalAlignment="Center" />
-                        </DockPanel>
-                    </Border>
-                    <Grid x:Name="panel_host" />
-                </DockPanel>
+                <local:MOD_PANEL_VIEW x:Name="panel_view" />
             </Border>
         </Grid>
 

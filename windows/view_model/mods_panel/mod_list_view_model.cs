@@ -47,6 +47,16 @@ public sealed class MOD_LIST_VIEW_MODEL : OBSERVABLE
         private set { assign(ref cards_, value); }
     }
 
+    public bool has_mods
+    {
+        get { return cards_.Count > 0; }
+    }
+
+    public bool has_no_mods
+    {
+        get { return cards_.Count == 0; }
+    }
+
     public bool? all_enabled_state
     {
         get {
@@ -97,6 +107,8 @@ public sealed class MOD_LIST_VIEW_MODEL : OBSERVABLE
                 MOD_SUMMARY.describe(mod, direct_index, live), mod));
         }
         this.cards = cards;
+        notify(nameof(has_mods));
+        notify(nameof(has_no_mods));
         notify(nameof(all_enabled_state));
         notify(nameof(enabled_count));
         if (page_ == MOD_PAGE.edit) {
@@ -119,12 +131,14 @@ public sealed class MOD_LIST_VIEW_MODEL : OBSERVABLE
     {
         editor.begin_new(kind, add_part_);
         page = MOD_PAGE.edit;
+        notify(nameof(back_label));
     }
 
     public void open_card(MOD_CARD card)
     {
         editor.begin_edit(card.mod);
         page = MOD_PAGE.edit;
+        notify(nameof(back_label));
     }
 
     public bool apply()
@@ -136,6 +150,27 @@ public sealed class MOD_LIST_VIEW_MODEL : OBSERVABLE
         page = MOD_PAGE.list;
         changed?.Invoke(was_new ? STRINGS.mod_added : STRINGS.mod_updated);
         return true;
+    }
+
+    public string back_label
+    {
+        get { return editor.is_new ? STRINGS.back_to_add : STRINGS.back_to_list; }
+    }
+
+    public void go_back()
+    {
+        if (page_ == MOD_PAGE.edit && editor.is_new) {
+            PART part = editor.part;
+            editor.cancel();
+            add_part = part;
+            page = MOD_PAGE.add;
+            return;
+        }
+        if (page_ == MOD_PAGE.edit) {
+            cancel();
+            return;
+        }
+        close_add();
     }
 
     public void cancel()

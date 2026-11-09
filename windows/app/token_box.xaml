@@ -1,0 +1,11 @@
+<UserControl x:Class="limenamer.TOKEN_BOX"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <RichTextBox x:Name="box" AcceptsReturn="False" AcceptsTab="False" IsDocumentEnabled="True"
+                 MinHeight="34" Padding="4,5" FontFamily="{StaticResource name_font}" FontSize="14"
+                 VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled">
+        <FlowDocument PagePadding="0">
+            <Paragraph />
+        </FlowDocument>
+    </RichTextBox>
+</UserControl>

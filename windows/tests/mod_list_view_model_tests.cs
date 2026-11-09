@@ -106,6 +106,36 @@ public sealed class MOD_LIST_VIEW_MODEL_TESTS
     }
 
     [TestMethod]
+    public void goes_back_to_the_previous_page()
+    {
+        using MOD_PANEL_SCENARIO scenario = new("a.txt");
+        scenario.engine.mod_add(LIST_SCENARIO.INSERT_NEW);
+        scenario.load();
+        MOD_LIST_VIEW_MODEL mods = scenario.mods;
+
+        mods.open_add();
+        mods.add_part = PART.ext;
+        mods.choose_kind(MOD_KIND.insert);
+        string new_label = mods.back_label;
+        mods.go_back();
+        MOD_PAGE after_new = mods.page;
+        PART kept_part = mods.add_part;
+        mods.go_back();
+        MOD_PAGE after_add = mods.page;
+        mods.open_card(mods.cards[0]);
+        string edit_label = mods.back_label;
+        mods.go_back();
+
+        Assert.AreEqual("수정 추가", new_label);
+        Assert.AreEqual(MOD_PAGE.add, after_new);
+        Assert.AreEqual(PART.ext, kept_part);
+        Assert.AreEqual(MOD_PAGE.list, after_add);
+        Assert.AreEqual("수정 목록", edit_label);
+        Assert.AreEqual(MOD_PAGE.list, mods.page);
+        Assert.AreEqual(0, scenario.messages.Count);
+    }
+
+    [TestMethod]
     public void cancels_with_messages()
     {
         using MOD_PANEL_SCENARIO scenario = new("a.txt");

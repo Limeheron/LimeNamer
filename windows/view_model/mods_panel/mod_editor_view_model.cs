@@ -377,6 +377,15 @@ public sealed class MOD_EDITOR_VIEW_MODEL : OBSERVABLE
         get { return shows_between && !to_end_; }
     }
 
+    public string value_label
+    {
+        get {
+            return kind_ == MOD_KIND.insert
+                ? STRINGS.field_value_insert
+                : STRINGS.field_value_replace;
+        }
+    }
+
     public bool shows_value
     {
         get { return kind_ is MOD_KIND.insert or MOD_KIND.replace; }
