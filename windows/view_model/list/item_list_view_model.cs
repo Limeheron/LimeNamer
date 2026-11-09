@@ -261,6 +261,17 @@ public sealed class ITEM_LIST_VIEW_MODEL : OBSERVABLE
         refresh_checks();
     }
 
+    public IReadOnlyList<ulong> live_checked_ids()
+    {
+        return live_checked().Select(row => row.item_id).ToArray();
+    }
+
+    public uint index_of(ulong item_id)
+    {
+        int index = index_in(all_rows_, item_id);
+        return index < 0 ? 0 : (uint)index + 1;
+    }
+
     private void apply_number_text(string text)
     {
         assign(ref number_text_, text, nameof(number_text));
