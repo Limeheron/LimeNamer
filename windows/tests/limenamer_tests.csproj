@@ -14,4 +14,8 @@
     <ItemGroup>
         <ProjectReference Include="..\view_model\limenamer_view_model.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+        <None Include="..\..\testdata\mod_summary_cases.json" Link="testdata\mod_summary_cases.json" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
 </Project>

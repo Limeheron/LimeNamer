@@ -12,6 +12,17 @@
     </ItemGroup>
 
     <ItemGroup>
+        <EmbeddedResource Update="strings\strings.resx">
+            <Generator>MSBuild:Compile</Generator>
+            <ManifestResourceName>limenamer.STRINGS</ManifestResourceName>
+            <StronglyTypedFileName>$(IntermediateOutputPath)strings.designer.cs</StronglyTypedFileName>
+            <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+            <StronglyTypedNamespace>limenamer</StronglyTypedNamespace>
+            <StronglyTypedClassName>STRINGS</StronglyTypedClassName>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
         <None Include="$(EngineDll)" Link="limenamer_engine.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
     </ItemGroup>
 

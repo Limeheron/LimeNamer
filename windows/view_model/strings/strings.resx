@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="status_ok" xml:space="preserve">
+        <value>정상</value>
+    </data>
+    <data name="status_unchanged" xml:space="preserve">
+        <value>변경 없음</value>
+    </data>
+    <data name="status_warning" xml:space="preserve">
+        <value>경고</value>
+    </data>
+    <data name="status_error" xml:space="preserve">
+        <value>오류</value>
+    </data>
+    <data name="status_conflict" xml:space="preserve">
+        <value>충돌</value>
+    </data>
+    <data name="issue_error_empty" xml:space="preserve">
+        <value>이름이 비어 있습니다.</value>
+    </data>
+    <data name="issue_error_dot_name" xml:space="preserve">
+        <value>"."과 ".."은 이름으로 쓸 수 없습니다.</value>
+    </data>
+    <data name="issue_error_win_forbidden_char" xml:space="preserve">
+        <value>Windows에서 쓸 수 없는 문자가 있습니다. (\ / : * ? " &lt; &gt; |)</value>
+    </data>
+    <data name="issue_error_win_reserved" xml:space="preserve">
+        <value>Windows 예약어라 쓸 수 없습니다. (CON, NUL 등)</value>
+    </data>
+    <data name="issue_error_win_trailing" xml:space="preserve">
+        <value>이름 끝에 공백이나 점을 쓸 수 없습니다.</value>
+    </data>
+    <data name="issue_error_win_name_too_long" xml:space="preserve">
+        <value>이름이 255자를 넘습니다.</value>
+    </data>
+    <data name="issue_error_win_path_too_long" xml:space="preserve">
+        <value>전체 경로가 260자 제한을 넘습니다.</value>
+    </data>
+    <data name="issue_error_mac_forbidden_char" xml:space="preserve">
+        <value>macOS에서 쓸 수 없는 문자가 있습니다. (/ :)</value>
+    </data>
+    <data name="issue_error_mac_name_too_long" xml:space="preserve">
+        <value>이름이 255바이트를 넘습니다.</value>
+    </data>
+    <data name="issue_warning_win_forbidden_char" xml:space="preserve">
+        <value>Windows에서는 쓸 수 없는 문자가 있습니다.</value>
+    </data>
+    <data name="issue_warning_win_reserved" xml:space="preserve">
+        <value>Windows 예약어라 Windows에서는 쓸 수 없습니다.</value>
+    </data>
+    <data name="issue_warning_win_trailing" xml:space="preserve">
+        <value>이름 끝의 공백이나 점은 Windows에서 쓸 수 없습니다.</value>
+    </data>
+    <data name="issue_warning_win_name_too_long" xml:space="preserve">
+        <value>Windows 길이 제한(255자)을 넘습니다.</value>
+    </data>
+    <data name="issue_warning_win_path_too_long" xml:space="preserve">
+        <value>Windows 경로 길이 제한(260자)을 넘습니다.</value>
+    </data>
+    <data name="issue_warning_mac_forbidden_char" xml:space="preserve">
+        <value>macOS에서는 쓸 수 없는 문자가 있습니다.</value>
+    </data>
+    <data name="issue_warning_mac_name_too_long" xml:space="preserve">
+        <value>macOS 길이 제한(255바이트)을 넘습니다.</value>
+    </data>
+    <data name="issue_warning_hidden" xml:space="preserve">
+        <value>이름이 점으로 시작합니다. macOS에서는 숨김 파일이 됩니다.</value>
+    </data>
+    <data name="conflict_list_item" xml:space="preserve">
+        <value>목록 {0}번 항목과 이름이 겹칩니다.</value>
+    </data>
+    <data name="conflict_existing_item" xml:space="preserve">
+        <value>목록에 없는 기존 항목과 이름이 겹칩니다.</value>
+    </data>
+    <data name="adjusted" xml:space="preserve">
+        <value>중복 자동 조정으로 번호를 붙였습니다.</value>
+    </data>
+    <data name="failure_in_use" xml:space="preserve">
+        <value>다른 프로그램이 파일을 사용하고 있습니다.</value>
+    </data>
+    <data name="failure_access_denied" xml:space="preserve">
+        <value>접근이 거부되었습니다.</value>
+    </data>
+    <data name="failure_not_found" xml:space="preserve">
+        <value>항목을 찾을 수 없습니다.</value>
+    </data>
+    <data name="failure_already_exists" xml:space="preserve">
+        <value>같은 이름의 항목이 이미 있습니다.</value>
+    </data>
+    <data name="failure_replaced" xml:space="preserve">
+        <value>다른 항목으로 바뀌었습니다.</value>
+    </data>
+    <data name="failure_path_too_long" xml:space="preserve">
+        <value>경로가 너무 깁니다.</value>
+    </data>
+    <data name="failure_depends_on_failed" xml:space="preserve">
+        <value>먼저 처리해야 할 항목이 실패했습니다.</value>
+    </data>
+    <data name="failure_other" xml:space="preserve">
+        <value>이름을 바꾸지 못했습니다. (오류 코드 {0})</value>
+    </data>
+    <data name="problem_targets" xml:space="preserve">
+        <value>적용할 항목을 체크하거나 번호를 입력해야 합니다.</value>
+    </data>
+    <data name="problem_find_text" xml:space="preserve">
+        <value>찾을 텍스트를 입력해야 합니다.</value>
+    </data>
+    <data name="problem_start_text" xml:space="preserve">
+        <value>시작 구분 문자를 입력해야 합니다.</value>
+    </data>
+    <data name="problem_end_text" xml:space="preserve">
+        <value>끝 구분 문자를 입력해야 합니다.</value>
+    </data>
+    <data name="problem_value_insert" xml:space="preserve">
+        <value>넣을 텍스트를 입력해야 합니다.</value>
+    </data>
+    <data name="problem_value_replace" xml:space="preserve">
+        <value>새 텍스트를 입력해야 합니다.</value>
+    </data>
+    <data name="problem_value_direct" xml:space="preserve">
+        <value>새 이름을 입력해야 합니다.</value>
+    </data>
+    <data name="problem_modified_date_format" xml:space="preserve">
+        <value>수정일 형식을 입력해야 합니다.</value>
+    </data>
+    <data name="problem_created_date_format" xml:space="preserve">
+        <value>생성일 형식을 입력해야 합니다.</value>
+    </data>
+    <data name="index_syntax" xml:space="preserve">
+        <value>번호는 3-500, 600처럼 숫자, 쉼표, -로 씁니다.</value>
+    </data>
+    <data name="index_out_of_range" xml:space="preserve">
+        <value>번호는 1부터 {0}까지만 쓸 수 있습니다.</value>
+    </data>
+    <data name="index_empty_list" xml:space="preserve">
+        <value>목록이 비어 있습니다.</value>
+    </data>
+    <data name="example_skipped_dir" xml:space="preserve">
+        <value>폴더라 적용하지 않음</value>
+    </data>
+    <data name="example_no_target" xml:space="preserve">
+        <value>대상 없음</value>
+    </data>
+    <data name="result_failed" xml:space="preserve">
+        <value>작업을 처리하지 못했습니다. ({0})</value>
+    </data>
+    <data name="part_name" xml:space="preserve">
+        <value>이름</value>
+    </data>
+    <data name="part_ext" xml:space="preserve">
+        <value>확장자</value>
+    </data>
+    <data name="part_full" xml:space="preserve">
+        <value>이름과 확장자</value>
+    </data>
+    <data name="token_number" xml:space="preserve">
+        <value>번호</value>
+    </data>
+    <data name="token_original_name" xml:space="preserve">
+        <value>원래 이름</value>
+    </data>
+    <data name="token_modified_date" xml:space="preserve">
+        <value>수정일</value>
+    </data>
+    <data name="token_created_date" xml:space="preserve">
+        <value>생성일</value>
+    </data>
+    <data name="token_size" xml:space="preserve">
+        <value>파일 크기</value>
+    </data>
+    <data name="token_parent_folder" xml:space="preserve">
+        <value>상위 폴더 이름</value>
+    </data>
+    <data name="occurrence_first" xml:space="preserve">
+        <value>처음 나오는</value>
+    </data>
+    <data name="occurrence_last" xml:space="preserve">
+        <value>마지막</value>
+    </data>
+    <data name="occurrence_nth" xml:space="preserve">
+        <value>앞에서 {0}번째</value>
+    </data>
+    <data name="occurrence_nth_from_end" xml:space="preserve">
+        <value>뒤에서 {0}번째</value>
+    </data>
+    <data name="occurrence_all" xml:space="preserve">
+        <value>모든</value>
+    </data>
+    <data name="place_start" xml:space="preserve">
+        <value>{0} 맨 앞에</value>
+    </data>
+    <data name="place_end" xml:space="preserve">
+        <value>{0} 맨 끝에</value>
+    </data>
+    <data name="place_after_nth" xml:space="preserve">
+        <value>{0}의 앞에서 {1}번째 글자 뒤에</value>
+    </data>
+    <data name="place_before_nth_from_end" xml:space="preserve">
+        <value>{0}의 뒤에서 {1}번째 글자 앞에</value>
+    </data>
+    <data name="place_before_text" xml:space="preserve">
+        <value>{0}에서 {1} {2} 앞에</value>
+    </data>
+    <data name="place_after_text" xml:space="preserve">
+        <value>{0}에서 {1} {2} 뒤에</value>
+    </data>
+    <data name="target_whole" xml:space="preserve">
+        <value>{0} 전부</value>
+    </data>
+    <data name="target_first_n" xml:space="preserve">
+        <value>{0}의 앞 {1}글자</value>
+    </data>
+    <data name="target_last_n" xml:space="preserve">
+        <value>{0}의 뒤 {1}글자</value>
+    </data>
+    <data name="target_from_nth" xml:space="preserve">
+        <value>{0}의 {1}번째 글자부터 {2}글자</value>
+    </data>
+    <data name="target_text" xml:space="preserve">
+        <value>{0}에서 {1} {2}</value>
+    </data>
+    <data name="target_from_beginning" xml:space="preserve">
+        <value>{0}의 처음부터 {1}{2} 앞까지</value>
+    </data>
+    <data name="target_from_beginning_including" xml:space="preserve">
+        <value>{0}의 처음부터 {1}{2}까지</value>
+    </data>
+    <data name="target_to_end" xml:space="preserve">
+        <value>{0}에서 {1}{2} 뒤부터 끝까지</value>
+    </data>
+    <data name="target_to_end_including" xml:space="preserve">
+        <value>{0}에서 {1}{2}부터 끝까지</value>
+    </data>
+    <data name="target_between" xml:space="preserve">
+        <value>{0}에서 {1}{2:과/와} {3} 사이</value>
+    </data>
+    <data name="target_between_including" xml:space="preserve">
+        <value>{0}에서 {1}{2}부터 {3}까지</value>
+    </data>
+    <data name="format_upper" xml:space="preserve">
+        <value>대문자로</value>
+    </data>
+    <data name="format_lower" xml:space="preserve">
+        <value>소문자로</value>
+    </data>
+    <data name="format_title" xml:space="preserve">
+        <value>단어 첫 글자만 대문자로</value>
+    </data>
+    <data name="format_sentence" xml:space="preserve">
+        <value>문장 첫 글자만 대문자로</value>
+    </data>
+    <data name="summary_insert" xml:space="preserve">
+        <value>{0} {1} 넣기</value>
+    </data>
+    <data name="summary_delete" xml:space="preserve">
+        <value>{0:을/를} 지우기</value>
+    </data>
+    <data name="summary_delete_plain" xml:space="preserve">
+        <value>{0} 지우기</value>
+    </data>
+    <data name="summary_replace" xml:space="preserve">
+        <value>{0:을/를} {1:으로/로} 바꾸기</value>
+    </data>
+    <data name="summary_format_case" xml:space="preserve">
+        <value>{0:을/를} {1} 맞추기</value>
+    </data>
+    <data name="summary_pad_digits" xml:space="preserve">
+        <value>{0}의 숫자를 {1}자리로 맞추기</value>
+    </data>
+    <data name="summary_direct" xml:space="preserve">
+        <value>{0}번 항목을 {1:으로/로} 직접 수정</value>
+    </data>
+    <data name="summary_direct_unlisted" xml:space="preserve">
+        <value>항목을 {0:으로/로} 직접 수정</value>
+    </data>
+    <data name="summary_scope" xml:space="preserve">
+        <value> ({0}개)</value>
+    </data>
+</root>

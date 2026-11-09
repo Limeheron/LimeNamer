@@ -1,0 +1,217 @@
+[
+    {
+        "name": "spec_insert_start",
+        "mod": {"kind": "insert", "position": {"type": "start"}, "value": [{"text": "2024_"}]},
+        "expected": "이름 맨 앞에 \"2024_\" 넣기"
+    },
+    {
+        "name": "spec_insert_end_for_items",
+        "mod": {"kind": "insert", "position": {"type": "end"}, "value": [{"text": "a"}],
+            "scope": "items", "targets": [6, 7, 8]},
+        "target_count": 3,
+        "expected": "이름 맨 끝에 \"a\" 넣기 (3개)"
+    },
+    {
+        "name": "spec_delete_first_n",
+        "mod": {"kind": "delete", "position": {"type": "first_n", "n": 4}},
+        "expected": "이름의 앞 4글자 지우기"
+    },
+    {
+        "name": "spec_replace_text",
+        "mod": {"kind": "replace", "position": {"type": "text", "text": "IMG_", "occurrence": "first"},
+            "value": [{"text": "제주_"}]},
+        "expected": "이름에서 처음 나오는 \"IMG_\"를 \"제주_\"로 바꾸기"
+    },
+    {
+        "name": "spec_lower_extension",
+        "mod": {"kind": "format", "part": "ext", "position": {"type": "all"}, "format": {"type": "lower"}},
+        "expected": "확장자를 소문자로 맞추기"
+    },
+    {
+        "name": "spec_pad_digits",
+        "mod": {"kind": "format", "position": {"type": "all"},
+            "format": {"type": "pad_digits", "digits": 3}},
+        "expected": "이름의 숫자를 3자리로 맞추기"
+    },
+    {
+        "name": "spec_direct_edit",
+        "mod": {"kind": "replace", "part": "full", "position": {"type": "all"},
+            "value": [{"text": "abc.jpg"}], "scope": "items", "targets": [3], "direct": true},
+        "direct_index": 3,
+        "expected": "3번 항목을 \"abc.jpg\"로 직접 수정"
+    },
+    {
+        "name": "direct_edit_of_removed_item",
+        "mod": {"kind": "replace", "part": "full", "position": {"type": "all"},
+            "value": [{"text": "abc.jpg"}], "scope": "items", "targets": [3], "direct": true},
+        "expected": "항목을 \"abc.jpg\"로 직접 수정"
+    },
+    {
+        "name": "insert_after_nth",
+        "mod": {"kind": "insert", "part": "full", "position": {"type": "after_nth", "n": 2},
+            "value": [{"text": "-"}]},
+        "expected": "이름과 확장자의 앞에서 2번째 글자 뒤에 \"-\" 넣기"
+    },
+    {
+        "name": "insert_before_nth_from_end",
+        "mod": {"kind": "insert", "position": {"type": "before_nth_from_end", "n": 1},
+            "value": [{"token": "number"}]},
+        "expected": "이름의 뒤에서 1번째 글자 앞에 \"{번호}\" 넣기"
+    },
+    {
+        "name": "insert_before_last_text",
+        "mod": {"kind": "insert", "position": {"type": "before_text", "text": "_", "occurrence": "last"},
+            "value": [{"token": "modified_date"}]},
+        "expected": "이름에서 마지막 \"_\" 앞에 \"{수정일}\" 넣기"
+    },
+    {
+        "name": "insert_after_nth_text",
+        "mod": {"kind": "insert",
+            "position": {"type": "after_text", "text": "a", "occurrence": "nth", "occurrence_n": 2},
+            "value": [{"text": "x"}]},
+        "expected": "이름에서 앞에서 2번째 \"a\" 뒤에 \"x\" 넣기"
+    },
+    {
+        "name": "insert_tokens_for_items",
+        "mod": {"kind": "insert", "position": {"type": "end"},
+            "value": [{"text": "_"}, {"token": "size"}], "scope": "items", "targets": [1, 2]},
+        "target_count": 1,
+        "expected": "이름 맨 끝에 \"_{파일 크기}\" 넣기 (1개)"
+    },
+    {
+        "name": "insert_folder_and_date_tokens",
+        "mod": {"kind": "insert", "position": {"type": "start"},
+            "value": [{"token": "parent_folder"}, {"text": "_"}, {"token": "created_date"},
+                {"text": "_"}]},
+        "expected": "이름 맨 앞에 \"{상위 폴더 이름}_{생성일}_\" 넣기"
+    },
+    {
+        "name": "delete_whole_extension",
+        "mod": {"kind": "delete", "part": "ext", "position": {"type": "all"}},
+        "expected": "확장자 전부 지우기"
+    },
+    {
+        "name": "delete_last_n",
+        "mod": {"kind": "delete", "position": {"type": "last_n", "n": 3}},
+        "expected": "이름의 뒤 3글자 지우기"
+    },
+    {
+        "name": "delete_from_nth",
+        "mod": {"kind": "delete", "position": {"type": "from_nth", "n": 2, "count": 3}},
+        "expected": "이름의 2번째 글자부터 3글자 지우기"
+    },
+    {
+        "name": "delete_every_text",
+        "mod": {"kind": "delete", "position": {"type": "text", "text": "-", "occurrence": "all"}},
+        "expected": "이름에서 모든 \"-\"를 지우기"
+    },
+    {
+        "name": "delete_between_including",
+        "mod": {"kind": "delete", "position": {"type": "between", "start_text": "(", "end_text": ")",
+            "include_delimiters": true, "occurrence": "first"}},
+        "expected": "이름에서 \"(\"부터 \")\"까지 지우기"
+    },
+    {
+        "name": "delete_between_last",
+        "mod": {"kind": "delete", "position": {"type": "between", "start_text": "[", "end_text": "]",
+            "occurrence": "last"}},
+        "expected": "이름에서 마지막 \"[\"와 \"]\" 사이를 지우기"
+    },
+    {
+        "name": "delete_from_beginning",
+        "mod": {"kind": "delete", "position": {"type": "between", "from_beginning": true,
+            "end_text": "_", "occurrence": "first"}},
+        "expected": "이름의 처음부터 \"_\" 앞까지 지우기"
+    },
+    {
+        "name": "delete_to_end_including",
+        "mod": {"kind": "delete", "position": {"type": "between", "start_text": "_", "to_end": true,
+            "include_delimiters": true, "occurrence": "nth", "occurrence_n": 2}},
+        "expected": "이름에서 앞에서 2번째 \"_\"부터 끝까지 지우기"
+    },
+    {
+        "name": "replace_all_with_number",
+        "mod": {"kind": "replace", "position": {"type": "all"},
+            "value": [{"text": "여행_"}, {"token": "number"}]},
+        "expected": "이름을 \"여행_{번호}\"로 바꾸기"
+    },
+    {
+        "name": "replace_extension",
+        "mod": {"kind": "replace", "part": "ext", "position": {"type": "all"},
+            "value": [{"text": "jpeg"}]},
+        "expected": "확장자를 \"jpeg\"로 바꾸기"
+    },
+    {
+        "name": "josa_after_hangul_final",
+        "mod": {"kind": "replace", "position": {"type": "text", "text": "사진", "occurrence": "first"},
+            "value": [{"text": "그림"}]},
+        "expected": "이름에서 처음 나오는 \"사진\"을 \"그림\"으로 바꾸기"
+    },
+    {
+        "name": "josa_after_rieul",
+        "mod": {"kind": "replace", "position": {"type": "text", "text": "가을", "occurrence": "first"},
+            "value": [{"text": "서울"}]},
+        "expected": "이름에서 처음 나오는 \"가을\"을 \"서울\"로 바꾸기"
+    },
+    {
+        "name": "josa_after_digits",
+        "mod": {"kind": "replace", "position": {"type": "text", "text": "1", "occurrence": "all"},
+            "value": [{"text": "3"}]},
+        "expected": "이름에서 모든 \"1\"을 \"3\"으로 바꾸기"
+    },
+    {
+        "name": "josa_after_digit_rieul",
+        "mod": {"kind": "replace",
+            "position": {"type": "text", "text": "0", "occurrence": "nth_from_end", "occurrence_n": 1},
+            "value": [{"text": "7"}]},
+        "expected": "이름에서 뒤에서 1번째 \"0\"을 \"7\"로 바꾸기"
+    },
+    {
+        "name": "josa_after_letters",
+        "mod": {"kind": "replace", "part": "ext",
+            "position": {"type": "text", "text": "html", "occurrence": "first"},
+            "value": [{"text": "htm"}]},
+        "expected": "확장자에서 처음 나오는 \"html\"을 \"htm\"으로 바꾸기"
+    },
+    {
+        "name": "josa_after_token_with_final",
+        "mod": {"kind": "replace", "position": {"type": "first_n", "n": 2},
+            "value": [{"token": "original_name"}]},
+        "expected": "이름의 앞 2글자를 \"{원래 이름}\"으로 바꾸기"
+    },
+    {
+        "name": "josa_after_token_with_rieul",
+        "mod": {"kind": "replace", "position": {"type": "all"}, "value": [{"token": "modified_date"}]},
+        "expected": "이름을 \"{수정일}\"로 바꾸기"
+    },
+    {
+        "name": "replace_whole_between",
+        "mod": {"kind": "replace", "position": {"type": "between", "from_beginning": true,
+            "to_end": true}, "value": [{"text": "x"}]},
+        "expected": "이름 전부를 \"x\"로 바꾸기"
+    },
+    {
+        "name": "format_upper_full",
+        "mod": {"kind": "format", "part": "full", "position": {"type": "all"},
+            "format": {"type": "upper"}},
+        "expected": "이름과 확장자를 대문자로 맞추기"
+    },
+    {
+        "name": "format_title_text",
+        "mod": {"kind": "format", "position": {"type": "text", "text": "abc", "occurrence": "all"},
+            "format": {"type": "title"}},
+        "expected": "이름에서 모든 \"abc\"를 단어 첫 글자만 대문자로 맞추기"
+    },
+    {
+        "name": "format_sentence_first_n",
+        "mod": {"kind": "format", "position": {"type": "first_n", "n": 5},
+            "format": {"type": "sentence"}},
+        "expected": "이름의 앞 5글자를 문장 첫 글자만 대문자로 맞추기"
+    },
+    {
+        "name": "pad_digits_between",
+        "mod": {"kind": "format", "position": {"type": "between", "start_text": "(", "end_text": ")",
+            "occurrence": "first"}, "format": {"type": "pad_digits", "digits": 2}},
+        "expected": "이름에서 \"(\"와 \")\" 사이의 숫자를 2자리로 맞추기"
+    }
+]
