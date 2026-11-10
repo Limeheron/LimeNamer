@@ -48,13 +48,23 @@ TEST(INDEX_LIST, rejects_bad_syntax)
 
 TEST(INDEX_LIST, rejects_numbers_outside_the_list)
 {
-    const std::u32string_view samples[] = {U"0", U"11", U"0-3", U"9-11", U"99999999999999"};
+    const std::u32string_view samples[] = {
+        U"0", U"11", U"0-3", U"11-15", U"15-11", U"99999999999999",
+    };
     for (const std::u32string_view sample : samples) {
         const INDEX_LIST_RESULT result = INDEX_LIST::parse(sample, 10);
         EXPECT_EQ(result.error, INDEX_ERROR::out_of_range) << UTF::encode_utf8(sample);
         EXPECT_TRUE(result.indices.empty());
     }
     EXPECT_EQ(INDEX_LIST::parse(U"1", 0).error, INDEX_ERROR::out_of_range);
+}
+
+TEST(INDEX_LIST, clamps_range_ends_to_the_list)
+{
+    EXPECT_EQ(INDEX_LIST::parse(U"9-11", 10).indices, std::vector<uint32_t>({9, 10}));
+    EXPECT_EQ(INDEX_LIST::parse(U"23-1", 5).indices, std::vector<uint32_t>({1, 2, 3, 4, 5}));
+    EXPECT_EQ(INDEX_LIST::parse(U"3, 4-99", 5).indices, std::vector<uint32_t>({3, 4, 5}));
+    EXPECT_EQ(INDEX_LIST::parse(U"9-11", 10).error, INDEX_ERROR::none);
 }
 
 TEST(INDEX_LIST, formats_indices)

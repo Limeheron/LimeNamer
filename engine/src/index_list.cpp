@@ -55,11 +55,12 @@ INDEX_LIST_RESULT INDEX_LIST::parse(std::u32string_view text, uint32_t item_coun
         ++at;
     }
 
-    for (const auto &[low, high] : ranges) {
-        if (low == 0 || high > item_count) {
+    for (auto &[low, high] : ranges) {
+        if (low == 0 || low > item_count) {
             result.error = INDEX_ERROR::out_of_range;
             return result;
         }
+        high = std::min<uint64_t>(high, item_count);
     }
     for (const auto &[low, high] : ranges) {
         for (uint64_t index = low; index <= high; ++index) {
