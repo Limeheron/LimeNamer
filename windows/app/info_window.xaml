@@ -1,0 +1,45 @@
+<Window x:Class="limenamer.INFO_WINDOW"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:limenamer;assembly=limenamer_view_model"
+        Title="{x:Static vm:STRINGS.info_title}"
+        Width="520"
+        Height="560"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner">
+    <DockPanel>
+        <Border DockPanel.Dock="Bottom" Padding="24,16" BorderThickness="0,1,0,0"
+                BorderBrush="{DynamicResource DividerStrokeColorDefaultBrush}"
+                Background="{DynamicResource LayerFillColorDefaultBrush}">
+            <Button Style="{StaticResource accent_button}" HorizontalAlignment="Right"
+                    MinWidth="120" IsDefault="True" IsCancel="True"
+                    Content="{x:Static vm:STRINGS.dialog_ok}" Click="close_click" />
+        </Border>
+
+        <DockPanel Margin="24,16,24,16">
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                <Border Width="48" Height="48" CornerRadius="10"
+                        Background="{DynamicResource accent_fill_brush}">
+                    <TextBlock Text="L" FontSize="26" FontWeight="Bold"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Foreground="{DynamicResource accent_on_brush}" />
+                </Border>
+                <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
+                    <TextBlock Text="LimeNamer" FontSize="20" FontWeight="SemiBold" />
+                    <TextBlock x:Name="version_text" Style="{StaticResource secondary_text}" />
+                </StackPanel>
+            </StackPanel>
+            <TextBlock DockPanel.Dock="Top" Margin="0,14,0,0" TextWrapping="Wrap"
+                       Text="{x:Static vm:STRINGS.info_description}" />
+            <TextBlock DockPanel.Dock="Top" Margin="0,4,0,0" TextWrapping="Wrap"
+                       Style="{StaticResource secondary_text}"
+                       Text="{x:Static vm:STRINGS.info_license}" />
+            <TextBlock DockPanel.Dock="Top" Margin="0,18,0,6" FontWeight="SemiBold"
+                       Text="{x:Static vm:STRINGS.info_notices}" />
+            <TextBox x:Name="notices_text" IsReadOnly="True" TextWrapping="Wrap"
+                     VerticalScrollBarVisibility="Auto" FontFamily="{StaticResource name_font}"
+                     FontSize="12" />
+        </DockPanel>
+    </DockPanel>
+</Window>

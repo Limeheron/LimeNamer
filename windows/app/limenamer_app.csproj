@@ -17,4 +17,9 @@
     <ItemGroup>
         <ProjectReference Include="..\view_model\limenamer_view_model.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+        <Resource Include="..\..\LICENSE" Link="licenses\limenamer.txt" />
+        <Resource Include="..\..\licenses\nlohmann_json.txt" Link="licenses\nlohmann_json.txt" />
+    </ItemGroup>
 </Project>

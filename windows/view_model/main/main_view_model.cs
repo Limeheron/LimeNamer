@@ -436,7 +436,7 @@ public sealed class MAIN_VIEW_MODEL : OBSERVABLE
         }
         status.post(text);
         if (report.skipped + report.failed > 0) {
-            dialogs_.ask(new DIALOG_CONTENT(STRINGS.dialog_undo_result_title,
+            dialogs_.ask(new DIALOG_CONTENT(DIALOG_KIND.report, STRINGS.dialog_undo_result_title,
                 JOSA_FORMATTER.format(STRINGS.dialog_undo_result_message, report.succeeded,
                     report.skipped, report.failed),
                 report.problems.Select(report_line).ToArray(), "", STRINGS.dialog_ok, ""));
@@ -463,7 +463,8 @@ public sealed class MAIN_VIEW_MODEL : OBSERVABLE
         REPORT_ITEM[] stuck = resolved.problems.Where(item => item.stage == STAGE.revert)
             .ToArray();
         if (stuck.Length > 0) {
-            dialogs_.ask(new DIALOG_CONTENT(STRINGS.dialog_revert_failed_title,
+            dialogs_.ask(new DIALOG_CONTENT(DIALOG_KIND.report,
+                STRINGS.dialog_revert_failed_title,
                 STRINGS.dialog_revert_failed_message, stuck.Select(report_line).ToArray(), "",
                 STRINGS.dialog_ok, ""));
         }
@@ -536,7 +537,7 @@ public sealed class MAIN_VIEW_MODEL : OBSERVABLE
                     string.Join(" ", MESSAGES.row_messages(row))));
             }
         }
-        return new DIALOG_CONTENT(STRINGS.dialog_warning_title,
+        return new DIALOG_CONTENT(DIALOG_KIND.confirm, STRINGS.dialog_warning_title,
             JOSA_FORMATTER.format(STRINGS.dialog_warning_message, preview_.warning,
                 preview_.runnable),
             lines, "", STRINGS.dialog_rename, STRINGS.dialog_cancel);
@@ -544,7 +545,7 @@ public sealed class MAIN_VIEW_MODEL : OBSERVABLE
 
     private DIALOG_CONTENT choice_dialog(REPORT report)
     {
-        return new DIALOG_CONTENT(STRINGS.dialog_choice_title,
+        return new DIALOG_CONTENT(DIALOG_KIND.choice, STRINGS.dialog_choice_title,
             JOSA_FORMATTER.format(STRINGS.dialog_choice_message, report.total, report.succeeded,
                 report.failed),
             report.problems.Select(report_line).ToArray(), STRINGS.dialog_choice_note,
@@ -553,7 +554,7 @@ public sealed class MAIN_VIEW_MODEL : OBSERVABLE
 
     private DIALOG_CONTENT failed_dialog(REPORT report)
     {
-        return new DIALOG_CONTENT(STRINGS.dialog_failed_title,
+        return new DIALOG_CONTENT(DIALOG_KIND.report, STRINGS.dialog_failed_title,
             JOSA_FORMATTER.format(STRINGS.dialog_failed_message, report.failed),
             report.problems.Select(report_line).ToArray(), "", STRINGS.dialog_ok, "");
     }
@@ -564,7 +565,7 @@ public sealed class MAIN_VIEW_MODEL : OBSERVABLE
         if (check.skipped > 0) {
             message += JOSA_FORMATTER.format(STRINGS.dialog_undo_skipped, check.skipped);
         }
-        return new DIALOG_CONTENT(STRINGS.dialog_undo_title, message,
+        return new DIALOG_CONTENT(DIALOG_KIND.confirm, STRINGS.dialog_undo_title, message,
             check.problems.Select(report_line).ToArray(), "", STRINGS.dialog_undo_action,
             STRINGS.dialog_cancel);
     }

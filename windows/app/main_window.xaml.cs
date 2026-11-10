@@ -22,7 +22,7 @@ public partial class MAIN_WINDOW : Window
     public MAIN_WINDOW(ENGINE engine, SETTINGS settings)
     {
         InitializeComponent();
-        main_ = new MAIN_VIEW_MODEL(engine, settings, new MESSAGE_BOX_DIALOGS(this),
+        main_ = new MAIN_VIEW_MODEL(engine, settings, new WPF_DIALOGS(this),
             () => DateTime.Now);
         DataContext = main_;
         list_view.attach(main_);
@@ -268,7 +268,6 @@ public partial class MAIN_WINDOW : Window
 
     private void info_click(object sender, RoutedEventArgs args)
     {
-        MessageBox.Show(this, JOSA_FORMATTER.format(STRINGS.info_text, ENGINE.version()),
-            "LimeNamer");
+        new INFO_WINDOW { Owner = this }.ShowDialog();
     }
 }

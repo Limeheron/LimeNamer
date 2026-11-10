@@ -85,6 +85,7 @@ public sealed class MAIN_VIEW_MODEL_TESTS
 
         DIALOG_CONTENT warning = scenario.dialogs.asked[0];
         Assert.IsTrue(kept);
+        Assert.AreEqual(DIALOG_KIND.confirm, warning.kind);
         Assert.AreEqual("경고가 있는 항목이 있습니다", warning.title);
         Assert.AreEqual("경고 1개를 포함해 2개 항목의 이름을 바꿉니다.", warning.message);
         Assert.AreEqual(new DIALOG_LINE(DIALOG_ICON.warning, 2, "b.txt → .b",
@@ -128,6 +129,7 @@ public sealed class MAIN_VIEW_MODEL_TESTS
         }
 
         DIALOG_CONTENT choice = scenario.dialogs.asked.Single();
+        Assert.AreEqual(DIALOG_KIND.choice, choice.kind);
         Assert.AreEqual("일부 항목의 이름을 바꾸지 못했습니다", choice.title);
         Assert.AreEqual("2개 중 1개를 바꿨고 1개는 바꾸지 못했습니다. 처리 방식을 고르세요.",
             choice.message);
@@ -175,6 +177,7 @@ public sealed class MAIN_VIEW_MODEL_TESTS
             confirm.message);
         Assert.AreEqual(new DIALOG_LINE(DIALOG_ICON.warning, 2, "new_b.txt → b.txt",
             "항목을 찾을 수 없습니다."), confirm.lines.Single());
+        Assert.AreEqual(DIALOG_KIND.report, result.kind);
         Assert.AreEqual("일부 항목을 되돌리지 못했습니다", result.title);
         Assert.AreEqual("1개 항목을 실행 전 이름으로 되돌렸습니다. "
             + "건너뛴 1개는 되돌리지 않았습니다.", scenario.message);

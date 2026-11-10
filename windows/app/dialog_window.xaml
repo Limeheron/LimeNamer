@@ -1,0 +1,87 @@
+<Window x:Class="limenamer.DIALOG_WINDOW"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="LimeNamer"
+        Width="500"
+        SizeToContent="Height"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner">
+    <DockPanel>
+        <Border DockPanel.Dock="Bottom" Padding="24,18" BorderThickness="0,1,0,0"
+                BorderBrush="{DynamicResource DividerStrokeColorDefaultBrush}"
+                Background="{DynamicResource LayerFillColorDefaultBrush}">
+            <UniformGrid x:Name="buttons" Rows="1">
+                <Button x:Name="primary_button" Height="32" Margin="0,0,4,0"
+                        HorizontalAlignment="Stretch" Click="primary_click" />
+                <Button x:Name="secondary_button" Height="32" Margin="4,0,0,0"
+                        HorizontalAlignment="Stretch" Click="secondary_click" />
+            </UniformGrid>
+        </Border>
+
+        <StackPanel Margin="24,12,24,22">
+            <TextBlock x:Name="title_text" FontSize="20" FontWeight="SemiBold"
+                       TextWrapping="Wrap" />
+            <TextBlock x:Name="message_text" Margin="0,12,0,0" TextWrapping="Wrap"
+                       LineHeight="20" />
+            <Border x:Name="lines_box" Margin="0,12,0,0" CornerRadius="6" BorderThickness="1"
+                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                <ScrollViewer MaxHeight="260" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl x:Name="lines_view">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Padding="12,8" BorderThickness="0,0,0,1"
+                                        BorderBrush="{DynamicResource
+                                            DividerStrokeColorDefaultBrush}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="22" />
+                                            <ColumnDefinition Width="Auto" MinWidth="28" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock x:Name="icon" Style="{StaticResource icon_text}"
+                                                   FontSize="14" Text="&#xE7BA;"
+                                                   Foreground="{DynamicResource
+                                                       status_warning_brush}" />
+                                        <TextBlock x:Name="index" Grid.Column="1"
+                                                   Margin="0,0,8,0" TextAlignment="Right"
+                                                   Style="{StaticResource secondary_text}"
+                                                   Text="{Binding index}" />
+                                        <TextBlock Grid.Column="2" FontSize="13"
+                                                   FontFamily="{StaticResource name_font}"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   Text="{Binding text}"
+                                                   ToolTip="{Binding text}" />
+                                        <TextBlock Grid.Row="1" Grid.Column="2" Margin="0,2,0,0"
+                                                   FontSize="12" TextWrapping="Wrap"
+                                                   Style="{StaticResource secondary_text}"
+                                                   Text="{Binding reason}" />
+                                    </Grid>
+                                </Border>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding icon}" Value="error">
+                                        <Setter TargetName="icon" Property="Text"
+                                                Value="&#xEA39;" />
+                                        <Setter TargetName="icon" Property="Foreground"
+                                                Value="{DynamicResource status_error_brush}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding index}" Value="0">
+                                        <Setter TargetName="index" Property="Visibility"
+                                                Value="Hidden" />
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
+            <TextBlock x:Name="note_text" Margin="0,10,0,0" FontSize="12" TextWrapping="Wrap"
+                       Style="{StaticResource secondary_text}" />
+        </StackPanel>
+    </DockPanel>
+</Window>
