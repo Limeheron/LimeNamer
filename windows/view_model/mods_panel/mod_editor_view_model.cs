@@ -308,8 +308,7 @@ public sealed class MOD_EDITOR_VIEW_MODEL : OBSERVABLE
                 return;
             }
             if (value == SCOPE.items) {
-                list_.begin_designation(
-                    last_targets_.Count > 0 ? last_targets_ : list_.selected_ids);
+                list_.begin_designation(last_targets_);
             } else {
                 last_targets_ = list_.checked_ids.ToHashSet();
                 list_.end_designation();

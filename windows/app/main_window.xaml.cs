@@ -33,7 +33,7 @@ public partial class MAIN_WINDOW : Window
         progress_timer_.Tick += (_, _) => main_.status.poll_progress();
         main_.PropertyChanged += on_main_changed;
         Activated += (_, _) => main_.activated();
-        KeyDown += on_key_down;
+        PreviewKeyDown += on_key_down;
         main_.list.PropertyChanged += on_list_changed;
         Loaded += on_loaded;
         SizeChanged += (_, _) => update_panel_limit();
@@ -71,7 +71,7 @@ public partial class MAIN_WINDOW : Window
 
     private void on_key_down(object sender, KeyEventArgs args)
     {
-        if (args.Handled || is_text_input(Keyboard.FocusedElement)) {
+        if (args.Handled || is_text_input(Keyboard.FocusedElement) || !IsActive) {
             return;
         }
         Key key = args.Key == Key.System ? args.SystemKey : args.Key;

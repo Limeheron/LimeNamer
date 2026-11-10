@@ -33,7 +33,7 @@ public sealed class ITEM_LIST_VIEW_MODEL_TESTS
         Assert.IsTrue(Regex.IsMatch(file.modified_text, @"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$"));
         Assert.IsTrue(folder.is_dir);
         Assert.AreEqual("—", folder.size_text);
-        Assert.AreEqual("항목 2개 · 선택 0개", scenario.list.header_text);
+        Assert.AreEqual("2개 · 선택 0개", scenario.list.header_text);
     }
 
     [TestMethod]
@@ -47,7 +47,7 @@ public sealed class ITEM_LIST_VIEW_MODEL_TESTS
         list.filter = VIEW_FILTER.error;
         CollectionAssert.AreEqual(new[] { "c.txt" }, scenario.visible_names());
         Assert.IsFalse(list.can_drag);
-        Assert.AreEqual("항목 5개 · 선택 0개 · 오류 항목만 보는 중", list.header_text);
+        Assert.AreEqual("5개 · 선택 0개 · 오류 항목만 보는 중", list.header_text);
         list.filter = VIEW_FILTER.conflict;
         CollectionAssert.AreEqual(new[] { "b.txt" }, scenario.visible_names());
         list.filter = VIEW_FILTER.warning;
@@ -162,7 +162,7 @@ public sealed class ITEM_LIST_VIEW_MODEL_TESTS
         CollectionAssert.AreEqual(typed, kept);
         Assert.AreEqual("1-5", list.number_text);
         Assert.AreEqual(true, list.check_all_state);
-        Assert.AreEqual("항목 5개 · 체크 5개", list.header_text);
+        Assert.AreEqual("5개 · 체크 5개", list.header_text);
 
         list.end_designation();
 

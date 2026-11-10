@@ -35,7 +35,7 @@
     <SolidColorBrush x:Key="accent_text_brush" Color="#4B7A10" />
     <SolidColorBrush x:Key="accent_fill_brush" Color="#9CCF45" />
     <SolidColorBrush x:Key="accent_on_brush" Color="#17210A" />
-    <SolidColorBrush x:Key="accent_tick_brush" Color="#4B7A10" Opacity="0.5" />
+    <SolidColorBrush x:Key="accent_column_brush" Color="#9CCF45" Opacity="0.12" />
     <SolidColorBrush x:Key="accent_soft_brush" Color="#EEF6DF" />
     <SolidColorBrush x:Key="status_ok_brush" Color="#2F7A3A" />
     <SolidColorBrush x:Key="status_ok_back_brush" Color="#E2F1E3" />

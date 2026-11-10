@@ -85,7 +85,7 @@ public sealed class MOD_EDITOR_VIEW_MODEL_TESTS
         using MOD_PANEL_SCENARIO scenario = new("a.txt", "b.txt", "c.txt");
         ulong b = scenario.items.id("b.txt");
         ITEM_LIST_VIEW_MODEL list = scenario.items.list;
-        list.set_selection([b]);
+        list.set_selection([scenario.items.id("a.txt")]);
         scenario.mods.open_add();
         scenario.mods.choose_kind(MOD_KIND.insert);
         MOD_EDITOR_VIEW_MODEL editor = scenario.editor;
@@ -93,10 +93,13 @@ public sealed class MOD_EDITOR_VIEW_MODEL_TESTS
 
         editor.scope = SCOPE.items;
         bool designating = list.designating;
+        int initial = list.checked_ids.Count;
+        list.toggle_check(b, false);
         string summary = editor.summary;
         bool applied = scenario.mods.apply();
 
         Assert.IsTrue(designating);
+        Assert.AreEqual(0, initial);
         Assert.AreEqual("이름 맨 끝에 \"_k\" 넣기 (1개)", summary);
         Assert.IsTrue(applied);
         Assert.IsFalse(list.designating);
