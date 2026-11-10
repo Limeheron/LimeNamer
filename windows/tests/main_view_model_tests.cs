@@ -30,7 +30,7 @@ public sealed class MAIN_VIEW_MODEL_TESTS
         main.redo_command.Execute(null);
         main.clear_command.Execute(null);
 
-        Assert.AreEqual("2개를 목록에 추가했습니다. 이미 목록에 있는 1개는 건너뛰었습니다. "
+        Assert.AreEqual("2개 항목을 추가했습니다. 이미 목록에 있는 1개는 건너뛰었습니다. "
             + "1개는 추가하지 못했습니다.", added);
         Assert.IsFalse(could_remove);
         Assert.IsTrue(can_remove);
@@ -49,7 +49,7 @@ public sealed class MAIN_VIEW_MODEL_TESTS
         scenario.add_mod(LIST_SCENARIO.INSERT_NEW);
         main.mods.open_add();
         main.mods.choose_kind(MOD_KIND.insert);
-        string block = "편집 중인 수정을 적용하거나 취소한 뒤 다시 하세요.";
+        string block = "먼저 편집을 적용하거나 취소하세요.";
 
         main.undo();
         string undo = scenario.message;
@@ -60,12 +60,12 @@ public sealed class MAIN_VIEW_MODEL_TESTS
         await main.rename();
 
         Assert.IsTrue(main.is_editing);
-        Assert.AreEqual("실행 취소를 할 수 없습니다. " + block, undo);
-        Assert.AreEqual("수정 패널을 닫을 수 없습니다. " + block, panel);
+        Assert.AreEqual("편집 중에는 실행 취소할 수 없습니다. " + block, undo);
+        Assert.AreEqual("편집 중에는 수정 패널을 닫을 수 없습니다. " + block, panel);
         Assert.IsTrue(main.panel_open);
-        Assert.AreEqual("수정을 편집하는 동안에는 이름을 직접 고칠 수 없습니다. "
-            + "적용하거나 취소한 뒤 다시 하세요.", direct);
-        Assert.AreEqual("이름을 바꿀 수 없습니다. " + block, scenario.message);
+        Assert.AreEqual("편집 중에는 이름을 직접 수정할 수 없습니다. "
+            + block, direct);
+        Assert.AreEqual("편집 중에는 이름을 바꿀 수 없습니다. " + block, scenario.message);
         Assert.IsTrue(scenario.temp.exists("a.txt"));
     }
 
@@ -89,11 +89,11 @@ public sealed class MAIN_VIEW_MODEL_TESTS
         Assert.AreEqual("경고가 있는 항목이 있습니다", warning.title);
         Assert.AreEqual("경고 1개를 포함해 2개 항목의 이름을 바꿉니다.", warning.message);
         Assert.AreEqual(new DIALOG_LINE(DIALOG_ICON.warning, 2, "b.txt → .b",
-            "이름이 점으로 시작합니다. macOS에서는 숨김 파일이 됩니다."), warning.lines.Single());
+            "점으로 시작해 macOS에서 숨김 파일이 됩니다."), warning.lines.Single());
         Assert.AreEqual(2, scenario.dialogs.asked.Count);
         Assert.IsTrue(scenario.temp.exists("new_a.txt") && scenario.temp.exists(".b"));
         Assert.AreEqual("2개 항목의 이름을 바꿨습니다. "
-            + "같은 수정이 다시 적용되지 않도록 수정을 모두 껐습니다.", scenario.message);
+            + "다시 적용되지 않게 수정을 모두 껐습니다.", scenario.message);
         Assert.AreEqual(VIEW_FILTER.all, main.list.filter);
         Assert.IsTrue(main.rename_undo_command.CanExecute(null));
         Assert.AreEqual(false, main.mods.all_enabled_state);
@@ -109,8 +109,8 @@ public sealed class MAIN_VIEW_MODEL_TESTS
 
         await scenario.main.rename();
 
-        Assert.AreEqual("이름을 바꾸지 않았습니다. 충돌 1개를 해결해야 합니다. "
-            + "첫 번째 문제는 2번 항목입니다.", scenario.message);
+        Assert.AreEqual("충돌 1개가 있어 이름을 바꾸지 않았습니다. "
+            + "첫 문제는 2번 항목입니다.", scenario.message);
         CollectionAssert.AreEqual(new[] { scenario.id("b.txt") },
             scenario.main.list.selected_ids.ToArray());
         Assert.IsTrue(scenario.temp.exists("a.txt"));
@@ -137,7 +137,7 @@ public sealed class MAIN_VIEW_MODEL_TESTS
             "다른 프로그램이 파일을 사용하고 있습니다."), choice.lines.Single());
         Assert.AreEqual(("전체 되돌리기", "성공한 항목 유지"), (choice.primary, choice.secondary));
         Assert.AreEqual("1개 항목의 이름을 바꿨습니다. 실패한 1개는 그대로 있습니다. "
-            + "같은 수정이 다시 적용되지 않도록 수정을 모두 껐습니다.", scenario.message);
+            + "다시 적용되지 않게 수정을 모두 껐습니다.", scenario.message);
         Assert.IsTrue(scenario.temp.exists("a.txt") && scenario.temp.exists("new_b.txt"));
     }
 
@@ -172,8 +172,8 @@ public sealed class MAIN_VIEW_MODEL_TESTS
         DIALOG_CONTENT confirm = scenario.dialogs.asked[0];
         DIALOG_CONTENT result = scenario.dialogs.asked[1];
         Assert.AreEqual("마지막으로 바꾼 이름을 되돌릴까요?", confirm.title);
-        Assert.AreEqual("1개 항목을 바꾸기 전 이름으로 돌립니다. 그 뒤에 목록을 고쳤더라도 "
-            + "마지막 실행 기록을 기준으로 되돌립니다. 아래 1개는 되돌릴 수 없어 건너뜁니다.",
+        Assert.AreEqual("1개 항목을 바꾸기 전 이름으로 돌립니다. 목록을 고쳤더라도 "
+            + "마지막 실행 기록대로 되돌립니다. 아래 1개는 되돌릴 수 없어 건너뜁니다.",
             confirm.message);
         Assert.AreEqual(new DIALOG_LINE(DIALOG_ICON.warning, 2, "new_b.txt → b.txt",
             "항목을 찾을 수 없습니다."), confirm.lines.Single());
@@ -215,10 +215,10 @@ public sealed class MAIN_VIEW_MODEL_TESTS
         File.Delete(Path.Combine(scenario.temp.path, "a.txt"));
         string? missing = main.location_of(scenario.id("a.txt"));
 
-        Assert.AreEqual("2번 항목을 직접 수정했습니다. 수정 목록 맨 아래에 직접 수정으로 들어갑니다.",
+        Assert.AreEqual("2번 항목을 직접 수정했습니다.",
             edited);
-        Assert.AreEqual("2번 항목: Windows에서 쓸 수 없는 문자가 있습니다. "
-            + "(\\ / : * ? \" < > |)", problems);
+        Assert.AreEqual("2번 항목: Windows에서 쓸 수 없는 문자"
+            + "(\\ / : * ? \" < > |)가 있습니다.", problems);
         Assert.IsNull(missing);
         Assert.AreEqual("항목을 찾을 수 없습니다.", scenario.message);
         Assert.AreEqual(Path.Combine(scenario.temp.path, "b.txt"), main.location_of(b));

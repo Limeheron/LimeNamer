@@ -153,8 +153,8 @@ public sealed class MOD_LIST_VIEW_MODEL_TESTS
         mods.cancel();
 
         CollectionAssert.AreEqual(new[] {
-            "새 수정을 추가하지 않고 닫았습니다.",
-            "편집한 내용을 적용하지 않고 닫았습니다.",
+            "새 수정을 취소했습니다.",
+            "편집을 취소했습니다.",
         }, scenario.messages);
         Assert.AreEqual("new_a.txt", scenario.first_new_name());
         Assert.AreEqual(MOD_PAGE.list, mods.page);

@@ -22,12 +22,12 @@ public sealed class MOD_EDITOR_VIEW_MODEL_TESTS
 
         Assert.IsFalse(applied);
         Assert.AreEqual(MOD_PAGE.edit, scenario.mods.page);
-        Assert.AreEqual("찾을 텍스트를 입력해야 합니다.", find_problem);
+        Assert.AreEqual("찾을 텍스트를 입력하세요.", find_problem);
         Assert.AreEqual("", editor.find_text_problem);
-        Assert.AreEqual("새 텍스트를 입력해야 합니다.", editor.value_problem);
+        Assert.AreEqual("새 값을 입력하세요.", editor.value_problem);
         Assert.AreEqual(MOD_FIELD.find_text, scenario.focused);
         CollectionAssert.AreEqual(new[] {
-            "적용하지 못했습니다. 찾을 텍스트를 입력해야 합니다. 빨간 칸 2개를 확인하세요.",
+            "적용하지 못했습니다. 찾을 텍스트를 입력하세요. 빨간 칸 2개를 확인하세요.",
         }, scenario.messages);
     }
 
@@ -125,7 +125,7 @@ public sealed class MOD_EDITOR_VIEW_MODEL_TESTS
         list.toggle_check(scenario.items.id("a.txt"), false);
 
         Assert.IsFalse(applied);
-        Assert.AreEqual("적용할 항목을 체크하거나 번호를 입력해야 합니다.", empty);
+        Assert.AreEqual("적용할 항목을 체크하거나 번호를 입력하세요.", empty);
         Assert.AreEqual("번호는 1부터 3까지만 쓸 수 있습니다.", range);
         Assert.AreEqual("", editor.targets_problem);
         Assert.AreEqual("이름 맨 끝에 \"_k\" 넣기 (1개)", editor.summary);

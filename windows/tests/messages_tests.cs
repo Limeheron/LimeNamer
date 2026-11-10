@@ -15,7 +15,7 @@ public sealed class MESSAGES_TESTS
         CollectionAssert.AreEqual(new[] {
             STRINGS.issue_error_win_forbidden_char,
             STRINGS.issue_error_win_trailing,
-            "목록 3번 항목과 이름이 겹칩니다.",
+            "3번 항목과 이름이 겹칩니다.",
             STRINGS.issue_warning_hidden,
             STRINGS.adjusted,
         }, (System.Collections.ICollection)MESSAGES.row_messages(row));
@@ -24,9 +24,9 @@ public sealed class MESSAGES_TESTS
     [TestMethod]
     public void words_issues_by_severity()
     {
-        Assert.AreEqual("Windows 예약어라 쓸 수 없습니다. (CON, NUL 등)",
+        Assert.AreEqual("Windows 예약어(CON, NUL 등)라 쓸 수 없습니다.",
             MESSAGES.issue_text(NAME_ISSUE.win_reserved, true));
-        Assert.AreEqual("Windows 예약어라 Windows에서는 쓸 수 없습니다.",
+        Assert.AreEqual("Windows에서는 예약어(CON, NUL 등)라 쓸 수 없습니다.",
             MESSAGES.issue_text(NAME_ISSUE.win_reserved, false));
     }
 
@@ -48,11 +48,11 @@ public sealed class MESSAGES_TESTS
     {
         PROBLEM problem = new(MOD_FIELD.value, PROBLEM_REASON.required);
 
-        Assert.AreEqual("넣을 텍스트를 입력해야 합니다.",
+        Assert.AreEqual("넣을 값을 입력하세요.",
             MESSAGES.problem_text(problem, MOD_KIND.insert, false));
-        Assert.AreEqual("새 텍스트를 입력해야 합니다.",
+        Assert.AreEqual("새 값을 입력하세요.",
             MESSAGES.problem_text(problem, MOD_KIND.replace, false));
-        Assert.AreEqual("새 이름을 입력해야 합니다.",
+        Assert.AreEqual("새 이름을 입력하세요.",
             MESSAGES.problem_text(problem, MOD_KIND.replace, true));
     }
 }
