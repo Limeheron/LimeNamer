@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Threading;
 using Microsoft.Win32;
 
@@ -32,6 +33,7 @@ public partial class MAIN_WINDOW : Window
         progress_timer_.Tick += (_, _) => main_.status.poll_progress();
         main_.PropertyChanged += on_main_changed;
         Activated += (_, _) => main_.activated();
+        KeyDown += on_key_down;
         main_.list.PropertyChanged += on_list_changed;
         Loaded += on_loaded;
         SizeChanged += (_, _) => update_panel_limit();
@@ -65,6 +67,44 @@ public partial class MAIN_WINDOW : Window
         } else if (args.PropertyName == nameof(MAIN_VIEW_MODEL.panel_open)) {
             apply_panel();
         }
+    }
+
+    private void on_key_down(object sender, KeyEventArgs args)
+    {
+        if (args.Handled || is_text_input(Keyboard.FocusedElement)) {
+            return;
+        }
+        Key key = args.Key == Key.System ? args.SystemKey : args.Key;
+        ModifierKeys modifiers = Keyboard.Modifiers;
+        bool control = modifiers == ModifierKeys.Control;
+        bool control_shift = modifiers == (ModifierKeys.Control | ModifierKeys.Shift);
+        if (control && key == Key.Z) {
+            run(main_.undo_command);
+        } else if ((control && key == Key.Y) || (control_shift && key == Key.Z)) {
+            run(main_.redo_command);
+        } else if (control && key == Key.A) {
+            list_view.select_all();
+        } else if (modifiers == ModifierKeys.None && key == Key.Delete) {
+            run(main_.remove_command);
+        } else if (modifiers == ModifierKeys.None && key == Key.F2) {
+            list_view.edit_selected();
+        } else {
+            return;
+        }
+        args.Handled = true;
+    }
+
+    private static void run(COMMAND command)
+    {
+        if (command.CanExecute(null)) {
+            command.Execute(null);
+        }
+    }
+
+    private static bool is_text_input(IInputElement? element)
+    {
+        return element is TextBoxBase || element is PasswordBox
+            || element is ComboBox { IsEditable: true };
     }
 
     private void apply_panel()

@@ -65,6 +65,18 @@ public partial class ITEM_LIST_VIEW : UserControl
         apply_columns();
     }
 
+    public void select_all()
+    {
+        grid.SelectAll();
+    }
+
+    public void edit_selected()
+    {
+        if (grid.SelectedItem is ITEM_ROW row && !is_editing()) {
+            begin_direct_edit(row);
+        }
+    }
+
     private void on_list_changed(object? sender, PropertyChangedEventArgs args)
     {
         if (args.PropertyName == nameof(ITEM_LIST_VIEW_MODEL.rows)) {
