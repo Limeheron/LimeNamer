@@ -25,7 +25,7 @@ let package = Package(
             ]),
         .testTarget(
             name: "limenamer_tests",
-            dependencies: ["limenamer_view_model"],
+            dependencies: ["limenamer_engine", "limenamer_view_model"],
             path: "tests",
             swiftSettings: [.treatAllWarnings(as: .error)]),
     ]
