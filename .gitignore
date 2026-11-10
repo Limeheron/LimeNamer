@@ -1,5 +1,8 @@
 build/
 bin/
 obj/
+.build/
+.swiftpm/
+xcuserdata/
 .DS_Store
 CMakeUserPresets.json

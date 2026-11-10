@@ -1,0 +1,4 @@
+module limenamer_engine {
+    header "../../../engine/include/limenamer.h"
+    export *
+}
