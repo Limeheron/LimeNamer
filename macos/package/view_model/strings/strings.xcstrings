@@ -1,0 +1,3988 @@
+{
+  "sourceLanguage" : "ko",
+  "strings" : {
+    "add_files" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "파일 추가..."
+          }
+        }
+      }
+    },
+    "add_folder_contents" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "폴더 안의 파일 추가..."
+          }
+        }
+      }
+    },
+    "add_folders" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "폴더 추가..."
+          }
+        }
+      }
+    },
+    "add_kind_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "종류"
+          }
+        }
+      }
+    },
+    "add_part_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "바꿀 부분"
+          }
+        }
+      }
+    },
+    "adjusted" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "중복 자동 조정으로 번호를 붙였습니다."
+          }
+        }
+      }
+    },
+    "apply_failed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "적용하지 못했습니다. {0}"
+          }
+        }
+      }
+    },
+    "apply_failed_more" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " 빨간 칸 {0}개를 확인하세요."
+          }
+        }
+      }
+    },
+    "back_to_add" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "수정 추가"
+          }
+        }
+      }
+    },
+    "back_to_list" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "수정 목록"
+          }
+        }
+      }
+    },
+    "blocked_direct" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "편집 중에는 이름을 직접 수정할 수 없습니다. 먼저 편집을 적용하거나 취소하세요."
+          }
+        }
+      }
+    },
+    "blocked_panel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "편집 중에는 수정 패널을 닫을 수 없습니다. {0}"
+          }
+        }
+      }
+    },
+    "blocked_redo" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "편집 중에는 다시 실행할 수 없습니다. {0}"
+          }
+        }
+      }
+    },
+    "blocked_rename" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "편집 중에는 이름을 바꿀 수 없습니다. {0}"
+          }
+        }
+      }
+    },
+    "blocked_rename_undo" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "편집 중에는 이름을 되돌릴 수 없습니다. {0}"
+          }
+        }
+      }
+    },
+    "blocked_undo" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "편집 중에는 실행 취소할 수 없습니다. {0}"
+          }
+        }
+      }
+    },
+    "button_apply" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "적용"
+          }
+        }
+      }
+    },
+    "button_cancel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "취소"
+          }
+        }
+      }
+    },
+    "button_rename" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름 바꾸기"
+          }
+        }
+      }
+    },
+    "button_rename_undo" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름 되돌리기"
+          }
+        }
+      }
+    },
+    "check_all_tip" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "목록 전체를 체크하거나 해제합니다."
+          }
+        }
+      }
+    },
+    "column_created" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "생성일"
+          }
+        }
+      }
+    },
+    "column_current" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "현재 이름"
+          }
+        }
+      }
+    },
+    "column_folder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "폴더"
+          }
+        }
+      }
+    },
+    "column_index" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "순번"
+          }
+        }
+      }
+    },
+    "column_modified" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "수정일"
+          }
+        }
+      }
+    },
+    "column_new" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "변경 이름"
+          }
+        }
+      }
+    },
+    "column_size" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "크기"
+          }
+        }
+      }
+    },
+    "column_status" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "상태"
+          }
+        }
+      }
+    },
+    "columns_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보여 줄 열"
+          }
+        }
+      }
+    },
+    "conflict_existing_item" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "폴더에 이미 있는 항목과 이름이 겹칩니다."
+          }
+        }
+      }
+    },
+    "conflict_list_item" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}번 항목과 이름이 겹칩니다."
+          }
+        }
+      }
+    },
+    "created_date_format_label" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "생성일 형식"
+          }
+        }
+      }
+    },
+    "date_custom" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "직접 입력"
+          }
+        }
+      }
+    },
+    "dialog_cancel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "취소"
+          }
+        }
+      }
+    },
+    "dialog_choice_message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}개 중 {1}개를 바꿨고 {2}개는 바꾸지 못했습니다. 처리 방식을 고르세요."
+          }
+        }
+      }
+    },
+    "dialog_choice_note" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "임시 이름 상태로 남은 항목은 이미 원래 이름으로 되돌렸습니다."
+          }
+        }
+      }
+    },
+    "dialog_choice_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "일부 항목의 이름을 바꾸지 못했습니다"
+          }
+        }
+      }
+    },
+    "dialog_failed_message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}개 항목의 이름을 바꾸지 못했습니다."
+          }
+        }
+      }
+    },
+    "dialog_failed_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름을 바꾸지 못했습니다"
+          }
+        }
+      }
+    },
+    "dialog_keep" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "성공한 항목 유지"
+          }
+        }
+      }
+    },
+    "dialog_line" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0} → {1}"
+          }
+        }
+      }
+    },
+    "dialog_ok" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "확인"
+          }
+        }
+      }
+    },
+    "dialog_rename" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름 바꾸기"
+          }
+        }
+      }
+    },
+    "dialog_revert_all" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전체 되돌리기"
+          }
+        }
+      }
+    },
+    "dialog_revert_failed_message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "아래 항목은 지금 경로에 남아 있습니다."
+          }
+        }
+      }
+    },
+    "dialog_revert_failed_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "일부 항목을 원래 이름으로 돌려놓지 못했습니다"
+          }
+        }
+      }
+    },
+    "dialog_undo_action" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름 되돌리기"
+          }
+        }
+      }
+    },
+    "dialog_undo_message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}개 항목을 바꾸기 전 이름으로 돌립니다. 목록을 고쳤더라도 마지막 실행 기록대로 되돌립니다."
+          }
+        }
+      }
+    },
+    "dialog_undo_result_message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}개 항목을 되돌렸습니다. 건너뛴 항목 {1}개, 실패한 항목 {2}개는 아래와 같습니다."
+          }
+        }
+      }
+    },
+    "dialog_undo_result_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "일부 항목을 되돌리지 못했습니다"
+          }
+        }
+      }
+    },
+    "dialog_undo_skipped" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " 아래 {0}개는 되돌릴 수 없어 건너뜁니다."
+          }
+        }
+      }
+    },
+    "dialog_undo_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "마지막으로 바꾼 이름을 되돌릴까요?"
+          }
+        }
+      }
+    },
+    "dialog_warning_message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "경고 {0}개를 포함해 {1}개 항목의 이름을 바꿉니다."
+          }
+        }
+      }
+    },
+    "dialog_warning_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "경고가 있는 항목이 있습니다"
+          }
+        }
+      }
+    },
+    "direct_edited" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}번 항목을 직접 수정했습니다."
+          }
+        }
+      }
+    },
+    "draft_discarded" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "편집을 취소했습니다."
+          }
+        }
+      }
+    },
+    "draft_discarded_new" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "새 수정을 취소했습니다."
+          }
+        }
+      }
+    },
+    "drag_count" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}개 항목"
+          }
+        }
+      }
+    },
+    "drop_text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "파일과 폴더를 함께 놓을 수 있습니다."
+          }
+        }
+      }
+    },
+    "drop_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "여기에 놓으면 목록에 추가합니다"
+          }
+        }
+      }
+    },
+    "duplicate_custom" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "직접 입력"
+          }
+        }
+      }
+    },
+    "duplicate_custom_hint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "번호 앞에 붙일 텍스트"
+          }
+        }
+      }
+    },
+    "duplicate_dash" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름-1"
+          }
+        }
+      }
+    },
+    "duplicate_format_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "번호 형식"
+          }
+        }
+      }
+    },
+    "duplicate_keep_first" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "첫 항목은 그대로"
+          }
+        }
+      }
+    },
+    "duplicate_mode_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "첫 항목"
+          }
+        }
+      }
+    },
+    "duplicate_number_all" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모두 번호 붙이기"
+          }
+        }
+      }
+    },
+    "duplicate_on" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "켜기"
+          }
+        }
+      }
+    },
+    "duplicate_on_tip" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "같은 폴더에서 이름이 겹치면 번호를 붙여 피합니다."
+          }
+        }
+      }
+    },
+    "duplicate_paren" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름 (1)"
+          }
+        }
+      }
+    },
+    "duplicate_underscore" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름_1"
+          }
+        }
+      }
+    },
+    "edit_block" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "먼저 편집을 적용하거나 취소하세요."
+          }
+        }
+      }
+    },
+    "empty_filter_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0} 항목이 없습니다"
+          }
+        }
+      }
+    },
+    "empty_list_text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "파일이나 폴더를 여기에 끌어 놓거나 추가하세요."
+          }
+        }
+      }
+    },
+    "empty_list_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "목록이 비어 있습니다"
+          }
+        }
+      }
+    },
+    "example_after" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "후"
+          }
+        }
+      }
+    },
+    "example_before" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전"
+          }
+        }
+      }
+    },
+    "example_default" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "예시 이름"
+          }
+        }
+      }
+    },
+    "example_ext_delete_after" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IMG_0001"
+          }
+        }
+      }
+    },
+    "example_ext_delete_before" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IMG_0001.JPG"
+          }
+        }
+      }
+    },
+    "example_ext_format_after" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IMG_0001.jpg"
+          }
+        }
+      }
+    },
+    "example_ext_format_before" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IMG_0001.JPG"
+          }
+        }
+      }
+    },
+    "example_ext_insert_after" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IMG_0001.JPG.bak"
+          }
+        }
+      }
+    },
+    "example_ext_insert_before" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IMG_0001.JPG"
+          }
+        }
+      }
+    },
+    "example_ext_replace_after" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IMG_0001.jpg"
+          }
+        }
+      }
+    },
+    "example_ext_replace_before" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IMG_0001.JPEG"
+          }
+        }
+      }
+    },
+    "example_full_delete_after" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0001.JPG"
+          }
+        }
+      }
+    },
+    "example_full_delete_before" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IMG_0001.JPG"
+          }
+        }
+      }
+    },
+    "example_full_format_after" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "img_0001.jpg"
+          }
+        }
+      }
+    },
+    "example_full_format_before" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IMG_0001.JPG"
+          }
+        }
+      }
+    },
+    "example_full_insert_after" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2024_IMG_0001.JPG"
+          }
+        }
+      }
+    },
+    "example_full_insert_before" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IMG_0001.JPG"
+          }
+        }
+      }
+    },
+    "example_full_replace_after" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "제주_0001.jpg"
+          }
+        }
+      }
+    },
+    "example_full_replace_before" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IMG_0001.JPG"
+          }
+        }
+      }
+    },
+    "example_index" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}번 항목"
+          }
+        }
+      }
+    },
+    "example_name_delete_after" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0001.JPG"
+          }
+        }
+      }
+    },
+    "example_name_delete_before" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IMG_0001.JPG"
+          }
+        }
+      }
+    },
+    "example_name_format_after" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IMG_001.JPG"
+          }
+        }
+      }
+    },
+    "example_name_format_before" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IMG_1.JPG"
+          }
+        }
+      }
+    },
+    "example_name_insert_after" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2024_IMG_0001.JPG"
+          }
+        }
+      }
+    },
+    "example_name_insert_before" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IMG_0001.JPG"
+          }
+        }
+      }
+    },
+    "example_name_replace_after" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "제주_0001.JPG"
+          }
+        }
+      }
+    },
+    "example_name_replace_before" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IMG_0001.JPG"
+          }
+        }
+      }
+    },
+    "example_no_target" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "대상 없음"
+          }
+        }
+      }
+    },
+    "example_skipped_dir" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "폴더라 적용하지 않음"
+          }
+        }
+      }
+    },
+    "example_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "예시"
+          }
+        }
+      }
+    },
+    "example_toggle_tip" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "예시 접기와 펴기"
+          }
+        }
+      }
+    },
+    "failure_access_denied" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "접근 권한이 없습니다."
+          }
+        }
+      }
+    },
+    "failure_already_exists" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "같은 이름의 항목이 이미 있습니다."
+          }
+        }
+      }
+    },
+    "failure_depends_on_failed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "먼저 처리해야 할 항목이 실패했습니다."
+          }
+        }
+      }
+    },
+    "failure_in_use" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다른 프로그램이 파일을 사용하고 있습니다."
+          }
+        }
+      }
+    },
+    "failure_not_found" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "항목을 찾을 수 없습니다."
+          }
+        }
+      }
+    },
+    "failure_other" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름을 바꾸지 못했습니다. (오류 코드 {0})"
+          }
+        }
+      }
+    },
+    "failure_path_too_long" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "경로가 너무 깁니다."
+          }
+        }
+      }
+    },
+    "failure_replaced" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "그 사이 다른 항목으로 바뀌었습니다."
+          }
+        }
+      }
+    },
+    "field_case_sensitive" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "대소문자 구분"
+          }
+        }
+      }
+    },
+    "field_digits" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "자릿수"
+          }
+        }
+      }
+    },
+    "field_end_text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "끝 구분 문자"
+          }
+        }
+      }
+    },
+    "field_find_text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "찾을 텍스트"
+          }
+        }
+      }
+    },
+    "field_format" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "방식"
+          }
+        }
+      }
+    },
+    "field_from_beginning" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "처음부터"
+          }
+        }
+      }
+    },
+    "field_include_delimiters" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "구분 문자도 포함"
+          }
+        }
+      }
+    },
+    "field_m" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "M"
+          }
+        }
+      }
+    },
+    "field_n" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "N"
+          }
+        }
+      }
+    },
+    "field_occurrence" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "몇 번째"
+          }
+        }
+      }
+    },
+    "field_part" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "바꿀 부분"
+          }
+        }
+      }
+    },
+    "field_position" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "위치"
+          }
+        }
+      }
+    },
+    "field_scope" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "적용 항목"
+          }
+        }
+      }
+    },
+    "field_start_text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시작 구분 문자"
+          }
+        }
+      }
+    },
+    "field_to_end" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "끝까지"
+          }
+        }
+      }
+    },
+    "field_value_insert" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "넣을 값"
+          }
+        }
+      }
+    },
+    "field_value_replace" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "새 값"
+          }
+        }
+      }
+    },
+    "filter_all" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전체"
+          }
+        }
+      }
+    },
+    "filter_changed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "변경"
+          }
+        }
+      }
+    },
+    "filter_conflict" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "충돌"
+          }
+        }
+      }
+    },
+    "filter_error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오류"
+          }
+        }
+      }
+    },
+    "filter_item" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0} ({1})"
+          }
+        }
+      }
+    },
+    "filter_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보기 필터"
+          }
+        }
+      }
+    },
+    "filter_warning" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "경고"
+          }
+        }
+      }
+    },
+    "format_choice_lower" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모두 소문자"
+          }
+        }
+      }
+    },
+    "format_choice_pad_digits" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "숫자 자릿수 맞추기"
+          }
+        }
+      }
+    },
+    "format_choice_sentence" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "문장 첫 글자만 대문자"
+          }
+        }
+      }
+    },
+    "format_choice_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "단어 첫 글자만 대문자"
+          }
+        }
+      }
+    },
+    "format_choice_upper" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모두 대문자"
+          }
+        }
+      }
+    },
+    "format_lower" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "소문자로"
+          }
+        }
+      }
+    },
+    "format_sentence" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "문장 첫 글자만 대문자로"
+          }
+        }
+      }
+    },
+    "format_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "단어 첫 글자만 대문자로"
+          }
+        }
+      }
+    },
+    "format_upper" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "대문자로"
+          }
+        }
+      }
+    },
+    "grip_tip" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "끌어서 순서를 바꿉니다."
+          }
+        }
+      }
+    },
+    "index_empty_list" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "목록이 비어 있습니다."
+          }
+        }
+      }
+    },
+    "index_out_of_range" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "번호는 1부터 {0}까지만 쓸 수 있습니다."
+          }
+        }
+      }
+    },
+    "index_syntax" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "번호는 3-500, 600처럼 숫자, 쉼표, -로 씁니다."
+          }
+        }
+      }
+    },
+    "index_tip" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "순번으로 지정합니다. 쉼표로 나누고, 범위는 3-500처럼 씁니다. 왼쪽 체크 칸과 서로 맞춰집니다."
+          }
+        }
+      }
+    },
+    "info_description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "여러 파일과 폴더의 이름을 한 번에 바꿉니다."
+          }
+        }
+      }
+    },
+    "info_license" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LimeNamer는 MIT 라이선스로 배포합니다."
+          }
+        }
+      }
+    },
+    "info_notices" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오픈소스 라이선스"
+          }
+        }
+      }
+    },
+    "info_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LimeNamer 정보"
+          }
+        }
+      }
+    },
+    "info_version" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "버전 {0}"
+          }
+        }
+      }
+    },
+    "issue_error_dot_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\".\"과 \"..\"은 이름으로 쓸 수 없습니다."
+          }
+        }
+      }
+    },
+    "issue_error_empty" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름이 비어 있습니다."
+          }
+        }
+      }
+    },
+    "issue_error_mac_forbidden_char" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS에서 쓸 수 없는 문자(/ :)가 있습니다."
+          }
+        }
+      }
+    },
+    "issue_error_mac_name_too_long" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름이 255바이트를 넘습니다."
+          }
+        }
+      }
+    },
+    "issue_error_win_forbidden_char" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows에서 쓸 수 없는 문자(\\ / : * ? \" < > |)가 있습니다."
+          }
+        }
+      }
+    },
+    "issue_error_win_name_too_long" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름이 255자를 넘습니다."
+          }
+        }
+      }
+    },
+    "issue_error_win_path_too_long" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전체 경로가 260자를 넘습니다."
+          }
+        }
+      }
+    },
+    "issue_error_win_reserved" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows 예약어(CON, NUL 등)라 쓸 수 없습니다."
+          }
+        }
+      }
+    },
+    "issue_error_win_trailing" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름 끝에 공백이나 점을 쓸 수 없습니다."
+          }
+        }
+      }
+    },
+    "issue_warning_hidden" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "점으로 시작해 macOS에서 숨김 파일이 됩니다."
+          }
+        }
+      }
+    },
+    "issue_warning_mac_forbidden_char" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS에서는 쓸 수 없는 문자가 있습니다."
+          }
+        }
+      }
+    },
+    "issue_warning_mac_name_too_long" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS 길이 제한(255바이트)을 넘습니다."
+          }
+        }
+      }
+    },
+    "issue_warning_win_forbidden_char" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows에서는 쓸 수 없는 문자가 있습니다."
+          }
+        }
+      }
+    },
+    "issue_warning_win_name_too_long" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows 길이 제한(255자)을 넘습니다."
+          }
+        }
+      }
+    },
+    "issue_warning_win_path_too_long" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows 경로 길이 제한(260자)을 넘습니다."
+          }
+        }
+      }
+    },
+    "issue_warning_win_reserved" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows에서는 예약어(CON, NUL 등)라 쓸 수 없습니다."
+          }
+        }
+      }
+    },
+    "issue_warning_win_trailing" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows에서는 이름 끝에 공백이나 점을 쓸 수 없습니다."
+          }
+        }
+      }
+    },
+    "items_added" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}개 항목을 추가했습니다."
+          }
+        }
+      }
+    },
+    "items_added_failed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " {0}개는 추가하지 못했습니다."
+          }
+        }
+      }
+    },
+    "items_added_skipped" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " 이미 목록에 있는 {0}개는 건너뛰었습니다."
+          }
+        }
+      }
+    },
+    "items_cleared" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "목록을 비웠습니다. 실행 취소로 되돌릴 수 있습니다."
+          }
+        }
+      }
+    },
+    "items_moved" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "순서를 바꿨습니다. 정렬은 사용자 지정이 됩니다."
+          }
+        }
+      }
+    },
+    "items_moved_many" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}개 항목의 순서를 바꿨습니다. 정렬은 사용자 지정이 됩니다."
+          }
+        }
+      }
+    },
+    "items_removed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}개 항목을 목록에서 뺐습니다. 실행 취소로 되돌릴 수 있습니다."
+          }
+        }
+      }
+    },
+    "kind_delete" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지우기"
+          }
+        }
+      }
+    },
+    "kind_delete_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "필요 없는 글자"
+          }
+        }
+      }
+    },
+    "kind_format" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "형식 맞추기"
+          }
+        }
+      }
+    },
+    "kind_format_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "대소문자, 숫자 자릿수"
+          }
+        }
+      }
+    },
+    "kind_insert" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "넣기"
+          }
+        }
+      }
+    },
+    "kind_insert_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "원하는 위치에 텍스트, 번호, 날짜"
+          }
+        }
+      }
+    },
+    "kind_replace" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "바꾸기"
+          }
+        }
+      }
+    },
+    "kind_replace_desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전체나 일부를 새 텍스트로"
+          }
+        }
+      }
+    },
+    "line_current" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지금 경로: {0}"
+          }
+        }
+      }
+    },
+    "list_checked" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "체크 {0}개"
+          }
+        }
+      }
+    },
+    "list_count" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}개"
+          }
+        }
+      }
+    },
+    "list_filtered" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0} 항목만 보는 중"
+          }
+        }
+      }
+    },
+    "list_joiner" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ", "
+          }
+        }
+      }
+    },
+    "list_selected" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "선택 {0}개"
+          }
+        }
+      }
+    },
+    "list_separator" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " · "
+          }
+        }
+      }
+    },
+    "list_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "항목"
+          }
+        }
+      }
+    },
+    "location_missing" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "항목을 찾을 수 없습니다."
+          }
+        }
+      }
+    },
+    "mod_added" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "수정을 추가했습니다."
+          }
+        }
+      }
+    },
+    "mod_disabled" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "수정을 껐습니다."
+          }
+        }
+      }
+    },
+    "mod_enabled" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "수정을 켰습니다."
+          }
+        }
+      }
+    },
+    "mod_moved" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "수정 순서를 바꿨습니다."
+          }
+        }
+      }
+    },
+    "mod_remove_tip" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지우기"
+          }
+        }
+      }
+    },
+    "mod_removed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "수정을 지웠습니다. 실행 취소로 되돌릴 수 있습니다."
+          }
+        }
+      }
+    },
+    "mod_toggle_tip" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "켜기와 끄기"
+          }
+        }
+      }
+    },
+    "mod_updated" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "수정을 고쳤습니다."
+          }
+        }
+      }
+    },
+    "modified_date_format_label" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "수정일 형식"
+          }
+        }
+      }
+    },
+    "mods_all_disabled" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모든 수정을 껐습니다."
+          }
+        }
+      }
+    },
+    "mods_all_enabled" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모든 수정을 켰습니다."
+          }
+        }
+      }
+    },
+    "mods_empty_text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름을 어떻게 바꿀지 수정을 추가하세요."
+          }
+        }
+      }
+    },
+    "mods_empty_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "수정이 없습니다"
+          }
+        }
+      }
+    },
+    "mods_toggle_all_tip" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모든 수정 켜기와 끄기"
+          }
+        }
+      }
+    },
+    "number_digits" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "자릿수"
+          }
+        }
+      }
+    },
+    "number_start" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시작 번호"
+          }
+        }
+      }
+    },
+    "number_step" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "증가값"
+          }
+        }
+      }
+    },
+    "occurrence_all" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모든"
+          }
+        }
+      }
+    },
+    "occurrence_choice_all" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모두"
+          }
+        }
+      }
+    },
+    "occurrence_choice_first" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "처음 나오는 것"
+          }
+        }
+      }
+    },
+    "occurrence_choice_last" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "마지막 것"
+          }
+        }
+      }
+    },
+    "occurrence_choice_nth" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앞에서 N번째"
+          }
+        }
+      }
+    },
+    "occurrence_choice_nth_from_end" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "뒤에서 N번째"
+          }
+        }
+      }
+    },
+    "occurrence_first" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "처음 나오는"
+          }
+        }
+      }
+    },
+    "occurrence_last" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "마지막"
+          }
+        }
+      }
+    },
+    "occurrence_nth" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앞에서 {0}번째"
+          }
+        }
+      }
+    },
+    "occurrence_nth_from_end" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "뒤에서 {0}번째"
+          }
+        }
+      }
+    },
+    "panel_add" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "수정 추가"
+          }
+        }
+      }
+    },
+    "panel_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "수정"
+          }
+        }
+      }
+    },
+    "part_ext" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "확장자"
+          }
+        }
+      }
+    },
+    "part_full" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름과 확장자"
+          }
+        }
+      }
+    },
+    "part_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름"
+          }
+        }
+      }
+    },
+    "part_tip_ext" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "마지막 점 뒤 부분입니다(점 제외). 점으로 시작하는 이름(.gitignore 등)과 폴더에는 확장자가 없습니다."
+          }
+        }
+      }
+    },
+    "part_tip_full" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "점을 포함한 이름 전체입니다."
+          }
+        }
+      }
+    },
+    "part_tip_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "마지막 점 앞 부분입니다. 폴더는 전체가 이름입니다."
+          }
+        }
+      }
+    },
+    "pill_conflict" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "충돌 {0}"
+          }
+        }
+      }
+    },
+    "pill_error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오류 {0}"
+          }
+        }
+      }
+    },
+    "pill_warning" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "경고 {0}"
+          }
+        }
+      }
+    },
+    "place_after_nth" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}의 앞에서 {1}번째 글자 뒤에"
+          }
+        }
+      }
+    },
+    "place_after_text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}에서 {1} {2} 뒤에"
+          }
+        }
+      }
+    },
+    "place_before_nth_from_end" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}의 뒤에서 {1}번째 글자 앞에"
+          }
+        }
+      }
+    },
+    "place_before_text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}에서 {1} {2} 앞에"
+          }
+        }
+      }
+    },
+    "place_end" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0} 맨 끝에"
+          }
+        }
+      }
+    },
+    "place_start" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0} 맨 앞에"
+          }
+        }
+      }
+    },
+    "position_after_nth" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앞에서 N번째 글자 뒤"
+          }
+        }
+      }
+    },
+    "position_after_text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "특정 텍스트 뒤"
+          }
+        }
+      }
+    },
+    "position_all" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전부"
+          }
+        }
+      }
+    },
+    "position_before_nth_from_end" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "뒤에서 N번째 글자 앞"
+          }
+        }
+      }
+    },
+    "position_before_text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "특정 텍스트 앞"
+          }
+        }
+      }
+    },
+    "position_between" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "두 구분 문자 사이"
+          }
+        }
+      }
+    },
+    "position_end" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "맨 끝"
+          }
+        }
+      }
+    },
+    "position_first_n" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앞에서 N글자"
+          }
+        }
+      }
+    },
+    "position_from_nth" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "N번째 글자부터 M글자"
+          }
+        }
+      }
+    },
+    "position_last_n" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "뒤에서 N글자"
+          }
+        }
+      }
+    },
+    "position_start" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "맨 앞"
+          }
+        }
+      }
+    },
+    "position_text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "특정 텍스트"
+          }
+        }
+      }
+    },
+    "problem_created_date_format" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "생성일 형식을 입력하세요."
+          }
+        }
+      }
+    },
+    "problem_end_text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "끝 구분 문자를 입력하세요."
+          }
+        }
+      }
+    },
+    "problem_find_text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "찾을 텍스트를 입력하세요."
+          }
+        }
+      }
+    },
+    "problem_modified_date_format" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "수정일 형식을 입력하세요."
+          }
+        }
+      }
+    },
+    "problem_start_text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시작 구분 문자를 입력하세요."
+          }
+        }
+      }
+    },
+    "problem_targets" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "적용할 항목을 체크하거나 번호를 입력하세요."
+          }
+        }
+      }
+    },
+    "problem_value_direct" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "새 이름을 입력하세요."
+          }
+        }
+      }
+    },
+    "problem_value_insert" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "넣을 값을 입력하세요."
+          }
+        }
+      }
+    },
+    "problem_value_replace" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "새 값을 입력하세요."
+          }
+        }
+      }
+    },
+    "progress_count" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0} / {1}"
+          }
+        }
+      }
+    },
+    "progress_renaming" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름 바꾸는 중"
+          }
+        }
+      }
+    },
+    "progress_reverting" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름 되돌리는 중"
+          }
+        }
+      }
+    },
+    "redone" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다시 실행했습니다."
+          }
+        }
+      }
+    },
+    "rename_choice_prompt" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}개 중 {1}개 항목의 이름을 바꾸지 못했습니다. 처리 방식을 고르세요."
+          }
+        }
+      }
+    },
+    "rename_count_conflict" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "충돌 {0}개"
+          }
+        }
+      }
+    },
+    "rename_count_error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오류 {0}개"
+          }
+        }
+      }
+    },
+    "rename_failed_all" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}개 항목의 이름을 바꾸지 못했습니다."
+          }
+        }
+      }
+    },
+    "rename_not_ready" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "폴더 내용이 바뀌어 다시 검사했습니다. 오류나 충돌을 해결한 뒤 다시 하세요."
+          }
+        }
+      }
+    },
+    "rename_nothing" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "바뀔 항목이 없습니다."
+          }
+        }
+      }
+    },
+    "rename_problems" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0:이/가} 있어 이름을 바꾸지 않았습니다. 첫 문제는 {1}번 항목입니다."
+          }
+        }
+      }
+    },
+    "renamed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}개 항목의 이름을 바꿨습니다."
+          }
+        }
+      }
+    },
+    "renamed_note" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " 다시 적용되지 않게 수정을 모두 껐습니다."
+          }
+        }
+      }
+    },
+    "renamed_partly" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}개 항목의 이름을 바꿨습니다. 실패한 {1}개는 그대로 있습니다."
+          }
+        }
+      }
+    },
+    "result_failed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "작업을 처리하지 못했습니다. ({0})"
+          }
+        }
+      }
+    },
+    "reverted_all" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모든 항목을 실행 전 이름으로 되돌렸습니다."
+          }
+        }
+      }
+    },
+    "row_direct_edit" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름 직접 수정"
+          }
+        }
+      }
+    },
+    "row_open_location" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "탐색기에서 위치 열기"
+          }
+        }
+      }
+    },
+    "row_problems" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}번 항목: {1}"
+          }
+        }
+      }
+    },
+    "row_remove" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "목록에서 빼기"
+          }
+        }
+      }
+    },
+    "sample_ext" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "JPG"
+          }
+        }
+      }
+    },
+    "sample_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IMG_0001"
+          }
+        }
+      }
+    },
+    "scope_all" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모든 항목"
+          }
+        }
+      }
+    },
+    "scope_items" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지정한 항목"
+          }
+        }
+      }
+    },
+    "show_all" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전체 보기"
+          }
+        }
+      }
+    },
+    "size_none" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "—"
+          }
+        }
+      }
+    },
+    "size_unit_auto" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "자동"
+          }
+        }
+      }
+    },
+    "size_unit_b" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "B"
+          }
+        }
+      }
+    },
+    "size_unit_gb" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GB"
+          }
+        }
+      }
+    },
+    "size_unit_kb" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "KB"
+          }
+        }
+      }
+    },
+    "size_unit_label" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "크기 단위"
+          }
+        }
+      }
+    },
+    "size_unit_mb" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MB"
+          }
+        }
+      }
+    },
+    "sort_added" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "추가순"
+          }
+        }
+      }
+    },
+    "sort_ascending" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오름차순"
+          }
+        }
+      }
+    },
+    "sort_custom" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사용자 지정"
+          }
+        }
+      }
+    },
+    "sort_descending" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "내림차순"
+          }
+        }
+      }
+    },
+    "sort_modified" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "수정일순"
+          }
+        }
+      }
+    },
+    "sort_name_natural" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름순 (자연 정렬)"
+          }
+        }
+      }
+    },
+    "sort_name_ordinal" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름순 (문자 순)"
+          }
+        }
+      }
+    },
+    "sort_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "정렬 기준"
+          }
+        }
+      }
+    },
+    "status_conflict" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "충돌"
+          }
+        }
+      }
+    },
+    "status_error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오류"
+          }
+        }
+      }
+    },
+    "status_ok" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "정상"
+          }
+        }
+      }
+    },
+    "status_unchanged" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "변경 없음"
+          }
+        }
+      }
+    },
+    "status_warning" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "경고"
+          }
+        }
+      }
+    },
+    "summary_delete" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0:을/를} 지우기"
+          }
+        }
+      }
+    },
+    "summary_delete_plain" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0} 지우기"
+          }
+        }
+      }
+    },
+    "summary_direct" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}번 항목을 {1:으로/로} 직접 수정"
+          }
+        }
+      }
+    },
+    "summary_direct_unlisted" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "항목을 {0:으로/로} 직접 수정"
+          }
+        }
+      }
+    },
+    "summary_format_case" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0:을/를} {1} 맞추기"
+          }
+        }
+      }
+    },
+    "summary_insert" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0} {1} 넣기"
+          }
+        }
+      }
+    },
+    "summary_pad_digits" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}의 숫자를 {1}자리로 맞추기"
+          }
+        }
+      }
+    },
+    "summary_replace" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0:을/를} {1:으로/로} 바꾸기"
+          }
+        }
+      }
+    },
+    "summary_scope" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " ({0}개)"
+          }
+        }
+      }
+    },
+    "tag_direct" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "직접"
+          }
+        }
+      }
+    },
+    "tag_folder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "폴더"
+          }
+        }
+      }
+    },
+    "target_between" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}에서 {1}{2:과/와} {3} 사이"
+          }
+        }
+      }
+    },
+    "target_between_including" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}에서 {1}{2}부터 {3}까지"
+          }
+        }
+      }
+    },
+    "target_first_n" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}의 앞 {1}글자"
+          }
+        }
+      }
+    },
+    "target_from_beginning" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}의 처음부터 {1}{2} 앞까지"
+          }
+        }
+      }
+    },
+    "target_from_beginning_including" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}의 처음부터 {1}{2}까지"
+          }
+        }
+      }
+    },
+    "target_from_nth" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}의 {1}번째 글자부터 {2}글자"
+          }
+        }
+      }
+    },
+    "target_last_n" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}의 뒤 {1}글자"
+          }
+        }
+      }
+    },
+    "target_text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}에서 {1} {2}"
+          }
+        }
+      }
+    },
+    "target_to_end" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}에서 {1}{2} 뒤부터 끝까지"
+          }
+        }
+      }
+    },
+    "target_to_end_including" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}에서 {1}{2}부터 끝까지"
+          }
+        }
+      }
+    },
+    "target_whole" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0} 전부"
+          }
+        }
+      }
+    },
+    "theme_changed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "화면 모드를 {0:으로/로} 바꿨습니다."
+          }
+        }
+      }
+    },
+    "theme_dark" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "어둡게"
+          }
+        }
+      }
+    },
+    "theme_light" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "밝게"
+          }
+        }
+      }
+    },
+    "theme_system" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시스템 설정 따름"
+          }
+        }
+      }
+    },
+    "theme_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "화면 모드"
+          }
+        }
+      }
+    },
+    "token_created_date" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "생성일"
+          }
+        }
+      }
+    },
+    "token_modified_date" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "수정일"
+          }
+        }
+      }
+    },
+    "token_number" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "번호"
+          }
+        }
+      }
+    },
+    "token_original_name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "원래 이름"
+          }
+        }
+      }
+    },
+    "token_parent_folder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "상위 폴더 이름"
+          }
+        }
+      }
+    },
+    "token_size" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "파일 크기"
+          }
+        }
+      }
+    },
+    "toolbar_add" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "파일 추가"
+          }
+        }
+      }
+    },
+    "toolbar_add_menu" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "추가 메뉴"
+          }
+        }
+      }
+    },
+    "toolbar_clear" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "비우기"
+          }
+        }
+      }
+    },
+    "toolbar_columns" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "열"
+          }
+        }
+      }
+    },
+    "toolbar_duplicate" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "중복 자동 조정"
+          }
+        }
+      }
+    },
+    "toolbar_filter" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보기 필터"
+          }
+        }
+      }
+    },
+    "toolbar_info" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "정보"
+          }
+        }
+      }
+    },
+    "toolbar_panel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "수정 패널"
+          }
+        }
+      }
+    },
+    "toolbar_redo" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다시 실행"
+          }
+        }
+      }
+    },
+    "toolbar_remove" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "빼기"
+          }
+        }
+      }
+    },
+    "toolbar_sort" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "정렬"
+          }
+        }
+      }
+    },
+    "toolbar_theme" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "테마"
+          }
+        }
+      }
+    },
+    "toolbar_theme_menu" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "화면 모드 메뉴"
+          }
+        }
+      }
+    },
+    "toolbar_undo" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "실행 취소"
+          }
+        }
+      }
+    },
+    "undo_done" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{0}개 항목을 실행 전 이름으로 되돌렸습니다."
+          }
+        }
+      }
+    },
+    "undo_done_failed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " 실패한 {0}개는 그대로 있습니다."
+          }
+        }
+      }
+    },
+    "undo_done_skipped" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " 건너뛴 {0}개는 되돌리지 않았습니다."
+          }
+        }
+      }
+    },
+    "undo_nothing" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "되돌릴 수 있는 항목이 없습니다."
+          }
+        }
+      }
+    },
+    "undone" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "실행 취소했습니다."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

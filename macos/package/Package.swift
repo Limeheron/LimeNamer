@@ -6,6 +6,7 @@ let ENGINE_LIB_DIR = Context.packageDirectory + "/../../engine/build/mac-release
 
 let package = Package(
     name: "limenamer",
+    defaultLocalization: "ko",
     platforms: [.macOS(.v14)],
     products: [
         .library(name: "limenamer_view_model", targets: ["limenamer_view_model"]),
@@ -16,6 +17,7 @@ let package = Package(
             name: "limenamer_view_model",
             dependencies: ["limenamer_engine"],
             path: "view_model",
+            resources: [.process("strings/strings.xcstrings")],
             swiftSettings: [.treatAllWarnings(as: .error)],
             linkerSettings: [
                 .unsafeFlags(["-L", ENGINE_LIB_DIR]),
