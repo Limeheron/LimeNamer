@@ -1,0 +1,174 @@
+import Testing
+
+@testable import limenamer_view_model
+
+@MainActor
+struct MOD_LIST_VIEW_MODEL_TESTS
+{
+    @Test func loads_cards_with_summaries() throws
+    {
+        let scenario = try MOD_PANEL_SCENARIO("a.txt", "b.txt", "c.txt")
+        defer {
+            scenario.close()
+        }
+        let a: UInt64 = try scenario.items.id("a.txt")
+        let c: UInt64 = try scenario.items.id("c.txt")
+        _ = try scenario.engine.mod_add(TEST_MODS.INSERT_NEW)
+        try scenario.engine.mod_direct_edit(try scenario.items.id("b.txt"), new_name: "x.txt")
+        _ = try scenario.engine.mod_add("""
+            {"kind":"insert","position":{"type":"end"},"value":[{"text":"_k"}],\
+            "scope":"items","targets":[\(a),\(c)]}
+            """)
+        try scenario.engine.items_remove([c])
+
+        try scenario.load()
+
+        let mods: MOD_LIST_VIEW_MODEL = scenario.mods
+        #expect(mods.cards.map { $0.summary } == [
+            "이름 맨 앞에 \"new_\" 넣기",
+            "2번 항목을 \"x.txt\"로 직접 수정",
+            "이름 맨 끝에 \"_k\" 넣기 (1개)",
+        ])
+        try #require(mods.cards.count == 3)
+        #expect(mods.cards[1].direct)
+        #expect(mods.all_enabled_state == true)
+        #expect(mods.enabled_count == 3)
+    }
+
+    @Test func toggles_and_removes_mods() throws
+    {
+        let scenario = try MOD_PANEL_SCENARIO("a.txt")
+        defer {
+            scenario.close()
+        }
+        _ = try scenario.engine.mod_add(TEST_MODS.INSERT_NEW)
+        _ = try scenario.engine.mod_add(TEST_MODS.INSERT_OLD)
+        try scenario.load()
+        let mods: MOD_LIST_VIEW_MODEL = scenario.mods
+
+        try mods.set_enabled(mods.cards[0], enabled: false)
+        let mixed: Bool? = mods.all_enabled_state
+        try mods.toggle_all()
+        let all_on: Bool? = mods.all_enabled_state
+        try mods.toggle_all()
+        let all_off: Bool? = mods.all_enabled_state
+        try mods.remove(mods.cards[1])
+
+        #expect(mixed == nil)
+        #expect(all_on == true)
+        #expect(all_off == false)
+        #expect(mods.cards.count == 1)
+        #expect(scenario.messages == [
+            "수정을 껐습니다.",
+            "모든 수정을 켰습니다.",
+            "모든 수정을 껐습니다.",
+            "수정을 지웠습니다. 실행 취소로 되돌릴 수 있습니다.",
+        ])
+    }
+
+    @Test func reorders_cards() throws
+    {
+        let scenario = try MOD_PANEL_SCENARIO("a.txt")
+        defer {
+            scenario.close()
+        }
+        let first: UInt64 = try scenario.engine.mod_add(TEST_MODS.INSERT_NEW)
+        let second: UInt64 = try scenario.engine.mod_add(TEST_MODS.INSERT_OLD)
+        try scenario.load()
+        let mods: MOD_LIST_VIEW_MODEL = scenario.mods
+
+        #expect(!mods.can_drop(first, target_id: first, after: true))
+        #expect(!mods.can_drop(first, target_id: second, after: false))
+        #expect(try mods.drop(second, target_id: first, after: false))
+
+        #expect(mods.cards.map { $0.id } == [second, first])
+        #expect(try scenario.first_new_name() == "new_old_a.txt")
+        #expect(scenario.messages == ["수정 순서를 바꿨습니다."])
+    }
+
+    @Test func adds_mod_from_add_page() throws
+    {
+        let scenario = try MOD_PANEL_SCENARIO("a.JPG")
+        defer {
+            scenario.close()
+        }
+        let mods: MOD_LIST_VIEW_MODEL = scenario.mods
+
+        mods.open_add()
+        mods.add_part = .ext
+        let insert: KIND_CARD = mods.kind_cards[0]
+        mods.choose_kind(.replace)
+        let editing: MOD_PAGE = mods.page
+        scenario.editor.value = [VALUE_PIECE(text: "jpeg")]
+        let applied: Bool = try mods.apply()
+
+        #expect(insert == KIND_CARD(kind: .insert, name: "넣기",
+            description: "원하는 위치에 텍스트, 번호, 날짜", example_before: "IMG_0001.JPG",
+            example_after: "IMG_0001.JPG.bak"))
+        #expect(editing == .edit)
+        #expect(applied)
+        #expect(mods.page == .list)
+        #expect(mods.cards.first?.summary == "확장자를 \"jpeg\"로 바꾸기")
+        #expect(try scenario.first_new_name() == "a.jpeg")
+        #expect(scenario.messages == ["수정을 추가했습니다."])
+    }
+
+    @Test func goes_back_to_the_previous_page() throws
+    {
+        let scenario = try MOD_PANEL_SCENARIO("a.txt")
+        defer {
+            scenario.close()
+        }
+        _ = try scenario.engine.mod_add(TEST_MODS.INSERT_NEW)
+        try scenario.load()
+        let mods: MOD_LIST_VIEW_MODEL = scenario.mods
+
+        mods.open_add()
+        mods.add_part = .ext
+        mods.choose_kind(.insert)
+        let new_label: String = mods.back_label
+        mods.go_back()
+        let after_new: MOD_PAGE = mods.page
+        let kept_part: PART = mods.add_part
+        mods.go_back()
+        let after_add: MOD_PAGE = mods.page
+        mods.open_card(mods.cards[0])
+        let edit_label: String = mods.back_label
+        mods.go_back()
+
+        #expect(new_label == "수정 추가")
+        #expect(after_new == .add)
+        #expect(kept_part == .ext)
+        #expect(after_add == .list)
+        #expect(edit_label == "수정 목록")
+        #expect(mods.page == .list)
+        #expect(scenario.messages.isEmpty)
+    }
+
+    @Test func cancels_with_messages() throws
+    {
+        let scenario = try MOD_PANEL_SCENARIO("a.txt")
+        defer {
+            scenario.close()
+        }
+        _ = try scenario.engine.mod_add(TEST_MODS.INSERT_NEW)
+        try scenario.load()
+        let mods: MOD_LIST_VIEW_MODEL = scenario.mods
+
+        mods.open_add()
+        mods.choose_kind(.delete)
+        mods.cancel()
+        mods.open_card(mods.cards[0])
+        mods.cancel()
+        mods.open_card(mods.cards[0])
+        scenario.editor.value = [VALUE_PIECE(text: "x_")]
+        mods.cancel()
+
+        #expect(scenario.messages == [
+            "새 수정을 취소했습니다.",
+            "편집을 취소했습니다.",
+        ])
+        #expect(try scenario.first_new_name() == "new_a.txt")
+        #expect(mods.page == .list)
+    }
+}

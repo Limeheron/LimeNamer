@@ -6,6 +6,7 @@ public final class ITEM_LIST_VIEW_MODEL
 {
     @ObservationIgnored public var selection_requested: ((Set<UInt64>) -> Void)? = nil
     @ObservationIgnored public var reveal_requested: ((UInt64) -> Void)? = nil
+    @ObservationIgnored public var checks_changed: (() -> Void)? = nil
     public private(set) var rows: [ITEM_ROW] = []
     public private(set) var selected_ids: Set<UInt64> = []
     public private(set) var checked_ids: Set<UInt64> = []
@@ -265,17 +266,26 @@ public final class ITEM_LIST_VIEW_MODEL
         number_value = text
         let count = UInt32(all_rows.count)
         guard let list = try? ENGINE.index_list_parse(text, item_count: count) else {
-            number_error = MESSAGES.index_error_text(.syntax, item_count: count)
+            reject_number(.syntax, item_count: count)
             return
         }
         if list.error != .none {
-            number_error = MESSAGES.index_error_text(list.error, item_count: count)
+            reject_number(list.error, item_count: count)
             return
         }
         number_error = ""
         checked_ids.subtract(all_rows.map { $0.item_id })
         checked_ids.formUnion(list.indices.map { all_rows[Int($0) - 1].item_id })
         update_checks()
+    }
+
+    private func reject_number(_ error: INDEX_ERROR, item_count: UInt32)
+    {
+        let text: String = MESSAGES.index_error_text(error, item_count: item_count)
+        if text != number_error {
+            number_error = text
+            checks_changed?()
+        }
     }
 
     private func refresh_checks()
@@ -290,6 +300,7 @@ public final class ITEM_LIST_VIEW_MODEL
             row.is_checked = checked_ids.contains(row.item_id)
             row.is_dimmed = designating && !row.is_checked
         }
+        checks_changed?()
     }
 
     private func write_number_text()

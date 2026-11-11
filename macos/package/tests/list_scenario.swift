@@ -7,7 +7,12 @@ final class LIST_SCENARIO
     let engine: ENGINE
     let list: ITEM_LIST_VIEW_MODEL
 
-    init(_ names: String...) throws
+    convenience init(_ names: String...) throws
+    {
+        try self.init(names: names)
+    }
+
+    init(names: [String]) throws
     {
         temp = try TEMP_FOLDER()
         engine = try ENGINE()
