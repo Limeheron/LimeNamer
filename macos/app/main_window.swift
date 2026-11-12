@@ -33,6 +33,7 @@ struct MAIN_WINDOW: View
             BOTTOM_BAR(main: main)
         }
         .frame(minWidth: 900, minHeight: 560)
+        .background(WINDOW_SETUP())
         .navigationSubtitle(main.list.subtitle_text)
         .toolbar {
             MAIN_TOOLBAR(main: main)
