@@ -20,7 +20,7 @@ struct BOTTOM_BAR: View
                     .foregroundStyle(.secondary)
                 ProgressView(value: status.progress_value)
                     .progressViewStyle(.linear)
-                    .tint(PALETTE.ACCENT_TEXT)
+                    .tint(Color(nsColor: PALETTE.ACCENT_TEXT))
                     .frame(width: 160)
                 Spacer(minLength: 0)
             } else {
@@ -64,22 +64,19 @@ struct BOTTOM_BAR: View
         let status: STATUS_BAR_VIEW_MODEL = main.status
         return HStack(spacing: 2) {
             if status.has_errors {
-                PILL_BUTTON(text: status.error_text, symbol: "xmark.circle",
-                    tint: PALETTE.ERROR_TEXT, back: PALETTE.ERROR_BACK,
+                PILL_BUTTON(text: status.error_text, status: .error,
                     active: status.active_filter == .error) {
                     status.toggle_error()
                 }
             }
             if status.has_conflicts {
-                PILL_BUTTON(text: status.conflict_text, symbol: "arrow.left.arrow.right",
-                    tint: PALETTE.CONFLICT_TEXT, back: PALETTE.CONFLICT_BACK,
+                PILL_BUTTON(text: status.conflict_text, status: .conflict,
                     active: status.active_filter == .conflict) {
                     status.toggle_conflict()
                 }
             }
             if status.has_warnings {
-                PILL_BUTTON(text: status.warning_text, symbol: "exclamationmark.triangle",
-                    tint: PALETTE.WARNING_TEXT, back: PALETTE.WARNING_BACK,
+                PILL_BUTTON(text: status.warning_text, status: .warning,
                     active: status.active_filter == .warning) {
                     status.toggle_warning()
                 }

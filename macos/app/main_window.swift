@@ -5,6 +5,7 @@ import limenamer_view_model
 
 struct MAIN_WINDOW: View
 {
+    private static let LIST_PADDING: CGFloat = 10
     private static let PANEL_WIDTH: CGFloat = 360
     private static let PANEL_MIN_WIDTH: CGFloat = 300
     private static let PROGRESS_INTERVAL: Duration = .milliseconds(50)
@@ -55,8 +56,11 @@ struct MAIN_WINDOW: View
 
     private var list_area: some View
     {
-        Color(nsColor: .controlBackgroundColor)
+        ITEM_TABLE(main: main, rows: main.list.rows,
+            hidden: ITEM_COLUMN.hidden(main.settings, designating: main.list.designating))
+            .padding(.horizontal, MAIN_WINDOW.LIST_PADDING)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(nsColor: .controlBackgroundColor), ignoresSafeAreaEdges: [])
     }
 
     private var panel_area: some View
