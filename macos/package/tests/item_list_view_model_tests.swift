@@ -45,6 +45,7 @@ struct ITEM_LIST_VIEW_MODEL_TESTS
         #expect(scenario.visible_names() == ["c.txt"])
         #expect(!list.can_drag)
         #expect(list.header_text == "5개 · 선택 0개 · 오류 항목만 보는 중")
+        #expect(list.subtitle_text == "항목 5개 · 선택 0개 · 오류 항목만 보는 중")
         list.filter = .conflict
         #expect(scenario.visible_names() == ["b.txt"])
         list.filter = .warning

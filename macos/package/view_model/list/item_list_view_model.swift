@@ -86,17 +86,12 @@ public final class ITEM_LIST_VIEW_MODEL
 
     public var header_text: String
     {
-        var parts: [String] = [JOSA_FORMATTER.format(STRINGS.list_count, all_rows.count)]
-        if designating {
-            parts.append(JOSA_FORMATTER.format(STRINGS.list_checked, live_checked().count))
-        } else {
-            parts.append(JOSA_FORMATTER.format(STRINGS.list_selected, selected_ids.count))
-        }
-        if filter != .all {
-            parts.append(JOSA_FORMATTER.format(STRINGS.list_filtered,
-                ITEM_LIST_VIEW_MODEL.filter_name(filter)))
-        }
-        return parts.joined(separator: STRINGS.list_separator)
+        return header(STRINGS.list_count)
+    }
+
+    public var subtitle_text: String
+    {
+        return header(STRINGS.subtitle_count)
     }
 
     public var check_all_state: Bool?
@@ -321,6 +316,21 @@ public final class ITEM_LIST_VIEW_MODEL
         } else {
             rows = all_rows.filter { ITEM_LIST_VIEW_MODEL.matches($0, filter) }
         }
+    }
+
+    private func header(_ count_format: String) -> String
+    {
+        var parts: [String] = [JOSA_FORMATTER.format(count_format, all_rows.count)]
+        if designating {
+            parts.append(JOSA_FORMATTER.format(STRINGS.list_checked, live_checked().count))
+        } else {
+            parts.append(JOSA_FORMATTER.format(STRINGS.list_selected, selected_ids.count))
+        }
+        if filter != .all {
+            parts.append(JOSA_FORMATTER.format(STRINGS.list_filtered,
+                ITEM_LIST_VIEW_MODEL.filter_name(filter)))
+        }
+        return parts.joined(separator: STRINGS.list_separator)
     }
 
     private static func matches(_ row: ITEM_ROW, _ filter: VIEW_FILTER) -> Bool

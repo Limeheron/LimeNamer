@@ -108,6 +108,7 @@ public enum STRINGS
     public static let filter_error: String = text("filter_error")
     public static let filter_conflict: String = text("filter_conflict")
     public static let list_count: String = text("list_count")
+    public static let subtitle_count: String = text("subtitle_count")
     public static let list_selected: String = text("list_selected")
     public static let list_checked: String = text("list_checked")
     public static let list_filtered: String = text("list_filtered")

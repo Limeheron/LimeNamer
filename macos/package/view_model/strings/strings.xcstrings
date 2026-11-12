@@ -3411,6 +3411,17 @@
         }
       }
     },
+    "subtitle_count" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "항목 {0}개"
+          }
+        }
+      }
+    },
     "summary_delete" : {
       "extractionState" : "manual",
       "localizations" : {

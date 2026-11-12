@@ -306,6 +306,9 @@
     <data name="list_count" xml:space="preserve">
         <value>{0}개</value>
     </data>
+    <data name="subtitle_count" xml:space="preserve">
+        <value>항목 {0}개</value>
+    </data>
     <data name="list_selected" xml:space="preserve">
         <value>선택 {0}개</value>
     </data>
