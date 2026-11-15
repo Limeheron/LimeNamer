@@ -22,7 +22,9 @@ final class ITEM_TABLE_CONTROLLER: NSObject, NSTableViewDataSource, NSTableViewD
     let scroll_view: DROP_SCROLL_VIEW = DROP_SCROLL_VIEW()
     let table: ITEM_TABLE_VIEW = ITEM_TABLE_VIEW()
     private let main: MAIN_VIEW_MODEL
-    private let drop_line: DROP_LINE_VIEW = DROP_LINE_VIEW()
+    private lazy var indicator: DROP_INDICATOR = DROP_INDICATOR(table: table,
+        scroll_view: scroll_view, left: ITEM_TABLE_CONTROLLER.DROP_LINE_LEFT,
+        right: ITEM_TABLE_CONTROLLER.DROP_LINE_RIGHT)
     private let autoscroller: DRAG_AUTOSCROLLER = DRAG_AUTOSCROLLER()
     private var rows: [ITEM_ROW] = []
     private var checked: Set<UInt64> = []
@@ -387,7 +389,6 @@ final class ITEM_TABLE_CONTROLLER: NSObject, NSTableViewDataSource, NSTableViewD
         }
         table.setDraggingSourceOperationMask(.move, forLocal: true)
         table.setDraggingSourceOperationMask([], forLocal: false)
-        drop_line.isHidden = true
         setup_drop()
         scroll_view.documentView = table
         scroll_view.hasVerticalScroller = true
@@ -451,7 +452,7 @@ final class ITEM_TABLE_CONTROLLER: NSObject, NSTableViewDataSource, NSTableViewD
     {
         drop_point = nil
         drop_gap = -1
-        drop_line.isHidden = true
+        indicator.hide()
     }
 
     private func refresh_drop() -> Bool
@@ -459,7 +460,7 @@ final class ITEM_TABLE_CONTROLLER: NSObject, NSTableViewDataSource, NSTableViewD
         guard let ids = drag_ids, let point = drop_point else {
             return false
         }
-        let gap: Int = gap_at(point)
+        let gap: Int = indicator.gap(at: point)
         if gap != drop_gap {
             drop_gap = gap
             drop_valid = slot(gap).map { slot in
@@ -467,9 +468,9 @@ final class ITEM_TABLE_CONTROLLER: NSObject, NSTableViewDataSource, NSTableViewD
             } ?? false
         }
         if drop_valid {
-            show_drop_line(gap)
+            indicator.show(gap)
         } else {
-            drop_line.isHidden = true
+            indicator.hide()
         }
         return drop_valid
     }
@@ -515,35 +516,6 @@ final class ITEM_TABLE_CONTROLLER: NSObject, NSTableViewDataSource, NSTableViewD
         }
     }
 
-    private func gap_at(_ window_point: NSPoint) -> Int
-    {
-        if rows.isEmpty {
-            return 0
-        }
-        let clip: NSClipView = scroll_view.contentView
-        let top: CGFloat = clip.bounds.minY + clip.contentInsets.top
-        let bottom: CGFloat = clip.bounds.maxY - clip.contentInsets.bottom
-        let point: NSPoint = table.convert(window_point, from: nil)
-        let y: CGFloat = min(max(point.y, top + 1), bottom - 1)
-        let row: Int = table.row(at: NSPoint(x: table.visibleRect.midX, y: y))
-        var gap: Int = rows.count
-        if row >= 0 {
-            gap = y > table.rect(ofRow: row).midY ? row + 1 : row
-        }
-        if gap < rows.count && gap_y(gap) < top - 1 {
-            gap += 1
-        } else if gap > 0 && gap_y(gap) > bottom + 1 {
-            gap -= 1
-        }
-        return gap
-    }
-
-    private func gap_y(_ gap: Int) -> CGFloat
-    {
-        return gap < rows.count ? table.rect(ofRow: gap).minY
-            : table.rect(ofRow: rows.count - 1).maxY
-    }
-
     private func slot(_ gap: Int) -> (target_id: UInt64, after: Bool)?
     {
         if rows.isEmpty || gap < 0 || gap > rows.count {
@@ -553,21 +525,6 @@ final class ITEM_TABLE_CONTROLLER: NSObject, NSTableViewDataSource, NSTableViewD
             return (rows[0].item_id, false)
         }
         return (rows[gap - 1].item_id, true)
-    }
-
-    private func show_drop_line(_ gap: Int)
-    {
-        let half: CGFloat = DROP_LINE_VIEW.HEIGHT / 2
-        let y: CGFloat = min(max(gap_y(gap), half), max(half, table.bounds.height - half))
-        let left: CGFloat = ITEM_TABLE_CONTROLLER.DROP_LINE_LEFT
-        let width: CGFloat = max(0,
-            table.bounds.width - left - ITEM_TABLE_CONTROLLER.DROP_LINE_RIGHT)
-        drop_line.frame = NSRect(x: left, y: y - half, width: width,
-            height: DROP_LINE_VIEW.HEIGHT)
-        if table.subviews.last !== drop_line {
-            table.addSubview(drop_line, positioned: .above, relativeTo: nil)
-        }
-        drop_line.isHidden = false
     }
 
     private static func name_range(_ text: String, is_dir: Bool) -> NSRange

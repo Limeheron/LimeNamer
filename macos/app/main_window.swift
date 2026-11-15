@@ -69,8 +69,7 @@ struct MAIN_WINDOW: View
 
     private var panel_area: some View
     {
-        Color(nsColor: .windowBackgroundColor)
-            .frame(maxHeight: .infinity)
+        MOD_PANEL(main: main)
     }
 
     private static func panel_limit(_ total_width: CGFloat) -> ClosedRange<CGFloat>
