@@ -22,11 +22,8 @@ bool MOD_STORE::update(uint64_t id, MODIFICATION mod)
         return false;
     }
     MOD_ENTRY &entry = entries_[*index];
-    if (mod.kind != entry.mod.kind) {
-        throw std::invalid_argument("modification kind cannot change");
-    }
     normalize(mod);
-    mod.direct = entry.mod.direct;
+    mod.direct = false;
     entry.mod = std::move(mod);
     return true;
 }

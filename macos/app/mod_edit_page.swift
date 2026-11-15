@@ -21,6 +21,7 @@ struct MOD_EDIT_PAGE: View
                     main.mods.go_back()
                 }
                 Spacer()
+                STATE_BADGE(text: main.mods.badge_text, existing: main.mods.is_existing)
             }
             ScrollViewReader { proxy in
                 ScrollView {
@@ -54,7 +55,7 @@ struct MOD_EDIT_PAGE: View
             Button {
                 MOD_ACTIONS.apply(main)
             } label: {
-                Text(STRINGS.button_apply)
+                Text(main.mods.apply_label)
                     .frame(minWidth: MOD_EDIT_PAGE.BUTTON_WIDTH)
             }
             .keyboardShortcut(.defaultAction)

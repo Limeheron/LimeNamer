@@ -74,6 +74,10 @@ internal static unsafe partial class NATIVE_METHODS
         ulong before_mod_id, LN_EXAMPLE **example);
 
     [LibraryImport(LIBRARY)]
+    internal static partial int ln_mod_sample(SESSION_HANDLE session, byte *json,
+        LN_EXAMPLE **example);
+
+    [LibraryImport(LIBRARY)]
     internal static partial int ln_options_get(SESSION_HANDLE session, byte **json);
 
     [LibraryImport(LIBRARY)]

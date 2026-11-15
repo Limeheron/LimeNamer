@@ -176,6 +176,15 @@ public sealed unsafe class ENGINE : IDisposable
         return NATIVE_READER.take_example(example);
     }
 
+    public EXAMPLE mod_sample(string json)
+    {
+        LN_EXAMPLE *example = null;
+        fixed (byte *text = UTF8_INPUT.encode(json)) {
+            check(NATIVE_METHODS.ln_mod_sample(handle_, text, &example));
+        }
+        return NATIVE_READER.take_example(example);
+    }
+
     public string options_get()
     {
         byte *json = null;

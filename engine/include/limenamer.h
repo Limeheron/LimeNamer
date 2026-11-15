@@ -283,6 +283,7 @@ LN_API LN_RESULT ln_mod_direct_edit(LN_SESSION *session, uint64_t item_id,
 LN_API LN_RESULT ln_mod_check(LN_SESSION *session, const char *json, LN_PROBLEMS **out);
 LN_API LN_RESULT ln_mod_example(LN_SESSION *session, const char *json, uint64_t before_mod_id,
     LN_EXAMPLE **out);
+LN_API LN_RESULT ln_mod_sample(LN_SESSION *session, const char *json, LN_EXAMPLE **out);
 LN_API LN_RESULT ln_options_get(LN_SESSION *session, char **json);
 LN_API LN_RESULT ln_options_set(LN_SESSION *session, const char *json);
 

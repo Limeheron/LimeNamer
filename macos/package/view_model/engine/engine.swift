@@ -161,6 +161,15 @@ public final class ENGINE: @unchecked Sendable
         return try NATIVE_READER.take_example(example)
     }
 
+    public func mod_sample(_ json: String) throws(ENGINE_ERROR) -> EXAMPLE
+    {
+        var example: UnsafeMutablePointer<LN_EXAMPLE>? = nil
+        try ENGINE.check(try UTF8_INPUT.with_c_string(json) {
+            ln_mod_sample(session, $0, &example)
+        })
+        return try NATIVE_READER.take_example(example)
+    }
+
     public func options_get() throws(ENGINE_ERROR) -> String
     {
         var json: UnsafeMutablePointer<CChar>? = nil

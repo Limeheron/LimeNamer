@@ -96,6 +96,123 @@
             <Setter Property="Padding" Value="6,0,10,0" />
             <Setter Property="HorizontalAlignment" Value="Left" />
         </Style>
+        <local:SAME_CONVERTER x:Key="same" />
+        <TextDecorationCollection x:Key="dotted_underline">
+            <TextDecoration Location="Underline" PenOffset="2">
+                <TextDecoration.Pen>
+                    <Pen Thickness="1" Brush="Gray" DashStyle="{x:Static DashStyles.Dot}" />
+                </TextDecoration.Pen>
+            </TextDecoration>
+        </TextDecorationCollection>
+        <ItemsPanelTemplate x:Key="pieces_panel">
+            <StackPanel Orientation="Horizontal" />
+        </ItemsPanelTemplate>
+        <DataTemplate x:Key="sample_piece">
+            <Grid>
+                <TextBlock x:Name="piece" Text="{Binding text}" FontSize="12"
+                           FontFamily="{StaticResource name_font}" />
+                <Border x:Name="caret" Width="2" Height="13" Margin="1,0" CornerRadius="1"
+                        VerticalAlignment="Center" Visibility="Collapsed"
+                        Background="{DynamicResource accent_text_brush}" />
+            </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding style}" Value="{x:Static vm:SAMPLE_STYLE.mark}">
+                    <Setter TargetName="piece" Property="FontWeight" Value="Bold" />
+                    <Setter TargetName="piece" Property="Foreground"
+                            Value="{DynamicResource accent_text_brush}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding style}" Value="{x:Static vm:SAMPLE_STYLE.removed}">
+                    <Setter TargetName="piece" Property="FontWeight" Value="Bold" />
+                    <Setter TargetName="piece" Property="Foreground"
+                            Value="{DynamicResource status_error_brush}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding style}" Value="{x:Static vm:SAMPLE_STYLE.anchor}">
+                    <Setter TargetName="piece" Property="FontWeight" Value="Bold" />
+                    <Setter TargetName="piece" Property="TextDecorations"
+                            Value="{StaticResource dotted_underline}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding style}"
+                             Value="{x:Static vm:SAMPLE_STYLE.mark_anchor}">
+                    <Setter TargetName="piece" Property="FontWeight" Value="Bold" />
+                    <Setter TargetName="piece" Property="Foreground"
+                            Value="{DynamicResource accent_text_brush}" />
+                    <Setter TargetName="piece" Property="TextDecorations"
+                            Value="{StaticResource dotted_underline}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding style}" Value="{x:Static vm:SAMPLE_STYLE.caret}">
+                    <Setter TargetName="piece" Property="Visibility" Value="Collapsed" />
+                    <Setter TargetName="caret" Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        <Style x:Key="panel_rule" TargetType="Border">
+            <Setter Property="Height" Value="1" />
+            <Setter Property="Margin" Value="0,14,0,0" />
+            <Setter Property="Background"
+                    Value="{DynamicResource DividerStrokeColorDefaultBrush}" />
+        </Style>
+        <Style x:Key="state_badge" TargetType="Border">
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="Padding" Value="8,1" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding mods.is_existing}" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource accent_soft_brush}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="state_badge_text" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11.5" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding mods.is_existing}" Value="True">
+                    <Setter Property="FontWeight" Value="SemiBold" />
+                    <Setter Property="Foreground" Value="{DynamicResource accent_text_brush}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="kind_header" TargetType="TextBlock">
+            <Setter Property="Margin" Value="2,16,2,0" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+        <Style x:Key="position_tile" TargetType="Button">
+            <Setter Property="Margin" Value="0,0,6,6" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="back" CornerRadius="6" Padding="10,8" BorderThickness="1"
+                                Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="back" Property="Background"
+                                        Value="{DynamicResource ControlFillColorSecondaryBrush}" />
+                            </Trigger>
+                            <DataTrigger Value="True">
+                                <DataTrigger.Binding>
+                                    <MultiBinding Converter="{StaticResource same}">
+                                        <Binding Path="type" />
+                                        <Binding Path="DataContext.position_type"
+                                                 RelativeSource="{RelativeSource
+                                                     AncestorType=ItemsControl}" />
+                                    </MultiBinding>
+                                </DataTrigger.Binding>
+                                <Setter TargetName="back" Property="BorderThickness" Value="2" />
+                                <Setter TargetName="back" Property="Padding" Value="9,7" />
+                                <Setter TargetName="back" Property="BorderBrush"
+                                        Value="{DynamicResource accent_text_brush}" />
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
 
     <Grid IsEnabled="{Binding can_edit}">
@@ -214,66 +331,84 @@
         <DockPanel Visibility="{Binding mods.page, Converter={StaticResource equals},
                        ConverterParameter={x:Static vm:MOD_PAGE.add}}">
             <Border DockPanel.Dock="Top" Style="{StaticResource panel_header}">
-                <Button Style="{StaticResource back_button}" Click="close_add_click">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource icon_text}" Text="&#xE72B;" />
-                        <TextBlock Margin="6,0,0,0" VerticalAlignment="Center"
-                                   Text="{x:Static vm:STRINGS.back_to_list}" />
-                    </StackPanel>
-                </Button>
+                <DockPanel>
+                    <Border DockPanel.Dock="Right" Style="{StaticResource state_badge}">
+                        <TextBlock Style="{StaticResource state_badge_text}"
+                                   Text="{Binding mods.badge_text}" />
+                    </Border>
+                    <Button Style="{StaticResource back_button}" Click="back_click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource icon_text}" Text="&#xE72B;" />
+                            <TextBlock Margin="6,0,0,0" VerticalAlignment="Center"
+                                       Text="{Binding mods.add_back_label}" />
+                        </StackPanel>
+                    </Button>
+                </DockPanel>
             </Border>
             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <StackPanel Margin="12,0,12,12">
-                    <TextBlock Style="{StaticResource field_label}"
-                               Text="{x:Static vm:STRINGS.add_part_title}" />
+                <StackPanel Margin="12,8,12,12">
                     <Border Style="{StaticResource segment_group}">
                         <UniformGrid Rows="1">
-                            <RadioButton Style="{StaticResource segment}" GroupName="add_part"
-                                         Content="{x:Static vm:STRINGS.part_name}"
-                                         ToolTip="{x:Static vm:STRINGS.part_tip_name}"
-                                         IsChecked="{Binding mods.add_part,
+                            <RadioButton Style="{StaticResource segment}" GroupName="add_kind"
+                                         Content="{x:Static vm:STRINGS.kind_insert}"
+                                         IsChecked="{Binding mods.add_kind,
                                              Converter={StaticResource equals},
-                                             ConverterParameter={x:Static vm:PART.name}}" />
-                            <RadioButton Style="{StaticResource segment}" GroupName="add_part"
-                                         Content="{x:Static vm:STRINGS.part_ext}"
-                                         ToolTip="{x:Static vm:STRINGS.part_tip_ext}"
-                                         IsChecked="{Binding mods.add_part,
+                                             ConverterParameter={x:Static vm:MOD_KIND.insert}}" />
+                            <RadioButton Style="{StaticResource segment}" GroupName="add_kind"
+                                         Content="{x:Static vm:STRINGS.kind_delete}"
+                                         IsChecked="{Binding mods.add_kind,
                                              Converter={StaticResource equals},
-                                             ConverterParameter={x:Static vm:PART.ext}}" />
-                            <RadioButton Style="{StaticResource segment}" GroupName="add_part"
-                                         Content="{x:Static vm:STRINGS.part_full}"
-                                         ToolTip="{x:Static vm:STRINGS.part_tip_full}"
-                                         IsChecked="{Binding mods.add_part,
+                                             ConverterParameter={x:Static vm:MOD_KIND.delete}}" />
+                            <RadioButton Style="{StaticResource segment}" GroupName="add_kind"
+                                         Content="{x:Static vm:STRINGS.kind_replace}"
+                                         IsChecked="{Binding mods.add_kind,
                                              Converter={StaticResource equals},
-                                             ConverterParameter={x:Static vm:PART.full}}" />
+                                             ConverterParameter={x:Static vm:MOD_KIND.replace}}" />
+                            <RadioButton Style="{StaticResource segment}" GroupName="add_kind"
+                                         Content="{x:Static vm:STRINGS.kind_format}"
+                                         IsChecked="{Binding mods.add_kind,
+                                             Converter={StaticResource equals},
+                                             ConverterParameter={x:Static vm:MOD_KIND.format}}" />
                         </UniformGrid>
                     </Border>
-                    <TextBlock Style="{StaticResource field_label}"
-                               Text="{x:Static vm:STRINGS.add_kind_title}" />
-                    <ItemsControl ItemsSource="{Binding mods.kind_cards}">
+                    <TextBlock Style="{StaticResource kind_header}"
+                               Text="{Binding mods.kind_header.description}" />
+                    <StackPanel Orientation="Horizontal" Margin="2,8,2,0">
+                        <TextBlock FontFamily="{StaticResource name_font}" FontSize="12.5"
+                                   Text="{Binding mods.kind_header.example_before}" />
+                        <TextBlock Style="{StaticResource icon_text}" FontSize="10" Margin="6,0"
+                                   Text="&#xE72A;" />
+                        <TextBlock FontFamily="{StaticResource name_font}" FontSize="12.5"
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource accent_text_brush}"
+                                   Text="{Binding mods.kind_header.example_after}" />
+                    </StackPanel>
+                    <Border Style="{StaticResource panel_rule}" />
+                    <ItemsControl Margin="0,14,0,0" ItemsSource="{Binding mods.position_cards}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Button Margin="0,0,0,6" Padding="12,10"
                                         HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Stretch"
-                                        Tag="{Binding kind}" Click="kind_click">
+                                        Tag="{Binding type}" Click="position_card_click">
                                     <StackPanel>
-                                        <TextBlock Text="{Binding name}" FontWeight="SemiBold" />
+                                        <TextBlock Text="{Binding label}" FontWeight="SemiBold" />
                                         <TextBlock Margin="0,2,0,6" FontSize="12"
                                                    Style="{StaticResource secondary_text}"
                                                    Text="{Binding description}" />
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock FontFamily="{StaticResource name_font}"
-                                                       FontSize="12"
-                                                       Text="{Binding example_before}" />
+                                            <ItemsControl ItemsSource="{Binding before}"
+                                              ItemTemplate="{StaticResource sample_piece}"
+                                              ItemsPanel="{StaticResource pieces_panel}" />
                                             <TextBlock Style="{StaticResource icon_text}"
                                                        FontSize="10" Margin="6,0"
-                                                       Text="&#xE72A;" />
-                                            <TextBlock FontFamily="{StaticResource name_font}"
-                                                       FontSize="12"
-                                                       Foreground="{DynamicResource
-                                                           accent_text_brush}"
-                                                       Text="{Binding example_after}" />
+                                                       Text="&#xE72A;"
+                                                       Visibility="{Binding shows_after,
+                                                           Converter={StaticResource
+                                                               visible_when}}" />
+                                            <ItemsControl ItemsSource="{Binding after}"
+                                              ItemTemplate="{StaticResource sample_piece}"
+                                              ItemsPanel="{StaticResource pieces_panel}" />
                                         </StackPanel>
                                     </StackPanel>
                                 </Button>
@@ -288,18 +423,24 @@
                        Converter={StaticResource equals},
                        ConverterParameter={x:Static vm:MOD_PAGE.edit}}">
             <Border DockPanel.Dock="Top" Style="{StaticResource panel_header}">
-                <Button Style="{StaticResource back_button}" Click="back_click">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource icon_text}" Text="&#xE72B;" />
-                        <TextBlock Margin="6,0,0,0" VerticalAlignment="Center"
-                                   Text="{Binding mods.back_label}" />
-                    </StackPanel>
-                </Button>
+                <DockPanel>
+                    <Border DockPanel.Dock="Right" Style="{StaticResource state_badge}">
+                        <TextBlock Style="{StaticResource state_badge_text}"
+                                   Text="{Binding mods.badge_text}" />
+                    </Border>
+                    <Button Style="{StaticResource back_button}" Click="back_click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource icon_text}" Text="&#xE72B;" />
+                            <TextBlock Margin="6,0,0,0" VerticalAlignment="Center"
+                                       Text="{Binding mods.back_label}" />
+                        </StackPanel>
+                    </Button>
+                </DockPanel>
             </Border>
 
             <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="12">
                 <Button Style="{StaticResource accent_button}" Margin="0,0,4,0"
-                        Content="{x:Static vm:STRINGS.button_apply}" Click="apply_click" />
+                        Content="{Binding mods.apply_label}" Click="apply_click" />
                 <Button Margin="4,0,0,0" Height="32" HorizontalAlignment="Stretch"
                         Content="{x:Static vm:STRINGS.button_cancel}" Click="cancel_click" />
             </UniformGrid>
@@ -335,23 +476,25 @@
                                    Style="{StaticResource secondary_text}"
                                    Text="{x:Static vm:STRINGS.example_before}" />
                         <TextBlock Grid.Row="0" Grid.Column="1" TextTrimming="CharacterEllipsis"
-                                   FontFamily="{StaticResource name_font}">
-                            <Run Text="{Binding mods.editor.example_before_head, Mode=OneWay}" />
-                            <Run Text="{Binding mods.editor.example_before_mark, Mode=OneWay}"
-                                 Background="{DynamicResource delete_back_brush}" />
-                            <Run Text="{Binding mods.editor.example_before_tail, Mode=OneWay}" />
-                        </TextBlock>
+                                   FontFamily="{StaticResource name_font}"><Run
+                            Text="{Binding mods.editor.example_before_head, Mode=OneWay}" /><Run
+                            Text="{Binding mods.editor.example_before_mark, Mode=OneWay}"
+                            FontWeight="Bold"
+                            Foreground="{DynamicResource status_error_brush}" /><Run
+                            Text="{Binding mods.editor.example_before_tail, Mode=OneWay}"
+                            /></TextBlock>
                         <TextBlock Grid.Row="1" Margin="0,4,0,0" FontSize="12"
                                    Style="{StaticResource secondary_text}"
                                    Text="{x:Static vm:STRINGS.example_after}" />
                         <TextBlock Grid.Row="1" Grid.Column="1" Margin="0,4,0,0"
                                    TextTrimming="CharacterEllipsis"
-                                   FontFamily="{StaticResource name_font}">
-                            <Run Text="{Binding mods.editor.example_after_head, Mode=OneWay}" />
-                            <Run Text="{Binding mods.editor.example_after_mark, Mode=OneWay}"
-                                 Background="{DynamicResource mark_back_brush}" />
-                            <Run Text="{Binding mods.editor.example_after_tail, Mode=OneWay}" />
-                        </TextBlock>
+                                   FontFamily="{StaticResource name_font}"><Run
+                            Text="{Binding mods.editor.example_after_head, Mode=OneWay}" /><Run
+                            Text="{Binding mods.editor.example_after_mark, Mode=OneWay}"
+                            FontWeight="Bold"
+                            Foreground="{DynamicResource accent_text_brush}" /><Run
+                            Text="{Binding mods.editor.example_after_tail, Mode=OneWay}"
+                            /></TextBlock>
                         <TextBlock Grid.Row="2" Grid.Column="1" Margin="0,4,0,0" FontSize="12"
                                    Foreground="{DynamicResource status_warning_brush}"
                                    Text="{Binding mods.editor.example_state_text}"
@@ -363,65 +506,65 @@
 
             <ScrollViewer x:Name="edit_scroller" VerticalScrollBarVisibility="Auto">
                 <StackPanel Margin="12,4,12,12" DataContext="{Binding mods.editor}">
-                    <Border Margin="0,10,0,0" Padding="10,8" Style="{StaticResource panel_card}">
-                        <TextBlock Text="{Binding summary}" TextWrapping="Wrap"
-                                   FontWeight="SemiBold" />
-                    </Border>
-
-                    <TextBlock Style="{StaticResource field_label}"
-                               Text="{x:Static vm:STRINGS.field_scope}" />
-                    <StackPanel Orientation="Horizontal">
-                        <RadioButton GroupName="scope" Margin="0,0,20,0"
-                                     Content="{x:Static vm:STRINGS.scope_all}"
-                                     IsChecked="{Binding scope, Converter={StaticResource equals},
-                                         ConverterParameter={x:Static vm:SCOPE.all}}" />
-                        <RadioButton GroupName="scope"
-                                     Content="{x:Static vm:STRINGS.scope_items}"
-                                     IsChecked="{Binding scope, Converter={StaticResource equals},
-                                         ConverterParameter={x:Static vm:SCOPE.items}}" />
-                    </StackPanel>
-                    <TextBox x:Name="number_box" Margin="0,8,0,0"
-                             Style="{StaticResource field_box}"
-                             Text="{Binding DataContext.list.number_text,
-                                 RelativeSource={RelativeSource AncestorType=UserControl},
-                                 UpdateSourceTrigger=PropertyChanged}"
-                             Tag="{Binding targets_problem}"
-                             Visibility="{Binding scope, Converter={StaticResource equals},
-                                 ConverterParameter={x:Static vm:SCOPE.items}}" />
-
-                    <TextBlock Style="{StaticResource field_label}"
-                               Text="{x:Static vm:STRINGS.field_part}" />
-                    <Border Style="{StaticResource segment_group}">
+                    <Border Margin="0,4,0,0" Style="{StaticResource segment_group}">
                         <UniformGrid Rows="1">
-                            <RadioButton Style="{StaticResource segment}" GroupName="part"
-                                         Content="{x:Static vm:STRINGS.part_name}"
-                                         ToolTip="{x:Static vm:STRINGS.part_tip_name}"
-                                         IsChecked="{Binding part,
+                            <RadioButton Style="{StaticResource segment}" GroupName="edit_kind"
+                                         Content="{x:Static vm:STRINGS.kind_insert}"
+                                         IsChecked="{Binding DataContext.mods.edit_kind,
+                                             RelativeSource={RelativeSource
+                                                 AncestorType=UserControl},
                                              Converter={StaticResource equals},
-                                             ConverterParameter={x:Static vm:PART.name}}" />
-                            <RadioButton Style="{StaticResource segment}" GroupName="part"
-                                         Content="{x:Static vm:STRINGS.part_ext}"
-                                         ToolTip="{x:Static vm:STRINGS.part_tip_ext}"
-                                         IsChecked="{Binding part,
+                                             ConverterParameter={x:Static vm:MOD_KIND.insert}}" />
+                            <RadioButton Style="{StaticResource segment}" GroupName="edit_kind"
+                                         Content="{x:Static vm:STRINGS.kind_delete}"
+                                         IsChecked="{Binding DataContext.mods.edit_kind,
+                                             RelativeSource={RelativeSource
+                                                 AncestorType=UserControl},
                                              Converter={StaticResource equals},
-                                             ConverterParameter={x:Static vm:PART.ext}}" />
-                            <RadioButton Style="{StaticResource segment}" GroupName="part"
-                                         Content="{x:Static vm:STRINGS.part_full}"
-                                         ToolTip="{x:Static vm:STRINGS.part_tip_full}"
-                                         IsChecked="{Binding part,
+                                             ConverterParameter={x:Static vm:MOD_KIND.delete}}" />
+                            <RadioButton Style="{StaticResource segment}" GroupName="edit_kind"
+                                         Content="{x:Static vm:STRINGS.kind_replace}"
+                                         IsChecked="{Binding DataContext.mods.edit_kind,
+                                             RelativeSource={RelativeSource
+                                                 AncestorType=UserControl},
                                              Converter={StaticResource equals},
-                                             ConverterParameter={x:Static vm:PART.full}}" />
+                                             ConverterParameter={x:Static vm:MOD_KIND.replace}}" />
+                            <RadioButton Style="{StaticResource segment}" GroupName="edit_kind"
+                                         Content="{x:Static vm:STRINGS.kind_format}"
+                                         IsChecked="{Binding DataContext.mods.edit_kind,
+                                             RelativeSource={RelativeSource
+                                                 AncestorType=UserControl},
+                                             Converter={StaticResource equals},
+                                             ConverterParameter={x:Static vm:MOD_KIND.format}}" />
                         </UniformGrid>
                     </Border>
-                    <TextBlock x:Name="part_sample" Margin="2,6,0,0" FontSize="12"
-                               FontFamily="{StaticResource name_font}"
-                               Style="{StaticResource secondary_text}" />
+
+                    <TextBlock Style="{StaticResource kind_header}" Text="{Binding summary}" />
 
                     <TextBlock Style="{StaticResource field_label}"
                                Text="{x:Static vm:STRINGS.field_position}" />
-                    <ComboBox ItemsSource="{Binding position_choices}" DisplayMemberPath="label"
-                              SelectedValuePath="value" HorizontalAlignment="Stretch"
-                              SelectedValue="{Binding position_type}" />
+                    <ItemsControl ItemsSource="{Binding position_tiles}" Margin="0,0,-6,0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="2" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Style="{StaticResource position_tile}" Tag="{Binding type}"
+                                        Click="position_tile_click">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding label}" FontSize="12"
+                                                   FontWeight="SemiBold" TextWrapping="Wrap" />
+                                        <ItemsControl Margin="0,4,0,0"
+                                                      ItemsSource="{Binding tile}"
+                                                      ItemTemplate="{StaticResource sample_piece}"
+                                                      ItemsPanel="{StaticResource pieces_panel}" />
+                                    </StackPanel>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                     <StackPanel Orientation="Horizontal" Margin="0,8,0,0"
                                 Visibility="{Binding shows_n,
                                     Converter={StaticResource visible_when}}">
@@ -498,6 +641,8 @@
                                       SelectedValue="{Binding occurrence}" />
                         </DockPanel>
                     </StackPanel>
+
+                    <Border Style="{StaticResource panel_rule}" />
 
                     <StackPanel Visibility="{Binding shows_value,
                                     Converter={StaticResource visible_when}}">
@@ -621,6 +766,59 @@
                                          UpdateSourceTrigger=PropertyChanged}" />
                         </StackPanel>
                     </StackPanel>
+                    <Border Style="{StaticResource panel_rule}"
+                            Visibility="{Binding shows_value_or_format,
+                                Converter={StaticResource visible_when}}" />
+
+                    <TextBlock Style="{StaticResource field_label}"
+                               Text="{x:Static vm:STRINGS.field_part}" />
+                    <Border Style="{StaticResource segment_group}">
+                        <UniformGrid Rows="1">
+                            <RadioButton Style="{StaticResource segment}" GroupName="part"
+                                         Content="{x:Static vm:STRINGS.part_name}"
+                                         ToolTip="{x:Static vm:STRINGS.part_tip_name}"
+                                         IsChecked="{Binding part,
+                                             Converter={StaticResource equals},
+                                             ConverterParameter={x:Static vm:PART.name}}" />
+                            <RadioButton Style="{StaticResource segment}" GroupName="part"
+                                         Content="{x:Static vm:STRINGS.part_ext}"
+                                         ToolTip="{x:Static vm:STRINGS.part_tip_ext}"
+                                         IsChecked="{Binding part,
+                                             Converter={StaticResource equals},
+                                             ConverterParameter={x:Static vm:PART.ext}}" />
+                            <RadioButton Style="{StaticResource segment}" GroupName="part"
+                                         Content="{x:Static vm:STRINGS.part_full}"
+                                         ToolTip="{x:Static vm:STRINGS.part_tip_full}"
+                                         IsChecked="{Binding part,
+                                             Converter={StaticResource equals},
+                                             ConverterParameter={x:Static vm:PART.full}}" />
+                        </UniformGrid>
+                    </Border>
+                    <TextBlock x:Name="part_sample" Margin="2,6,0,0" FontSize="12"
+                               FontFamily="{StaticResource name_font}"
+                               Style="{StaticResource secondary_text}" />
+
+                    <TextBlock Style="{StaticResource field_label}"
+                               Text="{x:Static vm:STRINGS.field_scope}" />
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton GroupName="scope" Margin="0,0,20,0"
+                                     Content="{x:Static vm:STRINGS.scope_all}"
+                                     IsChecked="{Binding scope, Converter={StaticResource equals},
+                                         ConverterParameter={x:Static vm:SCOPE.all}}" />
+                        <RadioButton GroupName="scope"
+                                     Content="{x:Static vm:STRINGS.scope_items}"
+                                     IsChecked="{Binding scope, Converter={StaticResource equals},
+                                         ConverterParameter={x:Static vm:SCOPE.items}}" />
+                    </StackPanel>
+                    <TextBox x:Name="number_box" Margin="0,8,0,0"
+                             Style="{StaticResource field_box}"
+                             Text="{Binding DataContext.list.number_text,
+                                 RelativeSource={RelativeSource AncestorType=UserControl},
+                                 UpdateSourceTrigger=PropertyChanged}"
+                             Tag="{Binding targets_problem}"
+                             Visibility="{Binding scope, Converter={StaticResource equals},
+                                 ConverterParameter={x:Static vm:SCOPE.items}}" />
+
                 </StackPanel>
             </ScrollViewer>
         </DockPanel>

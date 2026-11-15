@@ -161,6 +161,11 @@ std::optional<EXAMPLE> SESSION::example(const MODIFICATION &draft, uint64_t befo
     return finder_.find(items_, mods_.entries(), draft, before_mod_id);
 }
 
+EXAMPLE SESSION::sample(const MODIFICATION &draft) const
+{
+    return finder_.sample(items_, draft);
+}
+
 const OPTIONS &SESSION::options() const
 {
     return options_;

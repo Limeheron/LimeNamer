@@ -4,14 +4,19 @@ import Observation
 @Observable
 public final class MOD_LIST_VIEW_MODEL
 {
-    private static let KINDS: [MOD_KIND] = [.insert, .delete, .replace, .format]
+    public static let KIND_CHOICES: [CHOICE<MOD_KIND>] = [
+        CHOICE(value: .insert, label: STRINGS.kind_insert),
+        CHOICE(value: .delete, label: STRINGS.kind_delete),
+        CHOICE(value: .replace, label: STRINGS.kind_replace),
+        CHOICE(value: .format, label: STRINGS.kind_format),
+    ]
 
     @ObservationIgnored public var changed: ((String) -> Void)? = nil
     @ObservationIgnored public var notice: ((String) -> Void)? = nil
     public let editor: MOD_EDITOR_VIEW_MODEL
     public private(set) var page: MOD_PAGE = .list
     public private(set) var cards: [MOD_CARD] = []
-    public var add_part: PART = .name
+    public var add_kind: MOD_KIND = .insert
     @ObservationIgnored private let engine: ENGINE
 
     public init(engine: ENGINE, list: ITEM_LIST_VIEW_MODEL)
@@ -47,9 +52,44 @@ public final class MOD_LIST_VIEW_MODEL
         return cards.filter { $0.enabled }.count
     }
 
-    public var kind_cards: [KIND_CARD]
+    public var kind_header: KIND_CARD
     {
-        return MOD_LIST_VIEW_MODEL.KINDS.map { MOD_LIST_VIEW_MODEL.kind_card($0, add_part) }
+        return MOD_LIST_VIEW_MODEL.kind_card(add_kind)
+    }
+
+    public var position_cards: [POSITION_CHOICE]
+    {
+        return editor.position_choices(add_kind)
+    }
+
+    public var edit_kind: MOD_KIND
+    {
+        get {
+            return editor.kind
+        }
+        set {
+            switch_kind(newValue)
+        }
+    }
+
+    public var is_existing: Bool
+    {
+        return editor.is_active && !editor.is_new
+    }
+
+    public var badge_text: String
+    {
+        return is_existing ? STRINGS.badge_editing : STRINGS.badge_new
+    }
+
+    public var apply_label: String
+    {
+        return is_existing ? STRINGS.button_apply : STRINGS.button_add
+    }
+
+    public var add_back_label: String
+    {
+        return is_existing ? STRINGS.back_to_edit : STRINGS.back_to_list
     }
 
     public var back_label: String
@@ -90,19 +130,30 @@ public final class MOD_LIST_VIEW_MODEL
 
     public func open_add()
     {
-        add_part = .name
+        add_kind = .insert
         page = .add
     }
 
-    public func close_add()
+    public func choose_position(_ position: POSITION_TYPE)
     {
-        page = .list
+        if is_existing {
+            editor.restart(add_kind, position: position)
+        } else {
+            editor.begin_new(add_kind, position: position)
+        }
+        page = .edit
     }
 
-    public func choose_kind(_ kind: MOD_KIND)
+    public func switch_kind(_ kind: MOD_KIND)
     {
-        editor.begin_new(kind, part: add_part)
-        page = .edit
+        if page != .edit || kind == editor.kind {
+            return
+        }
+        if editor.is_new {
+            _ = editor.cancel()
+        }
+        add_kind = kind
+        page = .add
     }
 
     public func open_card(_ card: MOD_CARD)
@@ -126,9 +177,9 @@ public final class MOD_LIST_VIEW_MODEL
     public func go_back()
     {
         if page == .edit && editor.is_new {
-            let part: PART = editor.part
+            let kind: MOD_KIND = editor.kind
             _ = editor.cancel()
-            add_part = part
+            add_kind = kind
             page = .add
             return
         }
@@ -136,7 +187,7 @@ public final class MOD_LIST_VIEW_MODEL
             cancel()
             return
         }
-        close_add()
+        page = is_existing ? .edit : .list
     }
 
     public func cancel()
@@ -186,10 +237,10 @@ public final class MOD_LIST_VIEW_MODEL
         return true
     }
 
-    private static func kind_card(_ kind: MOD_KIND, _ part: PART) -> KIND_CARD
+    private static func kind_card(_ kind: MOD_KIND) -> KIND_CARD
     {
         let name: String = "kind_\(kind.rawValue)"
-        let example: String = "example_\(part.rawValue)_\(kind.rawValue)"
+        let example: String = "example_name_\(kind.rawValue)"
         return KIND_CARD(kind: kind, name: STRINGS.text(name),
             description: STRINGS.text(name + "_desc"),
             example_before: STRINGS.text(example + "_before"),

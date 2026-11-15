@@ -12,7 +12,8 @@ struct MOD_EDITOR_VIEW_MODEL_TESTS
             scenario.close()
         }
         scenario.mods.open_add()
-        scenario.mods.choose_kind(.replace)
+        scenario.mods.add_kind = .replace
+        scenario.mods.choose_position(.all)
         let editor: MOD_EDITOR_VIEW_MODEL = scenario.editor
         editor.position_type = .text
 
@@ -38,7 +39,8 @@ struct MOD_EDITOR_VIEW_MODEL_TESTS
             scenario.close()
         }
         scenario.mods.open_add()
-        scenario.mods.choose_kind(.insert)
+        scenario.mods.add_kind = .insert
+        scenario.mods.choose_position(.end)
         let editor: MOD_EDITOR_VIEW_MODEL = scenario.editor
 
         let initial: POSITION_TYPE = editor.position_type
@@ -91,7 +93,8 @@ struct MOD_EDITOR_VIEW_MODEL_TESTS
         let list: ITEM_LIST_VIEW_MODEL = scenario.items.list
         list.set_selection([try scenario.items.id("a.txt")])
         scenario.mods.open_add()
-        scenario.mods.choose_kind(.insert)
+        scenario.mods.add_kind = .insert
+        scenario.mods.choose_position(.end)
         let editor: MOD_EDITOR_VIEW_MODEL = scenario.editor
         editor.value = [VALUE_PIECE(text: "_k")]
 
@@ -119,7 +122,8 @@ struct MOD_EDITOR_VIEW_MODEL_TESTS
         }
         let list: ITEM_LIST_VIEW_MODEL = scenario.items.list
         scenario.mods.open_add()
-        scenario.mods.choose_kind(.insert)
+        scenario.mods.add_kind = .insert
+        scenario.mods.choose_position(.end)
         let editor: MOD_EDITOR_VIEW_MODEL = scenario.editor
         editor.value = [VALUE_PIECE(text: "_k")]
         editor.scope = .items
@@ -145,15 +149,17 @@ struct MOD_EDITOR_VIEW_MODEL_TESTS
         }
         let editor: MOD_EDITOR_VIEW_MODEL = scenario.editor
         scenario.mods.open_add()
-        scenario.mods.choose_kind(.delete)
-        let delete_first: CHOICE<POSITION_TYPE> = editor.position_choices[0]
+        scenario.mods.add_kind = .delete
+        scenario.mods.choose_position(.all)
+        let delete_first: POSITION_TYPE = editor.position_tiles[0].type
         editor.position_type = .between
         let between_occurrences: Int = editor.occurrence_choices.count
         scenario.mods.cancel()
 
         scenario.mods.open_add()
-        scenario.mods.choose_kind(.insert)
-        let insert_first: CHOICE<POSITION_TYPE> = editor.position_choices[0]
+        scenario.mods.add_kind = .insert
+        scenario.mods.choose_position(.end)
+        let insert_first: POSITION_TYPE = editor.position_tiles[0].type
         let before_tokens: Bool = editor.uses_number
         editor.value = [
             VALUE_PIECE(text: "a"),
@@ -167,15 +173,76 @@ struct MOD_EDITOR_VIEW_MODEL_TESTS
         _ = try scenario.mods.apply()
         let stored: String = try scenario.engine.mods_get()
 
-        #expect(delete_first == CHOICE(value: .all, label: "전부"))
+        #expect(delete_first == .all)
         #expect(between_occurrences == 4)
-        #expect(insert_first == CHOICE(value: .start, label: "맨 앞"))
+        #expect(insert_first == .start)
         #expect(!before_tokens)
         #expect(editor.value.count == 3)
         #expect(editor.uses_number && editor.uses_modified_date)
         #expect(stored.contains(#""text":"ab""#), "\(stored)")
         #expect(stored.contains(#""digits":3"#), "\(stored)")
         #expect(stored.contains(#""format":"yyyy""#), "\(stored)")
+    }
+
+    @Test func offers_position_samples() throws
+    {
+        let scenario = try MOD_PANEL_SCENARIO("a.txt")
+        defer {
+            scenario.close()
+        }
+        let editor: MOD_EDITOR_VIEW_MODEL = scenario.editor
+        let insert: [POSITION_CHOICE] = editor.position_choices(.insert)
+        let delete: [POSITION_CHOICE] = editor.position_choices(.delete)
+        let replace: [POSITION_CHOICE] = editor.position_choices(.replace)
+        let format: [POSITION_CHOICE] = editor.position_choices(.format)
+
+        #expect(insert.map { $0.type } == [.start, .end, .after_nth, .before_nth_from_end,
+            .before_text, .after_text])
+        #expect(delete.map { $0.type } == [.all, .from_nth, .first_n, .last_n, .text, .between])
+        #expect(insert[0].label == "맨 앞")
+        #expect(insert[0].description == "이름 앞에 붙입니다.")
+        #expect(insert[2].label == "앞에서 N글자 뒤")
+        #expect(insert[0].after == [piece("2024_", .mark), piece("IMG_0001.JPG", .plain)])
+        #expect(insert[0].tile == [piece("", .caret), piece("IMG_0001.JPG", .plain)])
+        #expect(insert[1].tile == [piece("IMG_0001", .plain), piece("", .caret),
+            piece(".JPG", .plain)])
+        #expect(insert[4].tile == [piece("IMG_", .plain), piece("", .caret),
+            piece("0001", .anchor), piece(".JPG", .plain)])
+        #expect(insert[5].tile == [piece("IMG", .anchor), piece("", .caret),
+            piece("_0001.JPG", .plain)])
+        #expect(delete[3].before == [piece("IMG_", .plain), piece("0001", .removed),
+            piece(".JPG", .plain)])
+        #expect(delete[3].after == [piece("IMG_.JPG", .plain)])
+        #expect(delete[3].tile == [piece("IMG_", .plain), piece("0001", .mark),
+            piece(".JPG", .plain)])
+        #expect(delete[1].tile == [piece("I", .plain), piece("MG_", .mark),
+            piece("0001.JPG", .plain)])
+        #expect(delete[4].tile == [piece("IMG_", .mark_anchor), piece("0001.JPG", .plain)])
+        #expect(delete[5].tile == [piece("IMG", .anchor), piece("_0001", .mark),
+            piece(".JPG", .plain)])
+        #expect(replace[0].after == [piece("제주_", .mark), piece(".JPG", .plain)])
+        #expect(!format[0].shows_after)
+        #expect(format[3].before == format[3].tile)
+    }
+
+    @Test func starts_inserts_at_the_front() throws
+    {
+        let scenario = try MOD_PANEL_SCENARIO("a.txt")
+        defer {
+            scenario.close()
+        }
+        scenario.mods.open_add()
+        scenario.mods.choose_position(.start)
+        scenario.editor.value = [VALUE_PIECE(text: "x_")]
+        _ = try scenario.mods.apply()
+
+        #expect(try scenario.first_new_name() == "x_a.txt")
+        #expect(scenario.editor.position_choices(.insert)[0].type == .start)
+    }
+
+    private func piece(_ text: String, _ style: SAMPLE_STYLE) -> SAMPLE_PIECE
+    {
+        return SAMPLE_PIECE(text: text, style: style)
     }
 
     private func before_name(_ editor: MOD_EDITOR_VIEW_MODEL) -> String

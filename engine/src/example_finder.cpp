@@ -91,6 +91,11 @@ EXAMPLE EXAMPLE_FINDER::make(const ITEM &item, uint32_t index, std::u32string be
     return example;
 }
 
+EXAMPLE EXAMPLE_FINDER::sample(const ITEM_STORE &items, const MODIFICATION &draft) const
+{
+    return default_example(items, {}, draft);
+}
+
 EXAMPLE EXAMPLE_FINDER::default_example(const ITEM_STORE &items,
     const std::vector<const MODIFICATION *> &previous, const MODIFICATION &draft) const
 {

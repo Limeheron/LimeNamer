@@ -48,7 +48,8 @@ public sealed class MAIN_VIEW_MODEL_TESTS
         MAIN_VIEW_MODEL main = scenario.main;
         scenario.add_mod(LIST_SCENARIO.INSERT_NEW);
         main.mods.open_add();
-        main.mods.choose_kind(MOD_KIND.insert);
+        main.mods.add_kind = MOD_KIND.insert;
+        main.mods.choose_position(POSITION_TYPE.end);
         string block = "먼저 편집을 적용하거나 취소하세요.";
 
         main.undo();

@@ -77,6 +77,7 @@ public:
     void set_all_mods_enabled(bool enabled);
     std::optional<uint64_t> direct_edit(uint64_t item_id, std::u32string new_name);
     std::optional<EXAMPLE> example(const MODIFICATION &draft, uint64_t before_mod_id) const;
+    EXAMPLE sample(const MODIFICATION &draft) const;
 
     const OPTIONS &options() const;
     void set_options(OPTIONS options);

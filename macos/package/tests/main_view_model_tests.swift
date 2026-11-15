@@ -49,7 +49,8 @@ struct MAIN_VIEW_MODEL_TESTS
         let main: MAIN_VIEW_MODEL = scenario.main
         try scenario.add_mod(TEST_MODS.INSERT_NEW)
         main.mods.open_add()
-        main.mods.choose_kind(.insert)
+        main.mods.add_kind = .insert
+        main.mods.choose_position(.end)
         let block: String = "먼저 편집을 적용하거나 취소하세요."
 
         main.undo()

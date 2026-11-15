@@ -1,11 +1,10 @@
-import AppKit
 import SwiftUI
 
 import limenamer_view_model
 
-struct KIND_CARD_VIEW: View
+struct POSITION_CARD_VIEW: View
 {
-    let card: KIND_CARD
+    let choice: POSITION_CHOICE
     let action: () -> Void
 
     @State private var hovering: Bool = false
@@ -14,21 +13,20 @@ struct KIND_CARD_VIEW: View
     {
         Button(action: action) {
             VStack(alignment: .leading, spacing: 3) {
-                Text(card.name)
+                Text(choice.label)
                     .font(.system(size: 13, weight: .semibold))
-                Text(card.description)
+                Text(choice.description)
                     .font(.system(size: 12))
                     .foregroundStyle(.secondary)
                 HStack(spacing: 6) {
-                    Text(card.example_before)
-                    Image(systemName: "arrow.right")
-                        .font(.system(size: 9, weight: .semibold))
-                        .foregroundStyle(.secondary)
-                    Text(card.example_after)
-                        .foregroundStyle(Color(nsColor: PALETTE.ACCENT_TEXT))
+                    SAMPLE_TEXT(pieces: choice.before)
+                    if choice.shows_after {
+                        Image(systemName: "arrow.right")
+                            .font(.system(size: 9, weight: .semibold))
+                            .foregroundStyle(.secondary)
+                        SAMPLE_TEXT(pieces: choice.after)
+                    }
                 }
-                .font(.system(size: 12, design: .monospaced))
-                .lineLimit(1)
                 .padding(.top, 3)
             }
             .frame(maxWidth: .infinity, alignment: .leading)

@@ -147,6 +147,14 @@
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
 
+        <Style x:Key="new_name_mark" TargetType="Run">
+            <Setter Property="FontWeight" Value="Bold" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding status}" Value="{x:Static vm:STATUS.ok}">
+                    <Setter Property="Foreground" Value="{DynamicResource accent_text_brush}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
         <Style x:Key="new_name_text" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="{StaticResource name_font}" />
             <Setter Property="TextTrimming" Value="CharacterEllipsis" />
@@ -334,12 +342,11 @@
                                                FontSize="11"
                                                Foreground="{DynamicResource accent_text_brush}" />
                                 </Border>
-                                <TextBlock Style="{StaticResource new_name_text}">
-                                    <Run Text="{Binding new_name_head, Mode=OneWay}" />
-                                    <Run Text="{Binding new_name_mark, Mode=OneWay}"
-                                         Background="{DynamicResource mark_back_brush}" />
-                                    <Run Text="{Binding new_name_tail, Mode=OneWay}" />
-                                </TextBlock>
+                                <TextBlock Style="{StaticResource new_name_text}"><Run
+                                    Text="{Binding new_name_head, Mode=OneWay}" /><Run
+                                    Text="{Binding new_name_mark, Mode=OneWay}"
+                                    Style="{StaticResource new_name_mark}" /><Run
+                                    Text="{Binding new_name_tail, Mode=OneWay}" /></TextBlock>
                             </DockPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

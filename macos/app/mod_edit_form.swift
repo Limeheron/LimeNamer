@@ -12,36 +12,17 @@ struct MOD_EDIT_FORM: View
     var body: some View
     {
         VStack(alignment: .leading, spacing: 16) {
+            KIND_PICKER(kind: editor.kind) { kind in
+                main.mods.switch_kind(kind)
+            }
             Text(editor.summary)
-                .font(.system(size: 13, weight: .semibold))
+                .font(.system(size: 16, weight: .semibold))
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.vertical, 9)
-                .padding(.horizontal, 12)
-                .background(CARD_BOX())
-            FORM_FIELD(label: STRINGS.field_scope) {
-                Picker("", selection: $editor.scope) {
-                    ForEach(MOD_EDITOR_VIEW_MODEL.SCOPE_CHOICES, id: \.label) { choice in
-                        Text(choice.label)
-                            .tag(choice.value)
-                    }
-                }
-                .pickerStyle(.radioGroup)
-                .horizontalRadioGroupLayout()
-                .labelsHidden()
-                if editor.scope == .items {
-                    TEXT_INPUT(text: number_text, problem: editor.problem(.targets),
-                        field: .targets, focus: focus)
-                        .help(STRINGS.index_tip)
-                }
-            }
-            FORM_FIELD(label: STRINGS.field_part) {
-                PART_PICKER(part: editor.part) { part in
-                    editor.part = part
-                }
-                PART_DEMO(part: editor.part)
-            }
+                .padding(.horizontal, 2)
+                .padding(.top, MOD_ADD_PAGE.HEADER_GAP - 16)
             MOD_POSITION_FIELDS(editor: editor, focus: focus)
+            Divider()
             if editor.shows_value {
                 MOD_VALUE_FIELDS(main: main, editor: editor, handles: handles)
             }
@@ -58,6 +39,31 @@ struct MOD_EDIT_FORM: View
                             }
                         }
                     }
+                }
+            }
+            if editor.shows_value_or_format {
+                Divider()
+            }
+            FORM_FIELD(label: STRINGS.field_part) {
+                PART_PICKER(part: editor.part) { part in
+                    editor.part = part
+                }
+                PART_DEMO(part: editor.part)
+            }
+            FORM_FIELD(label: STRINGS.field_scope) {
+                Picker("", selection: $editor.scope) {
+                    ForEach(MOD_EDITOR_VIEW_MODEL.SCOPE_CHOICES, id: \.label) { choice in
+                        Text(choice.label)
+                            .tag(choice.value)
+                    }
+                }
+                .pickerStyle(.radioGroup)
+                .horizontalRadioGroupLayout()
+                .labelsHidden()
+                if editor.scope == .items {
+                    TEXT_INPUT(text: number_text, problem: editor.problem(.targets),
+                        field: .targets, focus: focus)
+                        .help(STRINGS.index_tip)
                 }
             }
         }

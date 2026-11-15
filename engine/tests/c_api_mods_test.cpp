@@ -33,7 +33,8 @@ TEST_F(C_API_TEST, adds_updates_and_lists_mods)
     ASSERT_EQ(ln_mod_update(session_, id,
         R"({"kind":"insert","position":{"type":"end"},"value":[{"text":"_b"}]})"), ln_result_ok);
     EXPECT_EQ(new_names(), std::vector<std::string>({"x_b.txt"}));
-    EXPECT_EQ(ln_mod_update(session_, id, UPPER), ln_result_invalid_argument);
+    ASSERT_EQ(ln_mod_update(session_, id, UPPER), ln_result_ok);
+    EXPECT_EQ(new_names(), std::vector<std::string>({"X.txt"}));
     EXPECT_EQ(ln_mod_update(session_, 99, PREFIX), ln_result_not_found);
     EXPECT_EQ(ln_mod_update(session_, id, nullptr), ln_result_invalid_argument);
 
@@ -160,6 +161,38 @@ TEST_F(C_API_TEST, finds_examples)
     EXPECT_EQ(ln_mod_example(session_, PREFIX, 99, &example), ln_result_not_found);
     EXPECT_EQ(example, nullptr);
     EXPECT_EQ(ln_mod_example(session_, "{}", 0, &example), ln_result_invalid_json);
+}
+
+TEST_F(C_API_TEST, makes_samples_from_one_mod)
+{
+    LN_ADD_RESULT added{};
+    add({make_file("x.txt")}, ln_add_mode_as_items, added);
+    uint64_t upper = 0;
+    ln_mod_add(session_, UPPER, &upper);
+    LN_EXAMPLE *sample = nullptr;
+    ASSERT_EQ(ln_mod_sample(session_, PREFIX, &sample), ln_result_ok);
+    EXPECT_EQ(sample->item_id, 0u);
+    EXPECT_EQ(sample->index, 0u);
+    EXPECT_EQ(std::string(sample->before), "IMG_0001.JPG");
+    EXPECT_EQ(std::string(sample->after), "a_IMG_0001.JPG");
+    EXPECT_EQ(sample->prefix_len, 0u);
+    EXPECT_EQ(sample->suffix_len, 12u);
+    EXPECT_EQ(sample->state, ln_example_state_changed);
+    ln_example_free(sample);
+
+    ASSERT_EQ(ln_mod_sample(session_,
+        R"({"kind":"delete","position":{"type":"last_n","n":4},"scope":"items","targets":[]})",
+        &sample), ln_result_ok);
+    EXPECT_EQ(std::string(sample->after), "IMG_.JPG");
+    EXPECT_EQ(sample->prefix_len, 4u);
+    EXPECT_EQ(sample->suffix_len, 4u);
+    ln_example_free(sample);
+
+    sample = reinterpret_cast<LN_EXAMPLE *>(&sample);
+    EXPECT_EQ(ln_mod_sample(session_, "{}", &sample), ln_result_invalid_json);
+    EXPECT_EQ(sample, nullptr);
+    EXPECT_EQ(ln_mod_sample(session_, nullptr, &sample), ln_result_invalid_argument);
+    EXPECT_EQ(ln_mod_sample(session_, PREFIX, nullptr), ln_result_invalid_argument);
 }
 
 TEST_F(C_API_TEST, reads_and_sets_options)

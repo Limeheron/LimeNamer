@@ -10,22 +10,6 @@ public sealed class MOD_EDITOR_VIEW_MODEL : OBSERVABLE
 {
     private const int NUMBER_LIMIT = 1_000_000_000;
 
-    private static readonly CHOICE<POSITION_TYPE>[] INSERT_POSITIONS = [
-        new(POSITION_TYPE.start, STRINGS.position_start),
-        new(POSITION_TYPE.end, STRINGS.position_end),
-        new(POSITION_TYPE.after_nth, STRINGS.position_after_nth),
-        new(POSITION_TYPE.before_nth_from_end, STRINGS.position_before_nth_from_end),
-        new(POSITION_TYPE.before_text, STRINGS.position_before_text),
-        new(POSITION_TYPE.after_text, STRINGS.position_after_text),
-    ];
-    private static readonly CHOICE<POSITION_TYPE>[] RANGE_POSITIONS = [
-        new(POSITION_TYPE.all, STRINGS.position_all),
-        new(POSITION_TYPE.first_n, STRINGS.position_first_n),
-        new(POSITION_TYPE.last_n, STRINGS.position_last_n),
-        new(POSITION_TYPE.from_nth, STRINGS.position_from_nth),
-        new(POSITION_TYPE.text, STRINGS.position_text),
-        new(POSITION_TYPE.between, STRINGS.position_between),
-    ];
     private static readonly CHOICE<OCCURRENCE>[] OCCURRENCES = [
         new(OCCURRENCE.first, STRINGS.occurrence_choice_first),
         new(OCCURRENCE.last, STRINGS.occurrence_choice_last),
@@ -34,10 +18,11 @@ public sealed class MOD_EDITOR_VIEW_MODEL : OBSERVABLE
         new(OCCURRENCE.all, STRINGS.occurrence_choice_all),
     ];
     private static readonly string[] DERIVED = [
-        nameof(position_choices), nameof(occurrence_choices), nameof(shows_n),
+        nameof(position_tiles), nameof(occurrence_choices), nameof(shows_n),
         nameof(shows_count), nameof(shows_text), nameof(shows_occurrence),
         nameof(shows_occurrence_n), nameof(shows_between), nameof(shows_start_text),
         nameof(shows_end_text), nameof(shows_value), nameof(shows_format), nameof(shows_digits),
+        nameof(shows_value_or_format),
         nameof(uses_number), nameof(uses_modified_date), nameof(uses_created_date),
         nameof(uses_size), nameof(shows_modified_date_custom), nameof(shows_created_date_custom),
     ];
@@ -49,12 +34,12 @@ public sealed class MOD_EDITOR_VIEW_MODEL : OBSERVABLE
 
     private readonly ENGINE engine_;
     private readonly ITEM_LIST_VIEW_MODEL list_;
+    private readonly POSITION_SAMPLES samples_;
     private bool loading_;
     private bool active_;
     private bool tried_;
     private string original_json_ = "";
     private ulong editing_id_;
-    private bool direct_;
     private MOD_KIND kind_;
     private PART part_;
     private POSITION_TYPE position_type_;
@@ -94,6 +79,7 @@ public sealed class MOD_EDITOR_VIEW_MODEL : OBSERVABLE
     {
         engine_ = engine;
         list_ = list;
+        samples_ = new POSITION_SAMPLES(engine);
         list_.PropertyChanged += on_list_changed;
     }
 
@@ -139,6 +125,11 @@ public sealed class MOD_EDITOR_VIEW_MODEL : OBSERVABLE
     public bool is_new
     {
         get { return editing_id_ == 0; }
+    }
+
+    public bool is_active
+    {
+        get { return active_; }
     }
 
     public ulong editing_id
@@ -317,9 +308,9 @@ public sealed class MOD_EDITOR_VIEW_MODEL : OBSERVABLE
         }
     }
 
-    public IReadOnlyList<CHOICE<POSITION_TYPE>> position_choices
+    public IReadOnlyList<POSITION_CHOICE> position_tiles
     {
-        get { return kind_ == MOD_KIND.insert ? INSERT_POSITIONS : RANGE_POSITIONS; }
+        get { return samples_.choices(kind_); }
     }
 
     public IReadOnlyList<CHOICE<OCCURRENCE>> occurrence_choices
@@ -393,6 +384,11 @@ public sealed class MOD_EDITOR_VIEW_MODEL : OBSERVABLE
     public bool shows_format
     {
         get { return kind_ == MOD_KIND.format; }
+    }
+
+    public bool shows_value_or_format
+    {
+        get { return shows_value || shows_format; }
     }
 
     public bool shows_digits
@@ -528,15 +524,21 @@ public sealed class MOD_EDITOR_VIEW_MODEL : OBSERVABLE
         };
     }
 
-    public void begin_new(MOD_KIND kind, PART part)
+    public IReadOnlyList<POSITION_CHOICE> position_choices(MOD_KIND kind)
     {
-        begin(new MOD {
-            kind = kind,
-            part = part,
-            position = new POSITION {
-                type = kind == MOD_KIND.insert ? POSITION_TYPE.end : POSITION_TYPE.all,
-            },
-        }, 0);
+        return samples_.choices(kind);
+    }
+
+    public void begin_new(MOD_KIND kind, POSITION_TYPE position)
+    {
+        begin(fresh(kind, position), 0);
+    }
+
+    public void restart(MOD_KIND kind, POSITION_TYPE position)
+    {
+        string original = original_json_;
+        begin(fresh(kind, position), editing_id_);
+        original_json_ = original;
     }
 
     public void begin_edit(MOD mod)
@@ -581,7 +583,7 @@ public sealed class MOD_EDITOR_VIEW_MODEL : OBSERVABLE
 
     public void refresh()
     {
-        summary = MOD_SUMMARY.describe(build(), direct_index(), target_count());
+        summary = MOD_SUMMARY.describe(build(), 0, target_count());
         refresh_example();
         if (tried_) {
             check();
@@ -592,7 +594,6 @@ public sealed class MOD_EDITOR_VIEW_MODEL : OBSERVABLE
     {
         loading_ = true;
         editing_id_ = id;
-        direct_ = mod.direct;
         kind_ = mod.kind;
         part = mod.part;
         POSITION position = mod.position;
@@ -667,7 +668,7 @@ public sealed class MOD_EDITOR_VIEW_MODEL : OBSERVABLE
     {
         Dictionary<MOD_FIELD, string> problems = new();
         foreach (PROBLEM item in engine_.mod_check(MOD_JSON.write(build()))) {
-            problems[item.field] = MESSAGES.problem_text(item, kind_, direct_);
+            problems[item.field] = MESSAGES.problem_text(item, kind_, false);
         }
         if (scope_ == SCOPE.items && list_.number_error != "") {
             problems[MOD_FIELD.targets] = list_.number_error;
@@ -755,17 +756,16 @@ public sealed class MOD_EDITOR_VIEW_MODEL : OBSERVABLE
             } : null,
             scope = scope_,
             targets = scope_ == SCOPE.items ? list_.live_checked_ids() : null,
-            direct = direct_,
         };
     }
 
-    private uint direct_index()
+    private static MOD fresh(MOD_KIND kind, POSITION_TYPE position)
     {
-        if (!direct_ || scope_ != SCOPE.items) {
-            return 0;
-        }
-        IReadOnlyList<ulong> targets = list_.live_checked_ids();
-        return targets.Count == 0 ? 0 : list_.index_of(targets[0]);
+        return new MOD {
+            kind = kind,
+            part = PART.name,
+            position = new POSITION { type = position },
+        };
     }
 
     private uint target_count()

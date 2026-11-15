@@ -6,7 +6,6 @@ struct MOD_DRAFT
 
     var kind: MOD_KIND = .insert
     var part: PART = .name
-    var direct: Bool = false
     var position_type: POSITION_TYPE = .start
     var n: UInt32 = 1
     var count: UInt32 = 1
@@ -41,7 +40,6 @@ struct MOD_DRAFT
         let number: NUMBER_SETTINGS = mod.tokens?.number ?? NUMBER_SETTINGS(digits: 3)
         kind = mod.kind
         part = mod.part
-        direct = mod.direct
         position_type = position.type
         n = max(1, position.n ?? 1)
         count = max(1, position.count ?? 1)
@@ -86,7 +84,7 @@ struct MOD_DRAFT
             digits: format_type == .pad_digits ? format_digits : nil)
         return MOD(kind: kind, part: part, position: position, value: has_value ? value : nil,
             tokens: has_value ? tokens : nil, format: kind == .format ? format : nil,
-            scope: scope, targets: targets, direct: direct)
+            scope: scope, targets: targets)
     }
 
     static func clamp_number(_ value: Int32) -> Int32

@@ -47,6 +47,4 @@
     <SolidColorBrush x:Key="status_conflict_back_brush" Color="#ECE5FB" />
     <SolidColorBrush x:Key="folder_tag_brush" Color="#22678E" />
     <SolidColorBrush x:Key="folder_tag_back_brush" Color="#DFEDF5" />
-    <SolidColorBrush x:Key="mark_back_brush" Color="#F1E3A0" />
-    <SolidColorBrush x:Key="delete_back_brush" Color="#F7D9D4" />
 </ResourceDictionary>

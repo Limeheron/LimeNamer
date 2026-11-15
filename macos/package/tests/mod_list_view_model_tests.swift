@@ -95,17 +95,22 @@ struct MOD_LIST_VIEW_MODEL_TESTS
         let mods: MOD_LIST_VIEW_MODEL = scenario.mods
 
         mods.open_add()
-        mods.add_part = .ext
-        let insert: KIND_CARD = mods.kind_cards[0]
-        mods.choose_kind(.replace)
+        let insert: KIND_CARD = mods.kind_header
+        let badge: String = mods.badge_text
+        mods.add_kind = .replace
+        mods.choose_position(.all)
         let editing: MOD_PAGE = mods.page
+        let apply_label: String = mods.apply_label
+        scenario.editor.part = .ext
         scenario.editor.value = [VALUE_PIECE(text: "jpeg")]
         let applied: Bool = try mods.apply()
 
         #expect(insert == KIND_CARD(kind: .insert, name: "넣기",
-            description: "원하는 위치에 텍스트, 번호, 날짜", example_before: "IMG_0001.JPG",
-            example_after: "IMG_0001.JPG.bak"))
+            description: "원하는 위치에 텍스트, 번호, 날짜 넣기", example_before: "IMG_0001.JPG",
+            example_after: "2024_IMG_0001.JPG"))
+        #expect(badge == "신규")
         #expect(editing == .edit)
+        #expect(apply_label == "추가")
         #expect(applied)
         #expect(mods.page == .list)
         #expect(mods.cards.first?.summary == "확장자를 \"jpeg\"로 바꾸기")
@@ -124,12 +129,13 @@ struct MOD_LIST_VIEW_MODEL_TESTS
         let mods: MOD_LIST_VIEW_MODEL = scenario.mods
 
         mods.open_add()
-        mods.add_part = .ext
-        mods.choose_kind(.insert)
+        mods.add_kind = .delete
+        mods.choose_position(.first_n)
         let new_label: String = mods.back_label
         mods.go_back()
         let after_new: MOD_PAGE = mods.page
-        let kept_part: PART = mods.add_part
+        let kept_kind: MOD_KIND = mods.add_kind
+        let add_label: String = mods.add_back_label
         mods.go_back()
         let after_add: MOD_PAGE = mods.page
         mods.open_card(mods.cards[0])
@@ -138,11 +144,108 @@ struct MOD_LIST_VIEW_MODEL_TESTS
 
         #expect(new_label == "수정 추가")
         #expect(after_new == .add)
-        #expect(kept_part == .ext)
+        #expect(kept_kind == .delete)
+        #expect(add_label == "수정 목록")
         #expect(after_add == .list)
         #expect(edit_label == "수정 목록")
         #expect(mods.page == .list)
         #expect(scenario.messages.isEmpty)
+    }
+
+    @Test func switches_kinds_of_new_and_existing_mods() throws
+    {
+        let scenario = try MOD_PANEL_SCENARIO("a.txt")
+        defer {
+            scenario.close()
+        }
+        _ = try scenario.engine.mod_add(TEST_MODS.INSERT_NEW)
+        try scenario.load()
+        let mods: MOD_LIST_VIEW_MODEL = scenario.mods
+
+        mods.open_add()
+        mods.choose_position(.end)
+        mods.switch_kind(.delete)
+        let new_page: MOD_PAGE = mods.page
+        let new_active: Bool = scenario.editor.is_active
+        let new_back: String = mods.add_back_label
+        mods.go_back()
+        let after_new_back: MOD_PAGE = mods.page
+
+        let card: MOD_CARD = mods.cards[0]
+        mods.open_card(card)
+        let badge: String = mods.badge_text
+        let apply_label: String = mods.apply_label
+        mods.edit_kind = .insert
+        let same_kind: MOD_PAGE = mods.page
+        mods.edit_kind = .replace
+        let edit_back: String = mods.add_back_label
+        let kept_badge: String = mods.badge_text
+        mods.go_back()
+        let restored: MOD_KIND = scenario.editor.kind
+        mods.switch_kind(.replace)
+        mods.choose_position(.all)
+        let editing: UInt64 = scenario.editor.editing_id
+        scenario.editor.value = [VALUE_PIECE(text: "b")]
+        let applied: Bool = try mods.apply()
+
+        #expect(new_page == .add)
+        #expect(!new_active)
+        #expect(new_back == "수정 목록")
+        #expect(after_new_back == .list)
+        #expect(badge == "편집 중")
+        #expect(apply_label == "적용")
+        #expect(same_kind == .edit)
+        #expect(edit_back == "편집")
+        #expect(kept_badge == "편집 중")
+        #expect(restored == .insert)
+        #expect(editing == card.id)
+        #expect(applied)
+        #expect(mods.cards.count == 1)
+        #expect(mods.cards.first?.id == card.id)
+        #expect(mods.cards.first?.mod.kind == .replace)
+        #expect(try scenario.first_new_name() == "b.txt")
+        #expect(scenario.messages == ["수정을 고쳤습니다."])
+    }
+
+    @Test func cancels_a_switched_kind_with_the_original_kept() throws
+    {
+        let scenario = try MOD_PANEL_SCENARIO("a.txt")
+        defer {
+            scenario.close()
+        }
+        _ = try scenario.engine.mod_add(TEST_MODS.INSERT_NEW)
+        try scenario.load()
+        let mods: MOD_LIST_VIEW_MODEL = scenario.mods
+
+        mods.open_card(mods.cards[0])
+        mods.switch_kind(.delete)
+        mods.choose_position(.all)
+        mods.cancel()
+
+        #expect(mods.cards.first?.mod.kind == .insert)
+        #expect(try scenario.first_new_name() == "new_a.txt")
+        #expect(scenario.messages == ["편집을 취소했습니다."])
+    }
+
+    @Test func turns_an_edited_direct_edit_into_a_plain_mod() throws
+    {
+        let scenario = try MOD_PANEL_SCENARIO("a.txt")
+        defer {
+            scenario.close()
+        }
+        try scenario.engine.mod_direct_edit(try scenario.items.id("a.txt"), new_name: "b.txt")
+        try scenario.load()
+        let mods: MOD_LIST_VIEW_MODEL = scenario.mods
+
+        mods.open_card(mods.cards[0])
+        let summary: String = scenario.editor.summary
+        scenario.editor.value = [VALUE_PIECE(text: "c.txt")]
+        _ = try mods.apply()
+
+        #expect(summary == "이름과 확장자를 \"b.txt\"로 바꾸기 (1개)")
+        #expect(mods.cards.first?.direct == false)
+        #expect(mods.cards.first?.summary == "이름과 확장자를 \"c.txt\"로 바꾸기 (1개)")
+        #expect(try scenario.first_new_name() == "c.txt")
     }
 
     @Test func cancels_with_messages() throws
@@ -156,7 +259,8 @@ struct MOD_LIST_VIEW_MODEL_TESTS
         let mods: MOD_LIST_VIEW_MODEL = scenario.mods
 
         mods.open_add()
-        mods.choose_kind(.delete)
+        mods.add_kind = .delete
+        mods.choose_position(.all)
         mods.cancel()
         mods.open_card(mods.cards[0])
         mods.cancel()

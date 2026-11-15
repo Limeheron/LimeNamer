@@ -34,28 +34,6 @@
         }
       }
     },
-    "add_kind_title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "종류"
-          }
-        }
-      }
-    },
-    "add_part_title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "바꿀 부분"
-          }
-        }
-      }
-    },
     "adjusted" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -100,6 +78,17 @@
         }
       }
     },
+    "back_to_edit" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "편집"
+          }
+        }
+      }
+    },
     "back_to_list" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -107,6 +96,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "수정 목록"
+          }
+        }
+      }
+    },
+    "badge_editing" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "편집 중"
+          }
+        }
+      }
+    },
+    "badge_new" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "신규"
           }
         }
       }
@@ -173,6 +184,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "편집 중에는 실행 취소할 수 없습니다. {0}"
+          }
+        }
+      }
+    },
+    "button_add" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "추가"
           }
         }
       }
@@ -866,182 +888,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "예시 이름"
-          }
-        }
-      }
-    },
-    "example_ext_delete_after" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "IMG_0001"
-          }
-        }
-      }
-    },
-    "example_ext_delete_before" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "IMG_0001.JPG"
-          }
-        }
-      }
-    },
-    "example_ext_format_after" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "IMG_0001.jpg"
-          }
-        }
-      }
-    },
-    "example_ext_format_before" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "IMG_0001.JPG"
-          }
-        }
-      }
-    },
-    "example_ext_insert_after" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "IMG_0001.JPG.bak"
-          }
-        }
-      }
-    },
-    "example_ext_insert_before" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "IMG_0001.JPG"
-          }
-        }
-      }
-    },
-    "example_ext_replace_after" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "IMG_0001.jpg"
-          }
-        }
-      }
-    },
-    "example_ext_replace_before" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "IMG_0001.JPEG"
-          }
-        }
-      }
-    },
-    "example_full_delete_after" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "0001.JPG"
-          }
-        }
-      }
-    },
-    "example_full_delete_before" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "IMG_0001.JPG"
-          }
-        }
-      }
-    },
-    "example_full_format_after" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "img_0001.jpg"
-          }
-        }
-      }
-    },
-    "example_full_format_before" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "IMG_0001.JPG"
-          }
-        }
-      }
-    },
-    "example_full_insert_after" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "2024_IMG_0001.JPG"
-          }
-        }
-      }
-    },
-    "example_full_insert_before" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "IMG_0001.JPG"
-          }
-        }
-      }
-    },
-    "example_full_replace_after" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "제주_0001.jpg"
-          }
-        }
-      }
-    },
-    "example_full_replace_before" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "IMG_0001.JPG"
           }
         }
       }
@@ -2031,7 +1877,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "필요 없는 글자"
+            "value" : "필요 없는 글자 지우기"
           }
         }
       }
@@ -2053,7 +1899,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "대소문자, 숫자 자릿수"
+            "value" : "대소문자와 숫자 자릿수 맞추기"
           }
         }
       }
@@ -2075,7 +1921,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "원하는 위치에 텍스트, 번호, 날짜"
+            "value" : "원하는 위치에 텍스트, 번호, 날짜 넣기"
           }
         }
       }
@@ -2097,7 +1943,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "전체나 일부를 새 텍스트로"
+            "value" : "전체나 일부를 새 텍스트로 바꾸기"
           }
         }
       }
@@ -2751,6 +2597,138 @@
         }
       }
     },
+    "position_desc_after_nth" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앞에서 센 글자 수만큼 지나서 넣습니다."
+          }
+        }
+      }
+    },
+    "position_desc_after_text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "찾은 텍스트 바로 뒤에 넣습니다."
+          }
+        }
+      }
+    },
+    "position_desc_all" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름 전체"
+          }
+        }
+      }
+    },
+    "position_desc_before_nth_from_end" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "뒤에서 센 글자 수만큼 앞에 넣습니다."
+          }
+        }
+      }
+    },
+    "position_desc_before_text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "찾은 텍스트 바로 앞에 넣습니다."
+          }
+        }
+      }
+    },
+    "position_desc_between" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "두 구분 문자 사이의 글자"
+          }
+        }
+      }
+    },
+    "position_desc_end" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름 뒤에 붙입니다."
+          }
+        }
+      }
+    },
+    "position_desc_first_n" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앞에서부터 정한 글자 수"
+          }
+        }
+      }
+    },
+    "position_desc_from_nth" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "정한 자리부터 정한 글자 수"
+          }
+        }
+      }
+    },
+    "position_desc_last_n" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "뒤에서부터 정한 글자 수"
+          }
+        }
+      }
+    },
+    "position_desc_start" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름 앞에 붙입니다."
+          }
+        }
+      }
+    },
+    "position_desc_text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "찾은 텍스트"
+          }
+        }
+      }
+    },
     "position_end" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2791,6 +2769,61 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "뒤에서 N글자"
+          }
+        }
+      }
+    },
+    "position_short_after_nth" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앞에서 N글자 뒤"
+          }
+        }
+      }
+    },
+    "position_short_after_text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "텍스트 뒤"
+          }
+        }
+      }
+    },
+    "position_short_before_nth_from_end" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "뒤에서 N글자 앞"
+          }
+        }
+      }
+    },
+    "position_short_before_text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "텍스트 앞"
+          }
+        }
+      }
+    },
+    "position_short_from_nth" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "N번째부터 M글자"
           }
         }
       }

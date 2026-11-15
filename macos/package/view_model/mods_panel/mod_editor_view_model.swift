@@ -30,22 +30,6 @@ public final class MOD_EDITOR_VIEW_MODEL
     public static let DATE_FORMAT_CHOICES: [CHOICE<String>] =
         MOD_DRAFT.DATE_FORMATS.map { CHOICE(value: $0, label: $0) }
         + [CHOICE(value: "", label: STRINGS.date_custom)]
-    private static let INSERT_POSITIONS: [CHOICE<POSITION_TYPE>] = [
-        CHOICE(value: .start, label: STRINGS.position_start),
-        CHOICE(value: .end, label: STRINGS.position_end),
-        CHOICE(value: .after_nth, label: STRINGS.position_after_nth),
-        CHOICE(value: .before_nth_from_end, label: STRINGS.position_before_nth_from_end),
-        CHOICE(value: .before_text, label: STRINGS.position_before_text),
-        CHOICE(value: .after_text, label: STRINGS.position_after_text),
-    ]
-    private static let RANGE_POSITIONS: [CHOICE<POSITION_TYPE>] = [
-        CHOICE(value: .all, label: STRINGS.position_all),
-        CHOICE(value: .first_n, label: STRINGS.position_first_n),
-        CHOICE(value: .last_n, label: STRINGS.position_last_n),
-        CHOICE(value: .from_nth, label: STRINGS.position_from_nth),
-        CHOICE(value: .text, label: STRINGS.position_text),
-        CHOICE(value: .between, label: STRINGS.position_between),
-    ]
     private static let OCCURRENCES: [CHOICE<OCCURRENCE>] = [
         CHOICE(value: .first, label: STRINGS.occurrence_choice_first),
         CHOICE(value: .last, label: STRINGS.occurrence_choice_last),
@@ -67,10 +51,11 @@ public final class MOD_EDITOR_VIEW_MODEL
         ("", "", "")
     @ObservationIgnored private let engine: ENGINE
     @ObservationIgnored private let list: ITEM_LIST_VIEW_MODEL
+    @ObservationIgnored private let samples: POSITION_SAMPLES
     private var draft: MOD_DRAFT = MOD_DRAFT()
     private var scope_value: SCOPE = .all
     private var problems: [MOD_FIELD: String] = [:]
-    @ObservationIgnored private var active: Bool = false
+    private var active: Bool = false
     @ObservationIgnored private var tried: Bool = false
     @ObservationIgnored private var original: MOD = MOD()
     @ObservationIgnored private var last_targets: Set<UInt64> = []
@@ -79,6 +64,7 @@ public final class MOD_EDITOR_VIEW_MODEL
     {
         self.engine = engine
         self.list = list
+        samples = POSITION_SAMPLES(engine: engine)
         list.checks_changed = { [weak self] in
             self?.on_list_changed()
         }
@@ -87,6 +73,11 @@ public final class MOD_EDITOR_VIEW_MODEL
     public var is_new: Bool
     {
         return editing_id == 0
+    }
+
+    public var is_active: Bool
+    {
+        return active
     }
 
     public var kind: MOD_KIND
@@ -350,12 +341,9 @@ public final class MOD_EDITOR_VIEW_MODEL
         }
     }
 
-    public var position_choices: [CHOICE<POSITION_TYPE>]
+    public var position_tiles: [POSITION_CHOICE]
     {
-        if draft.kind == .insert {
-            return MOD_EDITOR_VIEW_MODEL.INSERT_POSITIONS
-        }
-        return MOD_EDITOR_VIEW_MODEL.RANGE_POSITIONS
+        return samples.choices(draft.kind)
     }
 
     public var occurrence_choices: [CHOICE<OCCURRENCE>]
@@ -431,6 +419,11 @@ public final class MOD_EDITOR_VIEW_MODEL
         return draft.kind == .format
     }
 
+    public var shows_value_or_format: Bool
+    {
+        return shows_value || shows_format
+    }
+
     public var shows_digits: Bool
     {
         return shows_format && draft.format_type == .pad_digits
@@ -483,10 +476,21 @@ public final class MOD_EDITOR_VIEW_MODEL
         return problems[field] ?? ""
     }
 
-    public func begin_new(_ kind: MOD_KIND, part: PART)
+    public func position_choices(_ kind: MOD_KIND) -> [POSITION_CHOICE]
     {
-        let type: POSITION_TYPE = kind == .insert ? .end : .all
-        begin(MOD(kind: kind, part: part, position: POSITION(type: type)), id: 0)
+        return samples.choices(kind)
+    }
+
+    public func begin_new(_ kind: MOD_KIND, position: POSITION_TYPE)
+    {
+        begin(MOD(kind: kind, part: .name, position: POSITION(type: position)), id: 0)
+    }
+
+    public func restart(_ kind: MOD_KIND, position: POSITION_TYPE)
+    {
+        let saved: MOD = original
+        begin(MOD(kind: kind, part: .name, position: POSITION(type: position)), id: editing_id)
+        original = saved
     }
 
     public func begin_edit(_ mod: MOD)
@@ -532,7 +536,7 @@ public final class MOD_EDITOR_VIEW_MODEL
 
     public func refresh()
     {
-        summary = MOD_SUMMARY.describe(build(), direct_index: direct_index(),
+        summary = MOD_SUMMARY.describe(build(), direct_index: 0,
             target_count: target_count())
         refresh_example()
         if tried {
@@ -598,8 +602,7 @@ public final class MOD_EDITOR_VIEW_MODEL
     {
         var found: [MOD_FIELD: String] = [:]
         for item in try engine.mod_check(MOD_JSON.write(build())) {
-            found[item.field] = MESSAGES.problem_text(item, kind: draft.kind,
-                direct: draft.direct)
+            found[item.field] = MESSAGES.problem_text(item, kind: draft.kind, direct: false)
         }
         if scope_value == .items && list.number_error != "" {
             found[.targets] = list.number_error
@@ -632,17 +635,6 @@ public final class MOD_EDITOR_VIEW_MODEL
     {
         let targets: [UInt64]? = scope_value == .items ? list.live_checked_ids() : nil
         return draft.mod(scope: scope_value, targets: targets)
-    }
-
-    private func direct_index() -> UInt32
-    {
-        if !draft.direct || scope_value != .items {
-            return 0
-        }
-        guard let first = list.live_checked_ids().first else {
-            return 0
-        }
-        return list.index_of(first)
     }
 
     private func target_count() -> UInt32

@@ -346,25 +346,25 @@
         <value>넣기</value>
     </data>
     <data name="kind_insert_desc" xml:space="preserve">
-        <value>원하는 위치에 텍스트, 번호, 날짜</value>
+        <value>원하는 위치에 텍스트, 번호, 날짜 넣기</value>
     </data>
     <data name="kind_delete" xml:space="preserve">
         <value>지우기</value>
     </data>
     <data name="kind_delete_desc" xml:space="preserve">
-        <value>필요 없는 글자</value>
+        <value>필요 없는 글자 지우기</value>
     </data>
     <data name="kind_replace" xml:space="preserve">
         <value>바꾸기</value>
     </data>
     <data name="kind_replace_desc" xml:space="preserve">
-        <value>전체나 일부를 새 텍스트로</value>
+        <value>전체나 일부를 새 텍스트로 바꾸기</value>
     </data>
     <data name="kind_format" xml:space="preserve">
         <value>형식 맞추기</value>
     </data>
     <data name="kind_format_desc" xml:space="preserve">
-        <value>대소문자, 숫자 자릿수</value>
+        <value>대소문자와 숫자 자릿수 맞추기</value>
     </data>
     <data name="part_tip_name" xml:space="preserve">
         <value>마지막 점 앞 부분입니다. 폴더는 전체가 이름입니다.</value>
@@ -398,54 +398,6 @@
     </data>
     <data name="example_name_format_after" xml:space="preserve">
         <value>IMG_001.JPG</value>
-    </data>
-    <data name="example_ext_insert_before" xml:space="preserve">
-        <value>IMG_0001.JPG</value>
-    </data>
-    <data name="example_ext_insert_after" xml:space="preserve">
-        <value>IMG_0001.JPG.bak</value>
-    </data>
-    <data name="example_ext_delete_before" xml:space="preserve">
-        <value>IMG_0001.JPG</value>
-    </data>
-    <data name="example_ext_delete_after" xml:space="preserve">
-        <value>IMG_0001</value>
-    </data>
-    <data name="example_ext_replace_before" xml:space="preserve">
-        <value>IMG_0001.JPEG</value>
-    </data>
-    <data name="example_ext_replace_after" xml:space="preserve">
-        <value>IMG_0001.jpg</value>
-    </data>
-    <data name="example_ext_format_before" xml:space="preserve">
-        <value>IMG_0001.JPG</value>
-    </data>
-    <data name="example_ext_format_after" xml:space="preserve">
-        <value>IMG_0001.jpg</value>
-    </data>
-    <data name="example_full_insert_before" xml:space="preserve">
-        <value>IMG_0001.JPG</value>
-    </data>
-    <data name="example_full_insert_after" xml:space="preserve">
-        <value>2024_IMG_0001.JPG</value>
-    </data>
-    <data name="example_full_delete_before" xml:space="preserve">
-        <value>IMG_0001.JPG</value>
-    </data>
-    <data name="example_full_delete_after" xml:space="preserve">
-        <value>0001.JPG</value>
-    </data>
-    <data name="example_full_replace_before" xml:space="preserve">
-        <value>IMG_0001.JPG</value>
-    </data>
-    <data name="example_full_replace_after" xml:space="preserve">
-        <value>제주_0001.jpg</value>
-    </data>
-    <data name="example_full_format_before" xml:space="preserve">
-        <value>IMG_0001.JPG</value>
-    </data>
-    <data name="example_full_format_after" xml:space="preserve">
-        <value>img_0001.jpg</value>
     </data>
     <data name="position_start" xml:space="preserve">
         <value>맨 앞</value>
@@ -482,6 +434,57 @@
     </data>
     <data name="position_between" xml:space="preserve">
         <value>두 구분 문자 사이</value>
+    </data>
+    <data name="position_short_after_nth" xml:space="preserve">
+        <value>앞에서 N글자 뒤</value>
+    </data>
+    <data name="position_short_before_nth_from_end" xml:space="preserve">
+        <value>뒤에서 N글자 앞</value>
+    </data>
+    <data name="position_short_before_text" xml:space="preserve">
+        <value>텍스트 앞</value>
+    </data>
+    <data name="position_short_after_text" xml:space="preserve">
+        <value>텍스트 뒤</value>
+    </data>
+    <data name="position_short_from_nth" xml:space="preserve">
+        <value>N번째부터 M글자</value>
+    </data>
+    <data name="position_desc_start" xml:space="preserve">
+        <value>이름 앞에 붙입니다.</value>
+    </data>
+    <data name="position_desc_end" xml:space="preserve">
+        <value>이름 뒤에 붙입니다.</value>
+    </data>
+    <data name="position_desc_after_nth" xml:space="preserve">
+        <value>앞에서 센 글자 수만큼 지나서 넣습니다.</value>
+    </data>
+    <data name="position_desc_before_nth_from_end" xml:space="preserve">
+        <value>뒤에서 센 글자 수만큼 앞에 넣습니다.</value>
+    </data>
+    <data name="position_desc_before_text" xml:space="preserve">
+        <value>찾은 텍스트 바로 앞에 넣습니다.</value>
+    </data>
+    <data name="position_desc_after_text" xml:space="preserve">
+        <value>찾은 텍스트 바로 뒤에 넣습니다.</value>
+    </data>
+    <data name="position_desc_all" xml:space="preserve">
+        <value>이름 전체</value>
+    </data>
+    <data name="position_desc_from_nth" xml:space="preserve">
+        <value>정한 자리부터 정한 글자 수</value>
+    </data>
+    <data name="position_desc_first_n" xml:space="preserve">
+        <value>앞에서부터 정한 글자 수</value>
+    </data>
+    <data name="position_desc_last_n" xml:space="preserve">
+        <value>뒤에서부터 정한 글자 수</value>
+    </data>
+    <data name="position_desc_text" xml:space="preserve">
+        <value>찾은 텍스트</value>
+    </data>
+    <data name="position_desc_between" xml:space="preserve">
+        <value>두 구분 문자 사이의 글자</value>
     </data>
     <data name="occurrence_choice_first" xml:space="preserve">
         <value>처음 나오는 것</value>
@@ -981,12 +984,6 @@
     <data name="back_to_list" xml:space="preserve">
         <value>수정 목록</value>
     </data>
-    <data name="add_part_title" xml:space="preserve">
-        <value>바꿀 부분</value>
-    </data>
-    <data name="add_kind_title" xml:space="preserve">
-        <value>종류</value>
-    </data>
     <data name="field_scope" xml:space="preserve">
         <value>적용 항목</value>
     </data>
@@ -1071,6 +1068,9 @@
     <data name="button_apply" xml:space="preserve">
         <value>적용</value>
     </data>
+    <data name="button_add" xml:space="preserve">
+        <value>추가</value>
+    </data>
     <data name="button_cancel" xml:space="preserve">
         <value>취소</value>
     </data>
@@ -1082,6 +1082,15 @@
     </data>
     <data name="back_to_add" xml:space="preserve">
         <value>수정 추가</value>
+    </data>
+    <data name="back_to_edit" xml:space="preserve">
+        <value>편집</value>
+    </data>
+    <data name="badge_new" xml:space="preserve">
+        <value>신규</value>
+    </data>
+    <data name="badge_editing" xml:space="preserve">
+        <value>편집 중</value>
     </data>
     <data name="info_title" xml:space="preserve">
         <value>LimeNamer 정보</value>

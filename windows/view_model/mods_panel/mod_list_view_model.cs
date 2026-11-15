@@ -6,13 +6,15 @@ namespace limenamer;
 
 public sealed class MOD_LIST_VIEW_MODEL : OBSERVABLE
 {
-    private static readonly MOD_KIND[] KINDS =
-        [MOD_KIND.insert, MOD_KIND.delete, MOD_KIND.replace, MOD_KIND.format];
+    private static readonly string[] FLOW = [
+        nameof(is_existing), nameof(badge_text), nameof(apply_label), nameof(add_back_label),
+        nameof(back_label), nameof(edit_kind),
+    ];
 
     private readonly ENGINE engine_;
     private MOD_PAGE page_ = MOD_PAGE.list;
     private IReadOnlyList<MOD_CARD> cards_ = [];
-    private PART add_part_ = PART.name;
+    private MOD_KIND add_kind_ = MOD_KIND.insert;
 
     public MOD_LIST_VIEW_MODEL(ENGINE engine, ITEM_LIST_VIEW_MODEL list)
     {
@@ -73,19 +75,58 @@ public sealed class MOD_LIST_VIEW_MODEL : OBSERVABLE
         get { return cards_.Count(card => card.enabled); }
     }
 
-    public PART add_part
+    public static IReadOnlyList<CHOICE<MOD_KIND>> kind_choices { get; } = [
+        new(MOD_KIND.insert, STRINGS.kind_insert),
+        new(MOD_KIND.delete, STRINGS.kind_delete),
+        new(MOD_KIND.replace, STRINGS.kind_replace),
+        new(MOD_KIND.format, STRINGS.kind_format),
+    ];
+
+    public MOD_KIND add_kind
     {
-        get { return add_part_; }
+        get { return add_kind_; }
         set {
-            if (assign(ref add_part_, value)) {
-                notify(nameof(kind_cards));
+            if (assign(ref add_kind_, value)) {
+                notify(nameof(kind_header));
+                notify(nameof(position_cards));
             }
         }
     }
 
-    public IReadOnlyList<KIND_CARD> kind_cards
+    public KIND_CARD kind_header
     {
-        get { return KINDS.Select(kind => kind_card(kind, add_part_)).ToArray(); }
+        get { return kind_card(add_kind_); }
+    }
+
+    public IReadOnlyList<POSITION_CHOICE> position_cards
+    {
+        get { return editor.position_choices(add_kind_); }
+    }
+
+    public MOD_KIND edit_kind
+    {
+        get { return editor.kind; }
+        set { switch_kind(value); }
+    }
+
+    public bool is_existing
+    {
+        get { return editor.is_active && !editor.is_new; }
+    }
+
+    public string badge_text
+    {
+        get { return is_existing ? STRINGS.badge_editing : STRINGS.badge_new; }
+    }
+
+    public string apply_label
+    {
+        get { return is_existing ? STRINGS.button_apply : STRINGS.button_add; }
+    }
+
+    public string add_back_label
+    {
+        get { return is_existing ? STRINGS.back_to_edit : STRINGS.back_to_list; }
     }
 
     public void load(PREVIEW preview)
@@ -118,27 +159,36 @@ public sealed class MOD_LIST_VIEW_MODEL : OBSERVABLE
 
     public void open_add()
     {
-        add_part = PART.name;
-        page = MOD_PAGE.add;
+        add_kind = MOD_KIND.insert;
+        show(MOD_PAGE.add);
     }
 
-    public void close_add()
+    public void choose_position(POSITION_TYPE position)
     {
-        page = MOD_PAGE.list;
+        if (is_existing) {
+            editor.restart(add_kind_, position);
+        } else {
+            editor.begin_new(add_kind_, position);
+        }
+        show(MOD_PAGE.edit);
     }
 
-    public void choose_kind(MOD_KIND kind)
+    public void switch_kind(MOD_KIND kind)
     {
-        editor.begin_new(kind, add_part_);
-        page = MOD_PAGE.edit;
-        notify(nameof(back_label));
+        if (page_ != MOD_PAGE.edit || kind == editor.kind) {
+            return;
+        }
+        if (editor.is_new) {
+            editor.cancel();
+        }
+        add_kind = kind;
+        show(MOD_PAGE.add);
     }
 
     public void open_card(MOD_CARD card)
     {
         editor.begin_edit(card.mod);
-        page = MOD_PAGE.edit;
-        notify(nameof(back_label));
+        show(MOD_PAGE.edit);
     }
 
     public bool apply()
@@ -147,7 +197,7 @@ public sealed class MOD_LIST_VIEW_MODEL : OBSERVABLE
         if (!editor.apply()) {
             return false;
         }
-        page = MOD_PAGE.list;
+        show(MOD_PAGE.list);
         changed?.Invoke(was_new ? STRINGS.mod_added : STRINGS.mod_updated);
         return true;
     }
@@ -160,23 +210,23 @@ public sealed class MOD_LIST_VIEW_MODEL : OBSERVABLE
     public void go_back()
     {
         if (page_ == MOD_PAGE.edit && editor.is_new) {
-            PART part = editor.part;
+            MOD_KIND kind = editor.kind;
             editor.cancel();
-            add_part = part;
-            page = MOD_PAGE.add;
+            add_kind = kind;
+            show(MOD_PAGE.add);
             return;
         }
         if (page_ == MOD_PAGE.edit) {
             cancel();
             return;
         }
-        close_add();
+        show(is_existing ? MOD_PAGE.edit : MOD_PAGE.list);
     }
 
     public void cancel()
     {
         string text = editor.cancel();
-        page = MOD_PAGE.list;
+        show(MOD_PAGE.list);
         if (text != "") {
             notice?.Invoke(text);
         }
@@ -216,9 +266,17 @@ public sealed class MOD_LIST_VIEW_MODEL : OBSERVABLE
         return true;
     }
 
-    private static KIND_CARD kind_card(MOD_KIND kind, PART part)
+    private void show(MOD_PAGE target)
     {
-        string key = $"example_{part}_{kind}";
+        page = target;
+        foreach (string name in FLOW) {
+            notify(name);
+        }
+    }
+
+    private static KIND_CARD kind_card(MOD_KIND kind)
+    {
+        string key = $"example_name_{kind}";
         return new KIND_CARD(kind, text($"kind_{kind}"), text($"kind_{kind}_desc"),
             text(key + "_before"), text(key + "_after"));
     }

@@ -28,6 +28,7 @@ public:
 
     std::optional<EXAMPLE> find(const ITEM_STORE &items, const std::vector<MOD_ENTRY> &mods,
         const MODIFICATION &draft, uint64_t before_mod_id) const;
+    EXAMPLE sample(const ITEM_STORE &items, const MODIFICATION &draft) const;
 
 private:
     static std::optional<std::vector<const MODIFICATION *>> mods_before(

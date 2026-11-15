@@ -7,6 +7,8 @@ struct MOD_POSITION_FIELDS: View
     static let COUNT: ClosedRange<Int> = 1...999_999
     static let DIGITS: ClosedRange<Int> = 1...32
     private static let CHECK_WIDTH: CGFloat = 84
+    private static let COLUMNS: [GridItem] = [GridItem(.flexible(), spacing: 6),
+        GridItem(.flexible(), spacing: 6)]
 
     @Bindable var editor: MOD_EDITOR_VIEW_MODEL
     let focus: FocusState<MOD_FIELD?>.Binding
@@ -14,7 +16,14 @@ struct MOD_POSITION_FIELDS: View
     var body: some View
     {
         FORM_FIELD(label: STRINGS.field_position) {
-            CHOICE_MENU(choices: editor.position_choices, selection: $editor.position_type)
+            LazyVGrid(columns: MOD_POSITION_FIELDS.COLUMNS, alignment: .leading, spacing: 6) {
+                ForEach(editor.position_tiles, id: \.type) { choice in
+                    POSITION_TILE_VIEW(choice: choice,
+                        selected: editor.position_type == choice.type) {
+                        editor.position_type = choice.type
+                    }
+                }
+            }
             if editor.shows_n {
                 HStack(spacing: 8) {
                     Text(STRINGS.field_n)

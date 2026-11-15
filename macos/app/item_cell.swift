@@ -9,6 +9,7 @@ final class ITEM_CELL: NSTableCellView
     private static let EDITOR_OUTSET: CGFloat = 3
     private static let DIM_ALPHA: CGFloat = 0.45
     private static let NAME_FONT: NSFont = NSFont.monospacedSystemFont(ofSize: 13, weight: .regular)
+    private static let MARK_FONT: NSFont = NSFont.monospacedSystemFont(ofSize: 13, weight: .bold)
     private static let INDEX_FONT: NSFont = NSFont.monospacedDigitSystemFont(ofSize: 13,
         weight: .regular)
     private static let SMALL_FONT: NSFont = NSFont.monospacedDigitSystemFont(ofSize: 12,
@@ -246,7 +247,8 @@ final class ITEM_CELL: NSTableCellView
         let text: NSMutableAttributedString = NSMutableAttributedString(string: parts.head,
             attributes: base)
         var marked: [NSAttributedString.Key: Any] = base
-        marked[.backgroundColor] = PALETTE.MARK_BACK
+        marked[.font] = MARK_FONT
+        marked[.foregroundColor] = row.status == .ok ? PALETTE.ACCENT_TEXT : color
         text.append(NSAttributedString(string: parts.mark, attributes: marked))
         text.append(NSAttributedString(string: parts.tail, attributes: base))
         return text

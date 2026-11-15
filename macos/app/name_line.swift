@@ -4,6 +4,7 @@ import SwiftUI
 struct NAME_LINE: View
 {
     private static let FONT: Font = .system(size: 13, design: .monospaced)
+    private static let MARK_FONT: Font = .system(size: 13, weight: .bold, design: .monospaced)
 
     let parts: (head: String, mark: String, tail: String)
     let mark: NSColor
@@ -12,7 +13,8 @@ struct NAME_LINE: View
     {
         var text: AttributedString = AttributedString(parts.head)
         var marked: AttributedString = AttributedString(parts.mark)
-        marked.backgroundColor = Color(nsColor: mark)
+        marked.foregroundColor = Color(nsColor: mark)
+        marked.font = NAME_LINE.MARK_FONT
         text.append(marked)
         text.append(AttributedString(parts.tail))
         return Text(text)

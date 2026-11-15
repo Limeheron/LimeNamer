@@ -36,11 +36,15 @@ TEST_F(MOD_STORE_TEST, updates_a_modification_in_place)
     EXPECT_FALSE(store_.update(999, MOD_JSON::parse(INSERT_A)));
 }
 
-TEST_F(MOD_STORE_TEST, keeps_the_kind_when_updating)
+TEST_F(MOD_STORE_TEST, changes_the_kind_when_updating)
 {
-    const uint64_t id = add(INSERT_A);
-    EXPECT_THROW(store_.update(id, MOD_JSON::parse(DELETE_ALL)), std::invalid_argument);
-    EXPECT_EQ(store_.find(id)->mod.kind, MOD_KIND::insert);
+    const uint64_t first = add(INSERT_A);
+    const uint64_t second = add(INSERT_B);
+    store_.set_enabled(first, false);
+    EXPECT_TRUE(store_.update(first, MOD_JSON::parse(DELETE_ALL)));
+    EXPECT_EQ(store_.find(first)->mod.kind, MOD_KIND::remove);
+    EXPECT_FALSE(store_.find(first)->enabled);
+    EXPECT_EQ(ids(), std::vector<uint64_t>({first, second}));
 }
 
 TEST_F(MOD_STORE_TEST, removes_modifications)
@@ -121,14 +125,19 @@ TEST_F(MOD_STORE_TEST, reuses_the_direct_edit_of_an_item)
         std::vector<VALUE_PIECE>({std::u32string(U"seven.jpg")}));
 }
 
-TEST_F(MOD_STORE_TEST, keeps_the_direct_flag_when_updating)
+TEST_F(MOD_STORE_TEST, turns_an_edited_direct_edit_into_a_plain_modification)
 {
     const uint64_t direct = store_.direct_edit(42, U"one.jpg");
     MODIFICATION edited = store_.find(direct)->mod;
-    edited.direct = false;
+    edited.direct = true;
     edited.value = {std::u32string(U"edited.jpg")};
     EXPECT_TRUE(store_.update(direct, edited));
-    EXPECT_TRUE(store_.find(direct)->mod.direct);
+    const MODIFICATION &mod = store_.find(direct)->mod;
+    EXPECT_FALSE(mod.direct);
+    EXPECT_EQ(mod.targets, std::vector<uint64_t>({42}));
+    const uint64_t again = store_.direct_edit(42, U"two.jpg");
+    EXPECT_NE(again, direct);
+    EXPECT_TRUE(store_.find(again)->mod.direct);
 }
 
 TEST_F(MOD_STORE_TEST, restores_earlier_entries)

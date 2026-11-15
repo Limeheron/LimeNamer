@@ -35,11 +35,11 @@ struct MOD_EXAMPLE_VIEW: View
                 Grid(alignment: .leading, horizontalSpacing: 6, verticalSpacing: 4) {
                     GridRow {
                         label(STRINGS.example_before)
-                        NAME_LINE(parts: editor.example_before, mark: PALETTE.DELETE_BACK)
+                        NAME_LINE(parts: editor.example_before, mark: PALETTE.ERROR_TEXT)
                     }
                     GridRow {
                         label(STRINGS.example_after)
-                        NAME_LINE(parts: editor.example_after, mark: PALETTE.MARK_BACK)
+                        NAME_LINE(parts: editor.example_after, mark: PALETTE.ACCENT_TEXT)
                     }
                     if !editor.example_state_text.isEmpty {
                         GridRow {

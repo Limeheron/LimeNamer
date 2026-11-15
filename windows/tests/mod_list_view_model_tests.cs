@@ -88,16 +88,21 @@ public sealed class MOD_LIST_VIEW_MODEL_TESTS
         MOD_LIST_VIEW_MODEL mods = scenario.mods;
 
         mods.open_add();
-        mods.add_part = PART.ext;
-        KIND_CARD insert = mods.kind_cards[0];
-        mods.choose_kind(MOD_KIND.replace);
+        KIND_CARD insert = mods.kind_header;
+        string badge = mods.badge_text;
+        mods.add_kind = MOD_KIND.replace;
+        mods.choose_position(POSITION_TYPE.all);
         MOD_PAGE editing = mods.page;
+        string apply_label = mods.apply_label;
+        scenario.editor.part = PART.ext;
         scenario.editor.value = [new VALUE_PIECE { text = "jpeg" }];
         bool applied = mods.apply();
 
-        Assert.AreEqual(new KIND_CARD(MOD_KIND.insert, "넣기", "원하는 위치에 텍스트, 번호, 날짜",
-            "IMG_0001.JPG", "IMG_0001.JPG.bak"), insert);
+        Assert.AreEqual(new KIND_CARD(MOD_KIND.insert, "넣기",
+            "원하는 위치에 텍스트, 번호, 날짜 넣기", "IMG_0001.JPG", "2024_IMG_0001.JPG"), insert);
+        Assert.AreEqual("신규", badge);
         Assert.AreEqual(MOD_PAGE.edit, editing);
+        Assert.AreEqual("추가", apply_label);
         Assert.IsTrue(applied);
         Assert.AreEqual(MOD_PAGE.list, mods.page);
         Assert.AreEqual("확장자를 \"jpeg\"로 바꾸기", mods.cards[0].summary);
@@ -114,12 +119,13 @@ public sealed class MOD_LIST_VIEW_MODEL_TESTS
         MOD_LIST_VIEW_MODEL mods = scenario.mods;
 
         mods.open_add();
-        mods.add_part = PART.ext;
-        mods.choose_kind(MOD_KIND.insert);
+        mods.add_kind = MOD_KIND.delete;
+        mods.choose_position(POSITION_TYPE.first_n);
         string new_label = mods.back_label;
         mods.go_back();
         MOD_PAGE after_new = mods.page;
-        PART kept_part = mods.add_part;
+        MOD_KIND kept_kind = mods.add_kind;
+        string add_label = mods.add_back_label;
         mods.go_back();
         MOD_PAGE after_add = mods.page;
         mods.open_card(mods.cards[0]);
@@ -128,11 +134,102 @@ public sealed class MOD_LIST_VIEW_MODEL_TESTS
 
         Assert.AreEqual("수정 추가", new_label);
         Assert.AreEqual(MOD_PAGE.add, after_new);
-        Assert.AreEqual(PART.ext, kept_part);
+        Assert.AreEqual(MOD_KIND.delete, kept_kind);
+        Assert.AreEqual("수정 목록", add_label);
         Assert.AreEqual(MOD_PAGE.list, after_add);
         Assert.AreEqual("수정 목록", edit_label);
         Assert.AreEqual(MOD_PAGE.list, mods.page);
         Assert.AreEqual(0, scenario.messages.Count);
+    }
+
+    [TestMethod]
+    public void switches_kinds_of_new_and_existing_mods()
+    {
+        using MOD_PANEL_SCENARIO scenario = new("a.txt");
+        scenario.engine.mod_add(LIST_SCENARIO.INSERT_NEW);
+        scenario.load();
+        MOD_LIST_VIEW_MODEL mods = scenario.mods;
+
+        mods.open_add();
+        mods.choose_position(POSITION_TYPE.end);
+        mods.switch_kind(MOD_KIND.delete);
+        MOD_PAGE new_page = mods.page;
+        bool new_active = scenario.editor.is_active;
+        string new_back = mods.add_back_label;
+        mods.go_back();
+        MOD_PAGE after_new_back = mods.page;
+
+        MOD_CARD card = mods.cards[0];
+        mods.open_card(card);
+        string badge = mods.badge_text;
+        string apply_label = mods.apply_label;
+        mods.switch_kind(MOD_KIND.insert);
+        MOD_PAGE same_kind = mods.page;
+        mods.switch_kind(MOD_KIND.replace);
+        string edit_back = mods.add_back_label;
+        string kept_badge = mods.badge_text;
+        mods.go_back();
+        MOD_KIND restored = scenario.editor.kind;
+        mods.switch_kind(MOD_KIND.replace);
+        mods.choose_position(POSITION_TYPE.all);
+        ulong editing = scenario.editor.editing_id;
+        scenario.editor.value = [new VALUE_PIECE { text = "b" }];
+        bool applied = mods.apply();
+
+        Assert.AreEqual(MOD_PAGE.add, new_page);
+        Assert.IsFalse(new_active);
+        Assert.AreEqual("수정 목록", new_back);
+        Assert.AreEqual(MOD_PAGE.list, after_new_back);
+        Assert.AreEqual("편집 중", badge);
+        Assert.AreEqual("적용", apply_label);
+        Assert.AreEqual(MOD_PAGE.edit, same_kind);
+        Assert.AreEqual("편집", edit_back);
+        Assert.AreEqual("편집 중", kept_badge);
+        Assert.AreEqual(MOD_KIND.insert, restored);
+        Assert.AreEqual(card.id, editing);
+        Assert.IsTrue(applied);
+        Assert.AreEqual(1, mods.cards.Count);
+        Assert.AreEqual(card.id, mods.cards[0].id);
+        Assert.AreEqual(MOD_KIND.replace, mods.cards[0].mod.kind);
+        Assert.AreEqual("b.txt", scenario.first_new_name());
+        CollectionAssert.AreEqual(new[] { "수정을 고쳤습니다." }, scenario.messages);
+    }
+
+    [TestMethod]
+    public void cancels_a_switched_kind_with_the_original_kept()
+    {
+        using MOD_PANEL_SCENARIO scenario = new("a.txt");
+        scenario.engine.mod_add(LIST_SCENARIO.INSERT_NEW);
+        scenario.load();
+        MOD_LIST_VIEW_MODEL mods = scenario.mods;
+
+        mods.open_card(mods.cards[0]);
+        mods.switch_kind(MOD_KIND.delete);
+        mods.choose_position(POSITION_TYPE.all);
+        mods.cancel();
+
+        Assert.AreEqual(MOD_KIND.insert, mods.cards[0].mod.kind);
+        Assert.AreEqual("new_a.txt", scenario.first_new_name());
+        CollectionAssert.AreEqual(new[] { "편집을 취소했습니다." }, scenario.messages);
+    }
+
+    [TestMethod]
+    public void turns_an_edited_direct_edit_into_a_plain_mod()
+    {
+        using MOD_PANEL_SCENARIO scenario = new("a.txt");
+        scenario.engine.mod_direct_edit(scenario.items.id("a.txt"), "b.txt");
+        scenario.load();
+        MOD_LIST_VIEW_MODEL mods = scenario.mods;
+
+        mods.open_card(mods.cards[0]);
+        string summary = scenario.editor.summary;
+        scenario.editor.value = [new VALUE_PIECE { text = "c.txt" }];
+        mods.apply();
+
+        Assert.AreEqual("이름과 확장자를 \"b.txt\"로 바꾸기 (1개)", summary);
+        Assert.IsFalse(mods.cards[0].direct);
+        Assert.AreEqual("이름과 확장자를 \"c.txt\"로 바꾸기 (1개)", mods.cards[0].summary);
+        Assert.AreEqual("c.txt", scenario.first_new_name());
     }
 
     [TestMethod]
@@ -144,7 +241,8 @@ public sealed class MOD_LIST_VIEW_MODEL_TESTS
         MOD_LIST_VIEW_MODEL mods = scenario.mods;
 
         mods.open_add();
-        mods.choose_kind(MOD_KIND.delete);
+        mods.add_kind = MOD_KIND.delete;
+        mods.choose_position(POSITION_TYPE.all);
         mods.cancel();
         mods.open_card(mods.cards[0]);
         mods.cancel();

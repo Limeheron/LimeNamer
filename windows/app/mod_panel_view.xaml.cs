@@ -138,16 +138,18 @@ public partial class MOD_PANEL_VIEW : UserControl
         main.mods.open_add();
     }
 
-    private void close_add_click(object sender, RoutedEventArgs args)
+    private void position_card_click(object sender, RoutedEventArgs args)
     {
-        main.mods.close_add();
+        if (((FrameworkElement)sender).Tag is POSITION_TYPE position) {
+            main.mods.choose_position(position);
+            edit_scroller.ScrollToTop();
+        }
     }
 
-    private void kind_click(object sender, RoutedEventArgs args)
+    private void position_tile_click(object sender, RoutedEventArgs args)
     {
-        if (((FrameworkElement)sender).Tag is MOD_KIND kind) {
-            main.mods.choose_kind(kind);
-            edit_scroller.ScrollToTop();
+        if (((FrameworkElement)sender).Tag is POSITION_TYPE position) {
+            main.mods.editor.position_type = position;
         }
     }
 

@@ -262,6 +262,20 @@ LN_RESULT ln_mod_example(LN_SESSION *session, const char *json, uint64_t before_
     });
 }
 
+LN_RESULT ln_mod_sample(LN_SESSION *session, const char *json, LN_EXAMPLE **out)
+{
+    if (out != nullptr) {
+        *out = nullptr;
+    }
+    return C_GUARD::run(session, [&](SESSION &target) -> LN_RESULT {
+        if (json == nullptr || out == nullptr) {
+            return ln_result_invalid_argument;
+        }
+        *out = C_RESULTS::example(target.sample(MOD_JSON::parse(json)));
+        return ln_result_ok;
+    });
+}
+
 LN_RESULT ln_options_get(LN_SESSION *session, char **json)
 {
     if (json != nullptr) {

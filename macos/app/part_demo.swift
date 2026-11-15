@@ -5,7 +5,7 @@ import limenamer_view_model
 struct PART_DEMO: View
 {
     private static let FONT: Font = .system(size: 12, design: .monospaced)
-    private static let MARK_FONT: Font = .system(size: 12, weight: .medium, design: .monospaced)
+    private static let MARK_FONT: Font = .system(size: 12, weight: .bold, design: .monospaced)
 
     let part: PART
 
@@ -34,7 +34,6 @@ struct PART_DEMO: View
         var text: AttributedString = AttributedString(value)
         text.font = MARK_FONT
         text.foregroundColor = Color(nsColor: PALETTE.ACCENT_TEXT)
-        text.backgroundColor = Color(nsColor: PALETTE.ACCENT_SOFT)
         return text
     }
 }
