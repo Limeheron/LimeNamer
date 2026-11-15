@@ -4,6 +4,7 @@ import limenamer_view_model
 
 enum ITEM_COLUMN: String, CaseIterable
 {
+    case check
     case index
     case status
     case current
@@ -23,6 +24,8 @@ enum ITEM_COLUMN: String, CaseIterable
     var title: String
     {
         switch self {
+        case .check:
+            return ""
         case .index:
             return STRINGS.column_index
         case .status:
@@ -45,6 +48,8 @@ enum ITEM_COLUMN: String, CaseIterable
     var width: CGFloat
     {
         switch self {
+        case .check:
+            return 36
         case .index:
             return 48
         case .status:
@@ -63,6 +68,8 @@ enum ITEM_COLUMN: String, CaseIterable
     var min_width: CGFloat
     {
         switch self {
+        case .check:
+            return 36
         case .index:
             return 40
         case .status:
@@ -86,7 +93,7 @@ enum ITEM_COLUMN: String, CaseIterable
     var alignment: NSTextAlignment
     {
         switch self {
-        case .index:
+        case .check, .index:
             return .center
         case .size:
             return .right
@@ -98,7 +105,7 @@ enum ITEM_COLUMN: String, CaseIterable
     @MainActor
     static func hidden(_ settings: SETTINGS, designating: Bool) -> Set<ITEM_COLUMN>
     {
-        var result: Set<ITEM_COLUMN> = []
+        var result: Set<ITEM_COLUMN> = designating ? [] : [.check]
         for column in HIDEABLE where !column.shown(settings, designating: designating) {
             result.insert(column)
         }
@@ -109,6 +116,8 @@ enum ITEM_COLUMN: String, CaseIterable
     func shown(_ settings: SETTINGS, designating: Bool = false) -> Bool
     {
         switch self {
+        case .check:
+            return designating
         case .index:
             return settings.show_index || designating
         case .status:
@@ -134,7 +143,7 @@ enum ITEM_COLUMN: String, CaseIterable
             settings.show_index = value
         case .status:
             settings.show_status = value
-        case .current, .new_name:
+        case .check, .current, .new_name:
             break
         case .folder:
             settings.show_folder = value

@@ -57,8 +57,12 @@ struct MAIN_WINDOW: View
     private var list_area: some View
     {
         ITEM_TABLE(main: main, rows: main.list.rows,
-            hidden: ITEM_COLUMN.hidden(main.settings, designating: main.list.designating))
+            hidden: ITEM_COLUMN.hidden(main.settings, designating: main.list.designating),
+            checked: main.list.checked_ids)
             .padding(.horizontal, MAIN_WINDOW.LIST_PADDING)
+            .overlay {
+                LIST_GUIDE(main: main)
+            }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(nsColor: .controlBackgroundColor), ignoresSafeAreaEdges: [])
     }

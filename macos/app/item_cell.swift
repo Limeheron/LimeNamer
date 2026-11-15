@@ -6,6 +6,8 @@ final class ITEM_CELL: NSTableCellView
 {
     private static let PADDING: CGFloat = 8
     private static let TAG_GAP: CGFloat = 6
+    private static let EDITOR_OUTSET: CGFloat = 3
+    private static let DIM_ALPHA: CGFloat = 0.45
     private static let NAME_FONT: NSFont = NSFont.monospacedSystemFont(ofSize: 13, weight: .regular)
     private static let INDEX_FONT: NSFont = NSFont.monospacedDigitSystemFont(ofSize: 13,
         weight: .regular)
@@ -15,8 +17,11 @@ final class ITEM_CELL: NSTableCellView
     private let column: ITEM_COLUMN
     private let label: NSTextField = NSTextField(labelWithString: "")
     private let badge: STATUS_BADGE = STATUS_BADGE()
+    private let check_box: NSButton = NSButton(checkboxWithTitle: "", target: nil, action: nil)
     private let chip: TAG_VIEW?
+    private var shows_chip: Bool = false
     private var tinted: Bool = false
+    private(set) var editor: NSTextField? = nil
 
     init(column: ITEM_COLUMN)
     {
@@ -33,9 +38,12 @@ final class ITEM_CELL: NSTableCellView
         }
         super.init(frame: .zero)
         identifier = column.identifier
-        if column == .status {
+        switch column {
+        case .check:
+            addSubview(check_box)
+        case .status:
             addSubview(badge)
-        } else {
+        default:
             setup_label()
             addSubview(label)
             textField = label
@@ -51,20 +59,29 @@ final class ITEM_CELL: NSTableCellView
         fatalError("ITEM_CELL does not support coding")
     }
 
+    func bind_check(target: AnyObject, action: Selector)
+    {
+        check_box.target = target
+        check_box.action = action
+    }
+
     func show(_ row: ITEM_ROW)
     {
         switch column {
+        case .check:
+            break
         case .index:
             label.stringValue = String(row.index)
         case .status:
             badge.show(row.status, text: row.status_text)
         case .current:
             label.stringValue = row.name
-            chip?.isHidden = !row.is_dir
+            shows_chip = row.is_dir
             toolTip = row.full_path
         case .new_name:
             label.attributedStringValue = ITEM_CELL.new_name_text(row)
-            chip?.isHidden = !row.direct
+            shows_chip = row.direct
+            toolTip = row.has_problems ? row.problem_text : nil
             if tinted != row.changed {
                 tinted = row.changed
                 needsDisplay = true
@@ -79,6 +96,46 @@ final class ITEM_CELL: NSTableCellView
         case .size:
             label.stringValue = row.size_text
         }
+        chip?.isHidden = !shows_chip || editor != nil
+        show_check(row)
+        needsLayout = true
+    }
+
+    func show_check(_ row: ITEM_ROW)
+    {
+        if column == .check {
+            check_box.state = row.is_checked ? .on : .off
+        } else {
+            alphaValue = row.is_dimmed ? ITEM_CELL.DIM_ALPHA : 1
+        }
+    }
+
+    func begin_edit(_ text: String, delegate: NSTextFieldDelegate) -> NSTextField
+    {
+        let field: NSTextField = editor ?? ITEM_CELL.make_editor()
+        field.stringValue = text
+        field.delegate = delegate
+        if field.superview == nil {
+            addSubview(field)
+        }
+        editor = field
+        label.isHidden = true
+        chip?.isHidden = true
+        needsLayout = true
+        layoutSubtreeIfNeeded()
+        return field
+    }
+
+    func end_edit()
+    {
+        guard let field = editor else {
+            return
+        }
+        field.delegate = nil
+        field.removeFromSuperview()
+        editor = nil
+        label.isHidden = false
+        chip?.isHidden = !shows_chip
         needsLayout = true
     }
 
@@ -87,11 +144,24 @@ final class ITEM_CELL: NSTableCellView
         super.layout()
         let left: CGFloat = ITEM_CELL.PADDING
         let right: CGFloat = bounds.width - ITEM_CELL.PADDING
-        if column == .status {
+        switch column {
+        case .check:
+            let size: NSSize = check_box.intrinsicContentSize
+            check_box.frame = NSRect(x: round((bounds.width - size.width) / 2),
+                y: middle(size.height), width: size.width, height: size.height)
+            return
+        case .status:
             let size: NSSize = badge.intrinsicContentSize
             badge.frame = NSRect(x: left, y: middle(size.height),
                 width: max(0, min(size.width, right - left)), height: size.height)
             return
+        default:
+            break
+        }
+        if let editor {
+            let height: CGFloat = editor.intrinsicContentSize.height + 2
+            editor.frame = NSRect(x: left, y: middle(height),
+                width: max(0, right - left + ITEM_CELL.EDITOR_OUTSET), height: height)
         }
         var text_left: CGFloat = left
         var text_right: CGFloat = right
@@ -146,6 +216,23 @@ final class ITEM_CELL: NSTableCellView
         default:
             label.font = ITEM_CELL.SMALL_FONT
         }
+    }
+
+    private static func make_editor() -> NSTextField
+    {
+        let field: NSTextField = NSTextField(string: "")
+        field.font = NAME_FONT
+        field.isBordered = false
+        field.isBezeled = false
+        field.drawsBackground = true
+        field.backgroundColor = .textBackgroundColor
+        field.focusRingType = .exterior
+        field.usesSingleLineMode = true
+        field.maximumNumberOfLines = 1
+        field.lineBreakMode = .byClipping
+        field.cell?.wraps = false
+        field.cell?.isScrollable = true
+        return field
     }
 
     private static func new_name_text(_ row: ITEM_ROW) -> NSAttributedString

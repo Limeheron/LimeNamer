@@ -1,8 +1,18 @@
 import AppKit
 
+import limenamer_view_model
+
 @MainActor
 enum FILE_PICKER
 {
+    static func add(_ main: MAIN_VIEW_MODEL, folders: Bool, mode: ADD_MODE)
+    {
+        Task {
+            let paths: [String] = await FILE_PICKER.choose(folders: folders)
+            main.add_paths(paths, mode: mode)
+        }
+    }
+
     static func choose(folders: Bool) async -> [String]
     {
         let panel: NSOpenPanel = NSOpenPanel()

@@ -106,9 +106,6 @@ struct MAIN_TOOLBAR: ToolbarContent
 
     private func add(folders: Bool, mode: ADD_MODE)
     {
-        Task {
-            let paths: [String] = await FILE_PICKER.choose(folders: folders)
-            main.add_paths(paths, mode: mode)
-        }
+        FILE_PICKER.add(main, folders: folders, mode: mode)
     }
 }
