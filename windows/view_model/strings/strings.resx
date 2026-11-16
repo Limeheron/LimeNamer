@@ -957,6 +957,9 @@
     <data name="row_open_location" xml:space="preserve">
         <value>탐색기에서 위치 열기</value>
     </data>
+    <data name="row_reveal" xml:space="preserve">
+        <value>Finder에서 보기</value>
+    </data>
     <data name="check_all_tip" xml:space="preserve">
         <value>목록 전체를 체크하거나 해제합니다.</value>
     </data>
@@ -1106,6 +1109,9 @@
     </data>
     <data name="info_notices" xml:space="preserve">
         <value>오픈소스 라이선스</value>
+    </data>
+    <data name="about_menu" xml:space="preserve">
+        <value>LimeNamer에 관하여</value>
     </data>
     <data name="list_title" xml:space="preserve">
         <value>항목</value>

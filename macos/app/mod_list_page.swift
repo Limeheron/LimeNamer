@@ -4,6 +4,8 @@ import limenamer_view_model
 
 struct MOD_LIST_PAGE: View
 {
+    private static let ADD_ICON_SIDE: CGFloat = 20
+
     let main: MAIN_VIEW_MODEL
 
     var body: some View
@@ -26,6 +28,8 @@ struct MOD_LIST_PAGE: View
                     main.mods.open_add()
                 } label: {
                     Image(systemName: "plus")
+                        .frame(width: MOD_LIST_PAGE.ADD_ICON_SIDE,
+                            height: MOD_LIST_PAGE.ADD_ICON_SIDE)
                 }
                 .buttonStyle(.bordered)
                 .buttonBorderShape(.circle)

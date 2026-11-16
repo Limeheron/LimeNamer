@@ -26,6 +26,8 @@ final class ITEM_TABLE_CONTROLLER: NSObject, NSTableViewDataSource, NSTableViewD
         scroll_view: scroll_view, left: ITEM_TABLE_CONTROLLER.DROP_LINE_LEFT,
         right: ITEM_TABLE_CONTROLLER.DROP_LINE_RIGHT)
     private let autoscroller: DRAG_AUTOSCROLLER = DRAG_AUTOSCROLLER()
+    private let row_menu: NSMenu = NSMenu()
+    private var menu_item_id: UInt64 = 0
     private var rows: [ITEM_ROW] = []
     private var checked: Set<UInt64> = []
     private var designating: Bool = false
@@ -193,6 +195,10 @@ final class ITEM_TABLE_CONTROLLER: NSObject, NSTableViewDataSource, NSTableViewD
     func menuNeedsUpdate(_ menu: NSMenu)
     {
         menu.removeAllItems()
+        if menu === row_menu {
+            fill_row_menu(menu)
+            return
+        }
         for column in ITEM_COLUMN.HIDEABLE {
             let item: NSMenuItem = NSMenuItem(title: column.title,
                 action: #selector(toggle_column(_:)), keyEquivalent: "")
@@ -200,6 +206,25 @@ final class ITEM_TABLE_CONTROLLER: NSObject, NSTableViewDataSource, NSTableViewD
             item.representedObject = column.rawValue
             item.state = column.shown(main.settings) ? .on : .off
             menu.addItem(item)
+        }
+    }
+
+    @objc private func row_direct_edit(_ sender: NSMenuItem)
+    {
+        if let row = rows.firstIndex(where: { $0.item_id == menu_item_id }) {
+            begin_edit(row)
+        }
+    }
+
+    @objc private func row_remove(_ sender: NSMenuItem)
+    {
+        main.remove_selected()
+    }
+
+    @objc private func row_reveal(_ sender: NSMenuItem)
+    {
+        if let path = main.location_of(menu_item_id) {
+            NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: path)])
         }
     }
 
@@ -243,6 +268,34 @@ final class ITEM_TABLE_CONTROLLER: NSObject, NSTableViewDataSource, NSTableViewD
     @objc private func clip_resized(_ notification: Notification)
     {
         fit_columns()
+    }
+
+    private func fill_row_menu(_ menu: NSMenu)
+    {
+        let row: Int = table.clickedRow
+        guard main.can_edit, row >= 0, row < rows.count else {
+            return
+        }
+        if !table.selectedRowIndexes.contains(row) {
+            table.selectRowIndexes(IndexSet(integer: row), byExtendingSelection: false)
+        }
+        menu_item_id = rows[row].item_id
+        menu.addItem(menu_item(STRINGS.row_direct_edit, "pencil", "\r",
+            #selector(row_direct_edit(_:))))
+        menu.addItem(menu_item(STRINGS.row_remove, "minus.circle", "\u{8}",
+            #selector(row_remove(_:))))
+        menu.addItem(.separator())
+        menu.addItem(menu_item(STRINGS.row_reveal, "folder", "", #selector(row_reveal(_:))))
+    }
+
+    private func menu_item(_ title: String, _ symbol: String, _ key: String, _ action: Selector)
+        -> NSMenuItem
+    {
+        let item: NSMenuItem = NSMenuItem(title: title, action: action, keyEquivalent: key)
+        item.keyEquivalentModifierMask = []
+        item.target = self
+        item.image = NSImage(systemSymbolName: symbol, accessibilityDescription: nil)
+        return item
     }
 
     private func make_cell(_ column: ITEM_COLUMN) -> ITEM_CELL
@@ -377,6 +430,8 @@ final class ITEM_TABLE_CONTROLLER: NSObject, NSTableViewDataSource, NSTableViewD
         let menu: NSMenu = NSMenu()
         menu.delegate = self
         table.headerView?.menu = menu
+        row_menu.delegate = self
+        table.menu = row_menu
         table.dataSource = self
         table.delegate = self
         table.target = self

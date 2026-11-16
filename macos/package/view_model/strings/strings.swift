@@ -328,6 +328,7 @@ public enum STRINGS
     public static let row_direct_edit: String = text("row_direct_edit")
     public static let row_remove: String = text("row_remove")
     public static let row_open_location: String = text("row_open_location")
+    public static let row_reveal: String = text("row_reveal")
     public static let check_all_tip: String = text("check_all_tip")
     public static let grip_tip: String = text("grip_tip")
     public static let drag_count: String = text("drag_count")
@@ -378,6 +379,7 @@ public enum STRINGS
     public static let info_version: String = text("info_version")
     public static let info_license: String = text("info_license")
     public static let info_notices: String = text("info_notices")
+    public static let about_menu: String = text("about_menu")
     public static let list_title: String = text("list_title")
 
     public static func text(_ key: String) -> String

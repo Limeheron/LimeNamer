@@ -70,10 +70,7 @@ struct MAIN_TOOLBAR: ToolbarContent
             }
             .help(STRINGS.toolbar_filter)
             .disabled(!main.can_edit)
-            Button(STRINGS.toolbar_duplicate, systemImage: "plus.square.on.square") {
-            }
-            .help(STRINGS.toolbar_duplicate)
-            .disabled(true)
+            DUPLICATE_BUTTON(main: main)
         }
         if #available(macOS 26.0, *) {
             ToolbarSpacer(.fixed, placement: .primaryAction)

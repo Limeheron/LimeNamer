@@ -8,10 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		A10000000000000000000001 /* limenamer_view_model in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000002 /* limenamer_view_model */; };
+		A10000000000000000000004 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000011 /* LICENSE */; };
+		A10000000000000000000005 /* nlohmann_json.txt in Resources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000012 /* nlohmann_json.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		A10000000000000000000010 /* LimeNamer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LimeNamer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10000000000000000000011 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = SOURCE_ROOT; };
+		A10000000000000000000012 /* nlohmann_json.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = nlohmann_json.txt; path = ../licenses/nlohmann_json.txt; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -38,8 +42,18 @@
 			isa = PBXGroup;
 			children = (
 				A10000000000000000000020 /* app */,
+				A10000000000000000000042 /* licenses */,
 				A10000000000000000000041 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		A10000000000000000000042 /* licenses */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000011 /* LICENSE */,
+				A10000000000000000000012 /* nlohmann_json.txt */,
+			);
+			name = licenses;
 			sourceTree = "<group>";
 		};
 		A10000000000000000000041 /* Products */ = {
@@ -118,6 +132,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A10000000000000000000004 /* LICENSE in Resources */,
+				A10000000000000000000005 /* nlohmann_json.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,5 +1,6 @@
 import AppKit
 import SwiftUI
+import UniformTypeIdentifiers
 
 import limenamer_view_model
 
@@ -11,8 +12,10 @@ struct MAIN_WINDOW: View
     private static let PROGRESS_INTERVAL: Duration = .milliseconds(50)
 
     let main: MAIN_VIEW_MODEL
+    let dialogs: SHEET_DIALOGS
 
     @State private var panel_width: CGFloat = MAIN_WINDOW.PANEL_WIDTH
+    @State private var dropping: Bool = false
 
     var body: some View
     {
@@ -39,6 +42,13 @@ struct MAIN_WINDOW: View
         .toolbar {
             MAIN_TOOLBAR(main: main)
         }
+        .sheet(isPresented: dialog_shown) {
+            if let content = dialogs.current {
+                DIALOG_SHEET(content: content) { primary in
+                    dialogs.answer(primary)
+                }
+            }
+        }
         .onChange(of: main.settings.theme_mode, initial: true) { _, mode in
             NSApp.appearance = MAIN_WINDOW.appearance(mode)
         }
@@ -54,6 +64,15 @@ struct MAIN_WINDOW: View
         }
     }
 
+    private var dialog_shown: Binding<Bool>
+    {
+        let dialogs: SHEET_DIALOGS = dialogs
+        return Binding(get: {
+            return dialogs.current != nil
+        }, set: { _ in
+        })
+    }
+
     private var list_area: some View
     {
         ITEM_TABLE(main: main, rows: main.list.rows,
@@ -61,10 +80,15 @@ struct MAIN_WINDOW: View
             checked: main.list.checked_ids)
             .padding(.horizontal, MAIN_WINDOW.LIST_PADDING)
             .overlay {
-                LIST_GUIDE(main: main)
+                if dropping {
+                    DROP_GUIDE()
+                } else {
+                    LIST_GUIDE(main: main)
+                }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(nsColor: .controlBackgroundColor), ignoresSafeAreaEdges: [])
+            .onDrop(of: [.fileURL], delegate: FILE_DROP(main: main, targeted: $dropping))
     }
 
     private var panel_area: some View

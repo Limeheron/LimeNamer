@@ -1,6 +1,17 @@
 {
   "sourceLanguage" : "ko",
   "strings" : {
+    "about_menu" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LimeNamer에 관하여"
+          }
+        }
+      }
+    },
     "add_files" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3165,6 +3176,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "목록에서 빼기"
+          }
+        }
+      }
+    },
+    "row_reveal" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finder에서 보기"
           }
         }
       }
