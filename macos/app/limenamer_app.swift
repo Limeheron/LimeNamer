@@ -10,6 +10,7 @@ struct LIMENAMER_APP: App
 
     @State private var dialogs: SHEET_DIALOGS
     @State private var main: MAIN_VIEW_MODEL
+    @State private var state: WINDOW_STATE = WINDOW_STATE()
 
     init()
     {
@@ -22,12 +23,12 @@ struct LIMENAMER_APP: App
     var body: some Scene
     {
         Window("LimeNamer", id: LIMENAMER_APP.WINDOW_ID) {
-            MAIN_WINDOW(main: main, dialogs: dialogs)
+            MAIN_WINDOW(main: main, dialogs: dialogs, state: state)
         }
         .defaultSize(width: 1280, height: 800)
         .windowResizability(.contentMinSize)
         .commands {
-            MAIN_COMMANDS(main: main, version: LIMENAMER_APP.version)
+            MAIN_COMMANDS(main: main, state: state, version: LIMENAMER_APP.version)
         }
     }
 

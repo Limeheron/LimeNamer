@@ -17,4 +17,20 @@ final class ITEM_TABLE_VIEW: NSTableView
         }
         super.keyDown(with: event)
     }
+
+    override func viewDidMoveToWindow()
+    {
+        super.viewDidMoveToWindow()
+        Task { @MainActor [weak self] in
+            guard let self, let window, window.firstResponder === window else {
+                return
+            }
+            window.makeFirstResponder(self)
+        }
+    }
+
+    @objc func edit_name(_ sender: Any?)
+    {
+        return_pressed?()
+    }
 }

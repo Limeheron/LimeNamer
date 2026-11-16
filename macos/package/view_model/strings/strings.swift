@@ -380,6 +380,10 @@ public enum STRINGS
     public static let info_license: String = text("info_license")
     public static let info_notices: String = text("info_notices")
     public static let about_menu: String = text("about_menu")
+    public static let menu_clear: String = text("menu_clear")
+    public static let menu_panel_show: String = text("menu_panel_show")
+    public static let menu_panel_hide: String = text("menu_panel_hide")
+    public static let menu_duplicate: String = text("menu_duplicate")
     public static let list_title: String = text("list_title")
 
     public static func text(_ key: String) -> String

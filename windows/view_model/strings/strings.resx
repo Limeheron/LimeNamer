@@ -1113,6 +1113,18 @@
     <data name="about_menu" xml:space="preserve">
         <value>LimeNamer에 관하여</value>
     </data>
+    <data name="menu_clear" xml:space="preserve">
+        <value>목록 비우기</value>
+    </data>
+    <data name="menu_panel_show" xml:space="preserve">
+        <value>수정 패널 보기</value>
+    </data>
+    <data name="menu_panel_hide" xml:space="preserve">
+        <value>수정 패널 가리기</value>
+    </data>
+    <data name="menu_duplicate" xml:space="preserve">
+        <value>중복 자동 조정...</value>
+    </data>
     <data name="list_title" xml:space="preserve">
         <value>항목</value>
     </data>

@@ -20,7 +20,7 @@ enum FILE_PICKER
         panel.canChooseDirectories = folders
         panel.allowsMultipleSelection = true
         let response: NSApplication.ModalResponse
-        if let window = NSApp.keyWindow {
+        if let window = NSApp.mainWindow ?? NSApp.keyWindow {
             response = await panel.beginSheetModal(for: window)
         } else {
             response = panel.runModal()

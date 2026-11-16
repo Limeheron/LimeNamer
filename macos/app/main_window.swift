@@ -13,6 +13,7 @@ struct MAIN_WINDOW: View
 
     let main: MAIN_VIEW_MODEL
     let dialogs: SHEET_DIALOGS
+    let state: WINDOW_STATE
 
     @State private var panel_width: CGFloat = MAIN_WINDOW.PANEL_WIDTH
     @State private var dropping: Bool = false
@@ -37,10 +38,10 @@ struct MAIN_WINDOW: View
             BOTTOM_BAR(main: main)
         }
         .frame(minWidth: 900, minHeight: 560)
-        .background(WINDOW_SETUP())
+        .background(WINDOW_SETUP(state: state))
         .navigationSubtitle(main.list.subtitle_text)
         .toolbar {
-            MAIN_TOOLBAR(main: main)
+            MAIN_TOOLBAR(main: main, state: state)
         }
         .sheet(isPresented: dialog_shown) {
             if let content = dialogs.current {

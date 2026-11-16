@@ -2058,6 +2058,50 @@
         }
       }
     },
+    "menu_clear" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "목록 비우기"
+          }
+        }
+      }
+    },
+    "menu_duplicate" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "중복 자동 조정..."
+          }
+        }
+      }
+    },
+    "menu_panel_hide" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "수정 패널 가리기"
+          }
+        }
+      }
+    },
+    "menu_panel_show" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "수정 패널 보기"
+          }
+        }
+      }
+    },
     "mod_added" : {
       "extractionState" : "manual",
       "localizations" : {

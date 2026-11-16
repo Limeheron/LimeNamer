@@ -5,6 +5,7 @@ import limenamer_view_model
 struct MAIN_COMMANDS: Commands
 {
     let main: MAIN_VIEW_MODEL
+    let state: WINDOW_STATE
     let version: String
 
     var body: some Commands
@@ -14,17 +15,10 @@ struct MAIN_COMMANDS: Commands
                 ABOUT_PANEL.show(version: version)
             }
         }
-        CommandGroup(replacing: .toolbar) {
-            Picker(STRINGS.theme_title, selection: Binding(get: {
-                return main.settings.theme_mode
-            }, set: { mode in
-                main.set_theme(mode)
-            })) {
-                ForEach(MAIN_VIEW_MODEL.THEME_CHOICES, id: \.value) { choice in
-                    Text(choice.label)
-                        .tag(choice.value)
-                }
-            }
+        FILE_COMMANDS(main: main, state: state)
+        EDIT_COMMANDS(main: main, state: state)
+        VIEW_COMMANDS(main: main, state: state)
+        CommandGroup(replacing: .help) {
         }
     }
 }

@@ -5,6 +5,7 @@ import limenamer_view_model
 struct MAIN_TOOLBAR: ToolbarContent
 {
     let main: MAIN_VIEW_MODEL
+    let state: WINDOW_STATE
 
     var body: some ToolbarContent
     {
@@ -70,7 +71,7 @@ struct MAIN_TOOLBAR: ToolbarContent
             }
             .help(STRINGS.toolbar_filter)
             .disabled(!main.can_edit)
-            DUPLICATE_BUTTON(main: main)
+            DUPLICATE_BUTTON(main: main, state: state)
         }
         if #available(macOS 26.0, *) {
             ToolbarSpacer(.fixed, placement: .primaryAction)
