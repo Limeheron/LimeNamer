@@ -21,6 +21,7 @@ public:
     explicit FAKE_FILE_SYSTEM(const TEXT_SERVICE &text_service);
 
     void add_folder(const std::filesystem::path &path);
+    void add_package(const std::filesystem::path &path);
     void add_file(const std::filesystem::path &path, int64_t size, bool hidden = false);
     void fail_next_rename(const std::filesystem::path &from, FS_ERROR error);
     void set_modified(const std::filesystem::path &path, int64_t modified_ms);

@@ -7,6 +7,7 @@
 struct FILE_INFO
 {
     bool is_dir = false;
+    bool package = false;
     bool hidden = false;
     int64_t size = 0;
     int64_t modified_ms = 0;

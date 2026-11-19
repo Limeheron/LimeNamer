@@ -81,6 +81,62 @@ TEST_F(SESSION_REAL_FS_TEST, undoes_to_the_original_normalization_form)
     EXPECT_EQ(names_in(env_.root()), sorted({UTF::path_from_u32(decomposed)}));
 }
 
+TEST_F(SESSION_REAL_FS_TEST, changes_the_case_of_a_folder_with_its_items)
+{
+    env_.make_folder(at("f"));
+    env_.make_file(at("f/x.txt"), 1);
+    session_.add_items({at("f"), at("f/x.txt")}, ADD_MODE::as_items);
+    const std::vector<uint64_t> ids = session_.items().order();
+    session_.direct_edit(ids[0], U"F");
+    session_.direct_edit(ids[1], U"y.txt");
+    EXPECT_EQ(session_.rename({})->succeeded, 2u);
+    EXPECT_EQ(names_in(env_.root()), sorted({"F"}));
+    EXPECT_EQ(names_in(at("F")), sorted({"y.txt"}));
+    EXPECT_EQ(session_.items().find(ids[1])->path, at("F/y.txt"));
+
+    EXPECT_EQ(session_.undo_rename({})->succeeded, 2u);
+    EXPECT_EQ(names_in(env_.root()), sorted({"f"}));
+    EXPECT_EQ(names_in(at("f")), sorted({"x.txt"}));
+}
+
+TEST_F(SESSION_REAL_FS_TEST, renames_decomposed_names)
+{
+    const std::u32string decomposed = U"e\u0301.txt";
+    session_.add_items(files({decomposed}), ADD_MODE::as_items);
+    const uint64_t id = session_.items().order()[0];
+    session_.direct_edit(id, U"\u00E9.txt");
+    EXPECT_EQ(session_.preview().changed, 0u);
+    session_.direct_edit(id, U"\u00C9.txt");
+    EXPECT_EQ(session_.rename({})->succeeded, 1u);
+    EXPECT_EQ(names_in(env_.root()), sorted({UTF::path_from_u32(U"\u00C9.txt")}));
+    EXPECT_EQ(session_.undo_rename({})->succeeded, 1u);
+    EXPECT_EQ(names_in(env_.root()), sorted({UTF::path_from_u32(decomposed)}));
+}
+
+TEST_F(SESSION_REAL_FS_TEST, finds_conflicts_with_decomposed_names)
+{
+    files({U"e\u0301.txt"});
+    session_.add_items(files({U"a.txt"}), ADD_MODE::as_items);
+    session_.direct_edit(session_.items().order()[0], U"\u00C9.TXT");
+    const PREVIEW preview = session_.preview();
+    ASSERT_EQ(preview.rows.size(), size_t{1});
+    EXPECT_EQ(preview.rows[0].conflict, CONFLICT_KIND::existing_item);
+    EXPECT_FALSE(session_.rename({}).has_value());
+}
+
+TEST_F(SESSION_REAL_FS_TEST, avoids_existing_temporary_names)
+{
+    env_.make_file(at(".limenamer-tmp-1"), 9);
+    session_.add_items(files({U"a.txt", U"b.txt"}), ADD_MODE::as_items);
+    const std::vector<uint64_t> ids = session_.items().order();
+    session_.direct_edit(ids[0], U"b.txt");
+    session_.direct_edit(ids[1], U"a.txt");
+    EXPECT_EQ(session_.rename({})->succeeded, 2u);
+    EXPECT_EQ(names_in(env_.root()), sorted({".limenamer-tmp-1", "a.txt", "b.txt"}));
+    EXPECT_EQ(size_of(at(".limenamer-tmp-1")), 9);
+    EXPECT_EQ(size_of(at("a.txt")), 2);
+}
+
 TEST_F(SESSION_REAL_FS_TEST, reverts_all_after_a_failure)
 {
     session_.add_items(files({U"a.txt", U"b.txt", U"c.txt"}), ADD_MODE::as_items);

@@ -31,10 +31,10 @@ PREVIEW PREVIEW_BUILDER::build(const ITEM_STORE &items, const std::vector<MOD_EN
         row.folder = item.folder;
         row.name = item.name;
         row.new_name = apply(item, index, plans);
-        row.size = item.info.size;
+        row.size = size_of(item.info);
         row.modified_ms = item.info.modified_ms;
         row.created_ms = item.info.created_ms;
-        row.is_dir = item.info.is_dir;
+        row.is_dir = is_folder(item.info);
         row.changed = row.new_name != item.name;
         row.direct = direct.contains(item.id);
 
@@ -102,8 +102,8 @@ std::u32string PREVIEW_BUILDER::apply_from(const ITEM &item, std::u32string name
     context.original_name = item.name;
     const std::optional<std::u32string> parent = UTF::path_to_u32(item.folder.filename());
     context.parent_name = parent ? text_service_.to_nfc(*parent) : std::u32string();
-    context.is_dir = item.info.is_dir;
-    context.size = item.info.size;
+    context.is_dir = is_folder(item.info);
+    context.size = size_of(item.info);
     context.modified_ms = item.info.modified_ms;
     context.created_ms = item.info.created_ms;
 
@@ -120,7 +120,7 @@ std::u32string PREVIEW_BUILDER::apply_from(const ITEM &item, std::u32string name
         }
         const bool has_value = mod.kind == MOD_KIND::insert || mod.kind == MOD_KIND::replace;
         const std::u32string value = has_value ? TOKEN_FORMATTER::build(mod, context) : U"";
-        name = applier_.apply(mod, name, item.info.is_dir, value);
+        name = applier_.apply(mod, name, context.is_dir, value);
     }
     return text_service_.to_nfc(name);
 }
@@ -134,6 +134,16 @@ std::vector<const MODIFICATION *> PREVIEW_BUILDER::enabled(const std::vector<MOD
         }
     }
     return result;
+}
+
+bool PREVIEW_BUILDER::is_folder(const FILE_INFO &info)
+{
+    return info.is_dir && !info.package;
+}
+
+int64_t PREVIEW_BUILDER::size_of(const FILE_INFO &info)
+{
+    return info.package ? -1 : info.size;
 }
 
 std::pair<uint32_t, uint32_t> PREVIEW_BUILDER::common_lengths(std::u32string_view before,

@@ -106,6 +106,7 @@ RENAME_REPORT RENAME_EXECUTOR::resolve(RESOLVE_CHOICE choice, const PROGRESS &pr
         problems_.push_back({item.item_id, item.original, item.target, item.current,
             REPORT_STAGE::revert, failure->second.first, failure->second.second});
     }
+    restore_stuck();
     return report();
 }
 
@@ -144,19 +145,24 @@ RENAME_EXECUTOR::FAILURES RENAME_EXECUTOR::execute(const std::vector<RENAME_STEP
     const PROGRESS &progress)
 {
     FAILURES failures;
+    std::unordered_set<std::u32string> held;
     const uint32_t total = static_cast<uint32_t>(steps.size());
     uint32_t done = 0;
     for (const RENAME_STEP &step : steps) {
         RENAME_TRACK &item = track(step.item_id);
         if (!failures.contains(item.item_id)) {
-            if (blocked_by_failure(step.to, failures)) {
+            if (!held.empty() && held.contains(key_of(step.to))) {
                 failures.emplace(item.item_id,
                     std::make_pair(RENAME_FAILURE::depends_on_failed, int32_t{0}));
+                held.insert(key_of(item.current));
             } else {
                 const FS_STATUS status = move(item, step.to);
                 if (!status.ok()) {
                     failures.emplace(item.item_id,
                         std::make_pair(failure_of(status.error), status.os_error));
+                    held.insert(key_of(item.current));
+                } else if (item.is_dir && !held.empty()) {
+                    held = held_keys(failures);
                 }
             }
         }
@@ -168,19 +174,27 @@ RENAME_EXECUTOR::FAILURES RENAME_EXECUTOR::execute(const std::vector<RENAME_STEP
     return failures;
 }
 
-bool RENAME_EXECUTOR::blocked_by_failure(const std::filesystem::path &target,
-    const FAILURES &failures) const
+std::unordered_set<std::u32string> RENAME_EXECUTOR::held_keys(const FAILURES &failures) const
 {
-    if (failures.empty()) {
-        return false;
-    }
-    const std::u32string target_key = key_of(target);
+    std::unordered_set<std::u32string> keys;
     for (const auto &[id, failure] : failures) {
-        if (key_of(tracks_[index_.at(id)].current) == target_key) {
-            return true;
+        keys.insert(key_of(tracks_[index_.at(id)].current));
+    }
+    return keys;
+}
+
+void RENAME_EXECUTOR::restore_stuck()
+{
+    for (RENAME_TRACK &item : tracks_) {
+        if (!item.failed || item.current.filename() == item.original.filename()) {
+            continue;
+        }
+        if (move(item, item.current.parent_path() / item.original.filename()).ok()) {
+            std::erase_if(problems_, [&item](const REPORT_ITEM &problem) {
+                return problem.item_id == item.item_id && problem.stage == REPORT_STAGE::revert;
+            });
         }
     }
-    return false;
 }
 
 FS_STATUS RENAME_EXECUTOR::move(RENAME_TRACK &item, const std::filesystem::path &to)

@@ -29,7 +29,7 @@ std::optional<EXAMPLE> EXAMPLE_FINDER::find(const ITEM_STORE &items,
         }
         const uint32_t position = static_cast<uint32_t>(index + 1);
         std::u32string before = builder_.apply(item, index, plans);
-        if (draft.part == MOD_PART::ext && item.info.is_dir) {
+        if (draft.part == MOD_PART::ext && PREVIEW_BUILDER::is_folder(item.info)) {
             if (!first) {
                 std::u32string same = before;
                 first = make(item, position, std::move(before), std::move(same),

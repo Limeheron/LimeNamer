@@ -22,4 +22,13 @@ struct ITEM_ROW_TESTS
         #expect(ITEM_ROW.size_of(2621440) == "2.5MB")
         #expect(ITEM_ROW.size_of(3221225472) == "3.0GB")
     }
+
+    @Test func shows_no_size_for_unknown_sizes()
+    {
+        let row = ROW(item_id: 1, folder: "/docs", name: "Notes.rtfd", new_name: "Notes.rtfd",
+            size: -1, modified_ms: 0, created_ms: 0, prefix_len: 10, suffix_len: 0,
+            errors: .none, warnings: .none, status: .unchanged, conflict: .none,
+            conflict_index: 0, is_dir: false, changed: false, adjusted: false, direct: false)
+        #expect(ITEM_ROW(row, index: 1).size_text == "—")
+    }
 }

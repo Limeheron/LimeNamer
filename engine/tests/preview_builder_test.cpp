@@ -76,6 +76,26 @@ TEST_F(PREVIEW_BUILDER_TEST, fills_item_tokens)
     EXPECT_EQ(new_names(), std::vector<std::u32string>({U"photos_trip.final_10B.jpg"}));
 }
 
+TEST_F(PREVIEW_BUILDER_TEST, names_packages_like_files)
+{
+    env_.fake().add_package(env_.root() / "docs" / "Song.band");
+    env_.make_folder(env_.root() / "docs" / "Plain.folder");
+    items_.add({env_.root() / "docs" / "Song.band", env_.root() / "docs" / "Plain.folder"},
+        ADD_MODE::as_items);
+    cache_.load(env_.root() / "docs");
+    add_mod(R"({"kind":"insert","position":{"type":"end"},
+        "value":[{"text":"_1"},{"token":"size"}],"tokens":{"size":{"unit":"b"}}})");
+    add_mod(R"({"kind":"format","part":"ext","position":{"type":"all"},
+        "format":{"type":"upper"}})");
+    const PREVIEW preview = build();
+    ASSERT_EQ(preview.rows.size(), size_t{2});
+    EXPECT_EQ(preview.rows[0].new_name, U"Song_1.BAND");
+    EXPECT_FALSE(preview.rows[0].is_dir);
+    EXPECT_EQ(preview.rows[0].size, -1);
+    EXPECT_EQ(preview.rows[1].new_name, U"Plain.folder_1");
+    EXPECT_TRUE(preview.rows[1].is_dir);
+}
+
 TEST_F(PREVIEW_BUILDER_TEST, treats_normalization_differences_as_unchanged)
 {
     const std::filesystem::path nfd = env_.root() / "photos" / u8"café.txt";

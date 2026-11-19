@@ -139,6 +139,44 @@ TEST_F(RENAME_EXECUTOR_TEST, reports_items_that_cannot_be_reverted)
     EXPECT_EQ(report.succeeded, 1u);
 }
 
+TEST_F(RENAME_EXECUTOR_TEST, restores_cycle_items_left_in_a_temporary_name_on_revert)
+{
+    fail("b.txt", FS_ERROR::in_use);
+    const RENAME_REPORT first = run({request(1, "a.txt", U"b.txt"),
+        request(2, "b.txt", U"c.txt"), request(3, "c.txt", U"a.txt")});
+    ASSERT_TRUE(first.needs_choice);
+    EXPECT_EQ(track(1).current, env_.root() / ".limenamer-tmp-1");
+    const RENAME_REPORT report = executor_.resolve(RESOLVE_CHOICE::revert_all, {});
+    EXPECT_EQ(names(), std::vector<std::filesystem::path>({"a.txt", "b.txt", "c.txt"}));
+    EXPECT_EQ(track(1).current, env_.root() / "a.txt");
+    EXPECT_EQ(report.problems.size(), size_t{2});
+    for (const REPORT_ITEM &problem : report.problems) {
+        EXPECT_EQ(problem.stage, REPORT_STAGE::run);
+    }
+}
+
+TEST_F(RENAME_EXECUTOR_TEST, fails_many_items_in_linear_time)
+{
+    const uint64_t count = 20000;
+    std::vector<RENAME_REQUEST> requests;
+    for (uint64_t index = 0; index < count; ++index) {
+        const std::string number = std::to_string(index);
+        const std::filesystem::path renamed = "g" + number + ".txt";
+        requests.push_back(request(index + 1, "f" + number + ".txt",
+            UTF::path_to_u32(renamed).value()));
+        fail("f" + number + ".txt", FS_ERROR::access_denied);
+    }
+    const std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
+    const RENAME_REPORT report = run(requests);
+    const long long ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+        std::chrono::steady_clock::now() - start).count();
+    EXPECT_EQ(report.failed, count);
+    RecordProperty("run_ms", std::to_string(ms));
+#if defined(NDEBUG)
+    EXPECT_LT(ms, 1000);
+#endif
+}
+
 TEST_F(RENAME_EXECUTOR_TEST, moves_tracked_items_with_their_folder)
 {
     const RENAME_REQUEST folder = request(1, "f", U"g", true);

@@ -21,4 +21,12 @@ public sealed class ITEM_ROW_TESTS
         Assert.AreEqual("2.5MB", ITEM_ROW.size_of(2621440));
         Assert.AreEqual("3.0GB", ITEM_ROW.size_of(3221225472));
     }
+
+    [TestMethod]
+    public void shows_no_size_for_unknown_sizes()
+    {
+        ROW row = new(1, "docs", "Notes.rtfd", "Notes.rtfd", -1, 0, 0, 10, 0, NAME_ISSUE.none,
+            NAME_ISSUE.none, STATUS.unchanged, CONFLICT.none, 0, false, false, false, false);
+        Assert.AreEqual("—", new ITEM_ROW(row, 1).size_text);
+    }
 }

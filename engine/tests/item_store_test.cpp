@@ -117,6 +117,17 @@ TEST_F(ITEM_STORE_TEST, adds_visible_files_of_a_folder)
     EXPECT_EQ(names(), std::vector<std::u32string>({U"B1.jpg", U"b2.jpg", U"b10.jpg"}));
 }
 
+TEST_F(ITEM_STORE_TEST, adds_packages_of_a_folder_as_files)
+{
+    env_.make_folder(at("docs"));
+    env_.fake().add_package(at("docs/Notes.rtfd"));
+    env_.make_file(at("docs/Notes.rtfd/TXT.rtf"), 1);
+    env_.make_file(at("docs/a.txt"), 1);
+    env_.make_folder(at("docs/sub"));
+    EXPECT_EQ(store_.add({at("docs")}, ADD_MODE::folder_contents), result(2, 0, 0));
+    EXPECT_EQ(names(), std::vector<std::u32string>({U"a.txt", U"Notes.rtfd"}));
+}
+
 TEST_F(ITEM_STORE_TEST, skips_listed_files_of_a_folder)
 {
     env_.make_folder(at("photos"));
@@ -216,6 +227,23 @@ TEST_F(ITEM_STORE_TEST, sorts_by_name)
     store_.sort(SORT_KEY::name_ordinal, false);
     EXPECT_EQ(names(), std::vector<std::u32string>({U"b", U"file1", U"file10", U"File2"}));
     EXPECT_EQ(store_.sort_state(), state(SORT_KEY::name_ordinal, false));
+}
+
+TEST_F(ITEM_STORE_TEST, sorts_equal_names_by_exact_text_then_by_added_order)
+{
+    for (const char *folder : {"x", "y", "z"}) {
+        env_.make_folder(at(folder));
+    }
+    env_.make_file(at("x/a.txt"), 1);
+    env_.make_file(at("y/A.txt"), 1);
+    env_.make_file(at("z/a.txt"), 1);
+    store_.add({at("z/a.txt"), at("y/A.txt"), at("x/a.txt")}, ADD_MODE::as_items);
+    store_.sort(SORT_KEY::name_natural, false);
+    std::vector<std::filesystem::path> folders;
+    for (const uint64_t id : store_.order()) {
+        folders.push_back(store_.find(id)->folder);
+    }
+    EXPECT_EQ(folders, std::vector<std::filesystem::path>({at("y"), at("z"), at("x")}));
 }
 
 TEST_F(ITEM_STORE_TEST, sorts_by_modified_time)

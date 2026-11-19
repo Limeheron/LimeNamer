@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -44,7 +45,8 @@ public:
 
 private:
     FAILURES execute(const std::vector<RENAME_STEP> &steps, const PROGRESS &progress);
-    bool blocked_by_failure(const std::filesystem::path &target, const FAILURES &failures) const;
+    std::unordered_set<std::u32string> held_keys(const FAILURES &failures) const;
+    void restore_stuck();
     FS_STATUS move(RENAME_TRACK &track, const std::filesystem::path &to);
     RENAME_TRACK &track(uint64_t id);
     std::u32string key_of(const std::filesystem::path &path) const;

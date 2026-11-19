@@ -78,7 +78,7 @@ public final class ITEM_ROW
 
     public var size_text: String
     {
-        return is_dir ? STRINGS.size_none : ITEM_ROW.size_of(source.size)
+        return is_dir || source.size < 0 ? STRINGS.size_none : ITEM_ROW.size_of(source.size)
     }
 
     static func split(_ text: String, prefix_len: UInt32, suffix_len: UInt32)

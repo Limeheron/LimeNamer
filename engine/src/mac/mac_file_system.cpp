@@ -7,6 +7,7 @@ FS_STATUS MAC_FILE_SYSTEM::get_info(const std::filesystem::path &path, FILE_INFO
         return from_errno(errno);
     }
     info.is_dir = S_ISDIR(status.st_mode);
+    info.package = info.is_dir && is_package(path);
     info.hidden = (status.st_flags & UF_HIDDEN) != 0;
     info.size = info.is_dir ? 0 : static_cast<int64_t>(status.st_size);
     info.modified_ms = to_ms(status.st_mtimespec);
@@ -47,10 +48,52 @@ FS_STATUS MAC_FILE_SYSTEM::list_names(const std::filesystem::path &folder,
 FS_STATUS MAC_FILE_SYSTEM::rename(const std::filesystem::path &from,
     const std::filesystem::path &to)
 {
-    if (renamex_np(from.c_str(), to.c_str(), RENAME_EXCL) != 0) {
+    if (renamex_np(from.c_str(), to.c_str(), RENAME_EXCL) == 0) {
+        return {};
+    }
+    if (errno == ENOTSUP) {
+        return rename_checked(from, to);
+    }
+    return from_errno(errno);
+}
+
+FS_STATUS MAC_FILE_SYSTEM::rename_checked(const std::filesystem::path &from,
+    const std::filesystem::path &to)
+{
+    struct stat target {};
+    if (lstat(to.c_str(), &target) == 0) {
+        struct stat source {};
+        if (lstat(from.c_str(), &source) != 0) {
+            return from_errno(errno);
+        }
+        if (source.st_dev != target.st_dev || source.st_ino != target.st_ino) {
+            return from_errno(EEXIST);
+        }
+    } else if (errno != ENOENT) {
+        return from_errno(errno);
+    }
+    if (::rename(from.c_str(), to.c_str()) != 0) {
         return from_errno(errno);
     }
     return {};
+}
+
+bool MAC_FILE_SYSTEM::is_package(const std::filesystem::path &path)
+{
+    const std::string &native = path.native();
+    const CF_TYPE url(CFURLCreateFromFileSystemRepresentation(nullptr,
+        reinterpret_cast<const UInt8 *>(native.data()), static_cast<CFIndex>(native.size()),
+        true), &CFRelease);
+    if (url == nullptr) {
+        return false;
+    }
+    CFTypeRef value = nullptr;
+    if (!CFURLCopyResourcePropertyForKey(static_cast<CFURLRef>(url.get()), kCFURLIsPackageKey,
+            &value, nullptr)) {
+        return false;
+    }
+    const CF_TYPE owned(value, &CFRelease);
+    return value == kCFBooleanTrue;
 }
 
 FS_STATUS MAC_FILE_SYSTEM::from_errno(int error)

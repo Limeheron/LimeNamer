@@ -84,6 +84,16 @@ TEST_F(EXAMPLE_FINDER_TEST, skips_folders_for_extension_changes)
     EXPECT_EQ(example(upper).state, EXAMPLE_STATE::skipped_dir);
 }
 
+TEST_F(EXAMPLE_FINDER_TEST, uses_packages_for_extension_changes)
+{
+    env_.fake().add_package(env_.root() / "Song.band");
+    items_.add({env_.root() / "Song.band"}, ADD_MODE::as_items);
+    const EXAMPLE result = example(R"({"kind":"format","part":"ext","position":{"type":"all"},
+        "format":{"type":"upper"}})");
+    EXPECT_EQ(result.state, EXAMPLE_STATE::changed);
+    EXPECT_EQ(result.after, U"Song.BAND");
+}
+
 TEST_F(EXAMPLE_FINDER_TEST, starts_from_modifications_before_the_edited_one)
 {
     add({U"name.txt"});

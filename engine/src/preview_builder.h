@@ -14,6 +14,7 @@
 
 #include "conflict_entry.h"
 #include "conflict_resolver.h"
+#include "file_info.h"
 #include "folder_cache.h"
 #include "item.h"
 #include "item_store.h"
@@ -44,6 +45,8 @@ public:
         const std::vector<MOD_PLAN> &plans) const;
 
     static std::vector<const MODIFICATION *> enabled(const std::vector<MOD_ENTRY> &mods);
+    static bool is_folder(const FILE_INFO &info);
+    static int64_t size_of(const FILE_INFO &info);
     static std::pair<uint32_t, uint32_t> common_lengths(std::u32string_view before,
         std::u32string_view after);
 

@@ -362,6 +362,23 @@ TEST_F(SESSION_TEST, follows_items_left_at_temporary_names)
     EXPECT_EQ(session_->record().entries()[0].item_id, ids[1]);
 }
 
+TEST_F(SESSION_TEST, restores_items_left_at_temporary_names_by_a_full_revert)
+{
+    session_->add_items(files({U"x.txt", U"y.txt"}), ADD_MODE::as_items);
+    const std::vector<uint64_t> ids = session_->items().order();
+    session_->direct_edit(ids[0], U"y.txt");
+    session_->direct_edit(ids[1], U"x.txt");
+    fake_->fail_next_rename(root_ / ".limenamer-tmp-1", FS_ERROR::in_use);
+    ASSERT_TRUE(session_->rename({})->needs_choice);
+    const RENAME_REPORT report = session_->resolve_rename(RESOLVE_CHOICE::revert_all, {});
+    for (const REPORT_ITEM &problem : report.problems) {
+        EXPECT_EQ(problem.stage, REPORT_STAGE::run);
+    }
+    EXPECT_EQ(session_->items().find(ids[0])->path, root_ / "x.txt");
+    EXPECT_EQ(session_->items().find(ids[1])->path, root_ / "y.txt");
+    EXPECT_TRUE(session_->record().empty());
+}
+
 TEST_F(SESSION_TEST, follows_items_left_at_temporary_names_after_a_full_revert)
 {
     session_->add_items(files({U"x.txt", U"y.txt"}), ADD_MODE::as_items);
@@ -369,9 +386,13 @@ TEST_F(SESSION_TEST, follows_items_left_at_temporary_names_after_a_full_revert)
     session_->direct_edit(ids[0], U"y.txt");
     session_->direct_edit(ids[1], U"x.txt");
     const std::filesystem::path temp = root_ / ".limenamer-tmp-1";
-    fake_->fail_next_rename(temp, FS_ERROR::in_use);
+    for (int attempt = 0; attempt < 3; ++attempt) {
+        fake_->fail_next_rename(temp, FS_ERROR::in_use);
+    }
     ASSERT_TRUE(session_->rename({})->needs_choice);
-    session_->resolve_rename(RESOLVE_CHOICE::revert_all, {});
+    const RENAME_REPORT report = session_->resolve_rename(RESOLVE_CHOICE::revert_all, {});
+    ASSERT_FALSE(report.problems.empty());
+    EXPECT_EQ(report.problems.back().stage, REPORT_STAGE::revert);
     EXPECT_EQ(session_->items().find(ids[0])->path, temp);
     EXPECT_EQ(session_->items().find(ids[1])->path, root_ / "y.txt");
     EXPECT_TRUE(session_->record().empty());
@@ -399,6 +420,26 @@ TEST_F(SESSION_TEST, retries_items_left_at_temporary_names_by_undo)
     EXPECT_EQ(session_->undo_rename({})->succeeded, 1u);
     EXPECT_EQ(session_->items().find(ids[0])->path, root_ / "x.txt");
     EXPECT_TRUE(session_->record().empty());
+}
+
+TEST_F(SESSION_TEST, moves_skipped_records_with_their_restored_folder)
+{
+    fake_->add_folder(root_ / "f");
+    fake_->add_file(root_ / "f" / "x.txt", 1);
+    session_->add_items({root_ / "f", root_ / "f" / "x.txt"}, ADD_MODE::as_items);
+    const std::vector<uint64_t> ids = session_->items().order();
+    session_->direct_edit(ids[0], U"g");
+    session_->direct_edit(ids[1], U"y.txt");
+    EXPECT_EQ(session_->rename({})->succeeded, 2u);
+    fake_->remove(root_ / "g" / "y.txt");
+    fake_->add_file(root_ / "g" / "y.txt", 1);
+
+    const std::optional<RENAME_REPORT> report = session_->undo_rename({});
+    ASSERT_TRUE(report.has_value());
+    EXPECT_EQ(report->succeeded, 1u);
+    EXPECT_EQ(report->skipped, 1u);
+    ASSERT_EQ(session_->record().size(), size_t{1});
+    EXPECT_EQ(session_->record().entries()[0].after, root_ / "f" / "y.txt");
 }
 
 TEST_F(SESSION_TEST, reports_items_by_their_listed_ids)

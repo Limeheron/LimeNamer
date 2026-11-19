@@ -349,7 +349,7 @@ void ITEM_STORE::add_contents(const std::filesystem::path &raw, ADD_RESULT &resu
             ++result.failed;
             continue;
         }
-        if (info.is_dir || info.hidden) {
+        if ((info.is_dir && !info.package) || info.hidden) {
             continue;
         }
         insert(path, std::move(*key), info);

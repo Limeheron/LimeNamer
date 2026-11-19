@@ -10,6 +10,12 @@ void FAKE_FILE_SYSTEM::add_folder(const std::filesystem::path &path)
     add_entry(path, true, 0, false);
 }
 
+void FAKE_FILE_SYSTEM::add_package(const std::filesystem::path &path)
+{
+    add_entry(path, true, 0, false);
+    entries_.at(key_of(path)).info.package = true;
+}
+
 void FAKE_FILE_SYSTEM::add_file(const std::filesystem::path &path, int64_t size, bool hidden)
 {
     add_entry(path, false, size, hidden);

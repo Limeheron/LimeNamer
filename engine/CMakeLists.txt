@@ -154,7 +154,8 @@ if(LN_BUILD_TESTS)
             tests/win_file_system_test.cpp)
     elseif(APPLE)
         list(APPEND LN_TEST_SOURCES
-            tests/mac_file_system_test.cpp)
+            tests/mac_file_system_test.cpp
+            tests/mac_session_test.cpp)
     endif()
 
     add_executable(limenamer_tests ${LN_TEST_SOURCES})

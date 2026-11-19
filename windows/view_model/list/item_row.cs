@@ -30,7 +30,7 @@ public sealed class ITEM_ROW : OBSERVABLE
         problem_text = string.Join("\n", problems);
         modified_text = date_text(row.modified_ms);
         created_text = date_text(row.created_ms);
-        size_text = row.is_dir ? STRINGS.size_none : size_of(row.size);
+        size_text = row.is_dir || row.size < 0 ? STRINGS.size_none : size_of(row.size);
     }
 
     public ulong item_id { get; }
