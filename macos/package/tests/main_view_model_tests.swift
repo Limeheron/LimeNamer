@@ -163,6 +163,86 @@ struct MAIN_VIEW_MODEL_TESTS
         #expect(scenario.main.mods.all_enabled_state == true)
     }
 
+    @Test func reports_items_that_all_failed() async throws
+    {
+        let scenario = try MAIN_SCENARIO("a.txt")
+        defer {
+            scenario.close()
+        }
+        try scenario.add_mod(TEST_MODS.INSERT_NEW)
+
+        try await rename_locked(scenario, "a.txt")
+
+        try #require(scenario.dialogs.asked.count == 1)
+        let report: DIALOG_CONTENT = scenario.dialogs.asked[0]
+        #expect(report.kind == .report)
+        #expect(report.title == "이름을 바꾸지 못했습니다")
+        #expect(report.message == "1개 항목의 이름을 바꾸지 못했습니다.")
+        #expect(scenario.message == "1개 항목의 이름을 바꾸지 못했습니다.")
+        #expect(scenario.temp.exists("a.txt"))
+    }
+
+    @Test func reports_items_left_after_revert() async throws
+    {
+        let scenario = try MAIN_SCENARIO("a.txt", "b.txt")
+        defer {
+            scenario.close()
+        }
+        try scenario.add_mod(TEST_MODS.INSERT_NEW)
+        let renamed: String = scenario.temp.path + "/new_b.txt"
+        scenario.dialogs.on_ask = { _ in
+            chflags(renamed, UInt32(UF_IMMUTABLE))
+        }
+        defer {
+            chflags(renamed, 0)
+        }
+
+        try await rename_locked(scenario, "a.txt")
+
+        try #require(scenario.dialogs.asked.count == 2)
+        #expect(scenario.dialogs.asked[1].title == "일부 항목을 원래 이름으로 돌려놓지 못했습니다")
+        #expect(scenario.message
+            == "되돌리지 못한 1개를 빼고 모든 항목을 실행 전 이름으로 되돌렸습니다.")
+        #expect(scenario.temp.exists("a.txt") && scenario.temp.exists("new_b.txt"))
+    }
+
+    @Test func skips_folder_refresh_while_choosing() async throws
+    {
+        let scenario = try MAIN_SCENARIO("a.txt", "b.txt")
+        defer {
+            scenario.close()
+        }
+        try scenario.add_mod(TEST_MODS.INSERT_NEW)
+        scenario.dialogs.answers = [false]
+        var message: String = ""
+        scenario.dialogs.on_ask = { _ in
+            scenario.main.activated()
+            message = scenario.message
+        }
+
+        try await rename_locked(scenario, "a.txt")
+
+        #expect(message == "2개 중 1개 항목의 이름을 바꾸지 못했습니다. 처리 방식을 고르세요.")
+    }
+
+    @Test func reveals_problems_found_when_running() async throws
+    {
+        let scenario = try MAIN_SCENARIO("a.txt")
+        defer {
+            scenario.close()
+        }
+        try scenario.add_mod(TEST_MODS.INSERT_NEW)
+        _ = try scenario.temp.file("new_a.txt")
+
+        await scenario.main.rename()
+
+        let id: UInt64 = try scenario.id("a.txt")
+        #expect(scenario.message
+            == "폴더 내용이 바뀌어 다시 검사했습니다. 오류나 충돌을 해결한 뒤 다시 하세요.")
+        #expect(scenario.main.list.selected_ids == [id])
+        #expect(scenario.temp.exists("a.txt"))
+    }
+
     @Test func undoes_rename_after_confirmation() async throws
     {
         let scenario = try MAIN_SCENARIO("a.txt", "b.txt")
@@ -188,6 +268,29 @@ struct MAIN_VIEW_MODEL_TESTS
         #expect(scenario.message == "1개 항목을 실행 전 이름으로 되돌렸습니다. "
             + "건너뛴 1개는 되돌리지 않았습니다.")
         #expect(scenario.temp.exists("a.txt"))
+    }
+
+    @Test func reports_undo_failures() async throws
+    {
+        let scenario = try MAIN_SCENARIO("a.txt", "b.txt")
+        defer {
+            scenario.close()
+        }
+        try scenario.add_mod(TEST_MODS.INSERT_NEW)
+        await scenario.main.rename()
+        let renamed: String = scenario.temp.path + "/new_a.txt"
+        try #require(chflags(renamed, UInt32(UF_IMMUTABLE)) == 0)
+        defer {
+            chflags(renamed, 0)
+        }
+
+        await scenario.main.rename_undo()
+
+        try #require(scenario.dialogs.asked.count == 2)
+        #expect(scenario.dialogs.asked[1].title == "일부 항목을 되돌리지 못했습니다")
+        #expect(scenario.message
+            == "1개 항목을 실행 전 이름으로 되돌렸습니다. 실패한 1개는 그대로 있습니다.")
+        #expect(scenario.temp.exists("new_a.txt") && scenario.temp.exists("b.txt"))
     }
 
     @Test func sorts_and_moves_items() throws

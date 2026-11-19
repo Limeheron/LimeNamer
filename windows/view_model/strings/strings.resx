@@ -720,6 +720,9 @@
     <data name="reverted_all" xml:space="preserve">
         <value>모든 항목을 실행 전 이름으로 되돌렸습니다.</value>
     </data>
+    <data name="reverted_partly" xml:space="preserve">
+        <value>되돌리지 못한 {0}개를 빼고 모든 항목을 실행 전 이름으로 되돌렸습니다.</value>
+    </data>
     <data name="rename_failed_all" xml:space="preserve">
         <value>{0}개 항목의 이름을 바꾸지 못했습니다.</value>
     </data>

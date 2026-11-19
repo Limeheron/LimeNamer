@@ -44,6 +44,7 @@ public final class MAIN_VIEW_MODEL
     private var rename_undo_ready: Bool = false
     private var duplicate: DUPLICATE_OPTIONS = DUPLICATE_OPTIONS()
     private var custom_text: String = "_copy"
+    @ObservationIgnored private var choosing: Bool = false
 
     public init(engine: ENGINE, settings: SETTINGS, dialogs: any DIALOG_SERVICE,
         now: @escaping () -> Date)
@@ -363,7 +364,8 @@ public final class MAIN_VIEW_MODEL
 
     public func activated()
     {
-        if !is_running && attempt({ () throws(ENGINE_ERROR) in try engine.folders_refresh() }) {
+        if !is_running && !choosing
+                && attempt({ () throws(ENGINE_ERROR) in try engine.folders_refresh() }) {
             refresh()
         }
     }
@@ -500,7 +502,9 @@ public final class MAIN_VIEW_MODEL
     {
         status.post(JOSA_FORMATTER.format(STRINGS.rename_choice_prompt, report.total,
             report.failed))
+        choosing = true
         let revert: Bool = await dialogs.ask(choice_dialog(report))
+        choosing = false
         let choice: RESOLVE_CHOICE = revert ? .revert_all : .keep_succeeded
         let resolved: REPORT
         do throws(ENGINE_ERROR) {
@@ -524,7 +528,9 @@ public final class MAIN_VIEW_MODEL
                 secondary: ""))
         }
         if revert {
-            status.post(STRINGS.reverted_all)
+            status.post(stuck.isEmpty
+                ? STRINGS.reverted_all
+                : JOSA_FORMATTER.format(STRINGS.reverted_partly, stuck.count))
             return
         }
         if resolved.succeeded == 0 {

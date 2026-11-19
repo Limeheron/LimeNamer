@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace limenamer;
@@ -23,6 +24,7 @@ public sealed class MAIN_VIEW_MODEL : OBSERVABLE
     private bool sort_descending_;
     private DUPLICATE_OPTIONS duplicate_ = new();
     private string duplicate_custom_text_ = "_copy";
+    private bool choosing_;
 
     public MAIN_VIEW_MODEL(ENGINE engine, SETTINGS settings, DIALOG_SERVICE dialogs,
         Func<DateTime> now)
@@ -171,15 +173,19 @@ public sealed class MAIN_VIEW_MODEL : OBSERVABLE
 
     public void refresh()
     {
-        preview_ = engine_.preview();
-        list.load(preview_);
-        mods.load(preview_);
-        (can_undo_, can_redo_) = engine_.history_state();
-        undo_available_ = engine_.rename_undo_state().available;
-        (sort_key_, sort_descending_) = engine_.items_sort_state();
-        duplicate_ = MOD_JSON.parse_options(engine_.options_get()).duplicate;
-        if (duplicate_.custom_text != null) {
-            duplicate_custom_text_ = duplicate_.custom_text;
+        try {
+            preview_ = engine_.preview();
+            list.load(preview_);
+            mods.load(preview_);
+            (can_undo_, can_redo_) = engine_.history_state();
+            undo_available_ = engine_.rename_undo_state().available;
+            (sort_key_, sort_descending_) = engine_.items_sort_state();
+            duplicate_ = parse_options(engine_.options_get()).duplicate;
+            if (duplicate_.custom_text != null) {
+                duplicate_custom_text_ = duplicate_.custom_text;
+            }
+        } catch (ENGINE_EXCEPTION error) {
+            status.post(MESSAGES.result_text(error.result));
         }
         notify(nameof(sort_key));
         notify(nameof(sort_descending));
@@ -327,7 +333,7 @@ public sealed class MAIN_VIEW_MODEL : OBSERVABLE
 
     public void activated()
     {
-        if (!running_ && attempt(engine_.folders_refresh)) {
+        if (!running_ && !choosing_ && attempt(engine_.folders_refresh)) {
             refresh();
         }
     }
@@ -406,7 +412,10 @@ public sealed class MAIN_VIEW_MODEL : OBSERVABLE
             status.post(JOSA_FORMATTER.format(STRINGS.blocked_rename_undo, STRINGS.edit_block));
             return;
         }
-        REPORT check = engine_.rename_undo_check();
+        REPORT? check = null;
+        if (!attempt(() => check = engine_.rename_undo_check()) || check == null) {
+            return;
+        }
         uint count = check.total - check.skipped;
         if (count == 0) {
             status.post(STRINGS.undo_nothing);
@@ -447,7 +456,9 @@ public sealed class MAIN_VIEW_MODEL : OBSERVABLE
     {
         status.post(JOSA_FORMATTER.format(STRINGS.rename_choice_prompt, report.total,
             report.failed));
+        choosing_ = true;
         bool revert = dialogs_.ask(choice_dialog(report));
+        choosing_ = false;
         RESOLVE_CHOICE choice = revert ? RESOLVE_CHOICE.revert_all : RESOLVE_CHOICE.keep_succeeded;
         REPORT resolved;
         try {
@@ -469,7 +480,9 @@ public sealed class MAIN_VIEW_MODEL : OBSERVABLE
                 STRINGS.dialog_ok, ""));
         }
         if (revert) {
-            status.post(STRINGS.reverted_all);
+            status.post(stuck.Length == 0
+                ? STRINGS.reverted_all
+                : JOSA_FORMATTER.format(STRINGS.reverted_partly, stuck.Length));
             return;
         }
         if (resolved.succeeded == 0) {
@@ -646,6 +659,15 @@ public sealed class MAIN_VIEW_MODEL : OBSERVABLE
             THEME_MODE.dark => STRINGS.theme_dark,
             _ => STRINGS.theme_system,
         };
+    }
+
+    private static ENGINE_OPTIONS parse_options(string json)
+    {
+        try {
+            return MOD_JSON.parse_options(json);
+        } catch (JsonException) {
+            throw new ENGINE_EXCEPTION(RESULT.internal_error);
+        }
     }
 
     private static async void fire(Func<Task> action)

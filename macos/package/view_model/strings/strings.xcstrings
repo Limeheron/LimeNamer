@@ -3180,6 +3180,17 @@
         }
       }
     },
+    "reverted_partly" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "되돌리지 못한 {0}개를 빼고 모든 항목을 실행 전 이름으로 되돌렸습니다."
+          }
+        }
+      }
+    },
     "row_direct_edit" : {
       "extractionState" : "manual",
       "localizations" : {

@@ -249,6 +249,7 @@ public enum STRINGS
     public static let renamed_partly: String = text("renamed_partly")
     public static let rename_choice_prompt: String = text("rename_choice_prompt")
     public static let reverted_all: String = text("reverted_all")
+    public static let reverted_partly: String = text("reverted_partly")
     public static let rename_failed_all: String = text("rename_failed_all")
     public static let progress_renaming: String = text("progress_renaming")
     public static let progress_reverting: String = text("progress_reverting")

@@ -161,6 +161,80 @@ public sealed class MAIN_VIEW_MODEL_TESTS
     }
 
     [TestMethod]
+    public async Task reports_items_that_all_failed()
+    {
+        using MAIN_SCENARIO scenario = new("a.txt");
+        scenario.add_mod(LIST_SCENARIO.INSERT_NEW);
+
+        using (FileStream locked = open_locked(scenario, "a.txt")) {
+            await scenario.main.rename();
+        }
+
+        Assert.AreEqual(1, scenario.dialogs.asked.Count);
+        DIALOG_CONTENT report = scenario.dialogs.asked[0];
+        Assert.AreEqual(DIALOG_KIND.report, report.kind);
+        Assert.AreEqual("이름을 바꾸지 못했습니다", report.title);
+        Assert.AreEqual("1개 항목의 이름을 바꾸지 못했습니다.", report.message);
+        Assert.AreEqual("1개 항목의 이름을 바꾸지 못했습니다.", scenario.message);
+        Assert.IsTrue(scenario.temp.exists("a.txt"));
+    }
+
+    [TestMethod]
+    public async Task reports_items_left_after_revert()
+    {
+        using MAIN_SCENARIO scenario = new("a.txt", "b.txt");
+        scenario.add_mod(LIST_SCENARIO.INSERT_NEW);
+        FileStream? renamed = null;
+        scenario.dialogs.on_ask = _ => renamed ??= open_locked(scenario, "new_b.txt");
+
+        using (FileStream locked = open_locked(scenario, "a.txt")) {
+            await scenario.main.rename();
+        }
+        renamed?.Dispose();
+
+        Assert.AreEqual(2, scenario.dialogs.asked.Count);
+        Assert.AreEqual("일부 항목을 원래 이름으로 돌려놓지 못했습니다", scenario.dialogs.asked[1].title);
+        Assert.AreEqual("되돌리지 못한 1개를 빼고 모든 항목을 실행 전 이름으로 되돌렸습니다.",
+            scenario.message);
+        Assert.IsTrue(scenario.temp.exists("a.txt") && scenario.temp.exists("new_b.txt"));
+    }
+
+    [TestMethod]
+    public async Task skips_folder_refresh_while_choosing()
+    {
+        using MAIN_SCENARIO scenario = new("a.txt", "b.txt");
+        scenario.add_mod(LIST_SCENARIO.INSERT_NEW);
+        scenario.dialogs.answers.Enqueue(false);
+        string message = "";
+        scenario.dialogs.on_ask = _ => {
+            scenario.main.activated();
+            message = scenario.message;
+        };
+
+        using (FileStream locked = open_locked(scenario, "a.txt")) {
+            await scenario.main.rename();
+        }
+
+        Assert.AreEqual("2개 중 1개 항목의 이름을 바꾸지 못했습니다. 처리 방식을 고르세요.", message);
+    }
+
+    [TestMethod]
+    public async Task reveals_problems_found_when_running()
+    {
+        using MAIN_SCENARIO scenario = new("a.txt");
+        scenario.add_mod(LIST_SCENARIO.INSERT_NEW);
+        scenario.temp.file("new_a.txt");
+
+        await scenario.main.rename();
+
+        Assert.AreEqual("폴더 내용이 바뀌어 다시 검사했습니다. 오류나 충돌을 해결한 뒤 다시 하세요.",
+            scenario.message);
+        CollectionAssert.AreEqual(new[] { scenario.id("a.txt") },
+            scenario.main.list.selected_ids.ToArray());
+        Assert.IsTrue(scenario.temp.exists("a.txt"));
+    }
+
+    [TestMethod]
     public async Task undoes_rename_after_confirmation()
     {
         using MAIN_SCENARIO scenario = new("a.txt", "b.txt");
@@ -183,6 +257,24 @@ public sealed class MAIN_VIEW_MODEL_TESTS
         Assert.AreEqual("1개 항목을 실행 전 이름으로 되돌렸습니다. "
             + "건너뛴 1개는 되돌리지 않았습니다.", scenario.message);
         Assert.IsTrue(scenario.temp.exists("a.txt"));
+    }
+
+    [TestMethod]
+    public async Task reports_undo_failures()
+    {
+        using MAIN_SCENARIO scenario = new("a.txt", "b.txt");
+        scenario.add_mod(LIST_SCENARIO.INSERT_NEW);
+        await scenario.main.rename();
+
+        using (FileStream locked = open_locked(scenario, "new_a.txt")) {
+            await scenario.main.rename_undo();
+        }
+
+        Assert.AreEqual(2, scenario.dialogs.asked.Count);
+        Assert.AreEqual("일부 항목을 되돌리지 못했습니다", scenario.dialogs.asked[1].title);
+        Assert.AreEqual("1개 항목을 실행 전 이름으로 되돌렸습니다. 실패한 1개는 그대로 있습니다.",
+            scenario.message);
+        Assert.IsTrue(scenario.temp.exists("new_a.txt") && scenario.temp.exists("b.txt"));
     }
 
     [TestMethod]
@@ -267,5 +359,11 @@ public sealed class MAIN_VIEW_MODEL_TESTS
         Assert.IsTrue(loaded.show_size && loaded.example_collapsed && loaded.show_index);
         Assert.AreEqual(THEME_MODE.system, broken.theme_mode);
         Assert.IsFalse(broken.show_size);
+    }
+
+    private static FileStream open_locked(MAIN_SCENARIO scenario, string name)
+    {
+        return new FileStream(Path.Combine(scenario.temp.path, name), FileMode.Open,
+            FileAccess.Read, FileShare.None);
     }
 }
