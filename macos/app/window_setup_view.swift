@@ -12,5 +12,8 @@ final class WINDOW_SETUP_VIEW: NSView
         }
         window.isRestorable = false
         state?.attach(window)
+        Task { @MainActor [weak window] in
+            window?.toolbar?.items.forEach { $0.view?.invalidateIntrinsicContentSize() }
+        }
     }
 }
