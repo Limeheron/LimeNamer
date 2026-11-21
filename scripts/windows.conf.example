@@ -1,0 +1,4 @@
+WINDOWS_HOST=windows
+WINDOWS_ROOT='D:\limenamer'
+WINDOWS_VS_DIR='C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools'
+WINDOWS_DOTNET_DIR='C:\Program Files\dotnet'

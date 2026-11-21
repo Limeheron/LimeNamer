@@ -6,3 +6,5 @@ obj/
 xcuserdata/
 .DS_Store
 CMakeUserPresets.json
+dist/
+scripts/windows.conf
