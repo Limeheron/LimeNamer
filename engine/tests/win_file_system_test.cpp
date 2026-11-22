@@ -100,3 +100,61 @@ TEST(WIN_FILE_SYSTEM, reads_hidden_flag)
     EXPECT_FALSE(shown.hidden);
     EXPECT_TRUE(hidden.hidden);
 }
+
+TEST(WIN_FILE_SYSTEM, renames_read_only_entries)
+{
+    REAL_FS_ENV env;
+    const std::filesystem::path file = env.root() / "a.txt";
+    const std::filesystem::path folder = env.root() / "folder";
+    env.make_file(file, 1);
+    env.make_folder(folder);
+    ASSERT_TRUE(SetFileAttributesW(file.c_str(), FILE_ATTRIBUTE_READONLY));
+    ASSERT_TRUE(SetFileAttributesW(folder.c_str(), FILE_ATTRIBUTE_READONLY));
+    const FS_STATUS file_status = env.file_system().rename(file, env.root() / "b.txt");
+    const FS_STATUS folder_status = env.file_system().rename(folder, env.root() / "renamed");
+    for (const char *name : {"a.txt", "b.txt", "folder", "renamed"}) {
+        SetFileAttributesW((env.root() / name).c_str(), FILE_ATTRIBUTE_NORMAL);
+    }
+    EXPECT_EQ(file_status.error, FS_ERROR::none);
+    EXPECT_EQ(folder_status.error, FS_ERROR::none);
+}
+
+TEST(WIN_FILE_SYSTEM, reports_folder_with_open_file_as_access_denied)
+{
+    REAL_FS_ENV env;
+    const std::filesystem::path folder = env.root() / "folder";
+    env.make_folder(folder);
+    env.make_file(folder / "a.txt", 1);
+    FS_STATUS status;
+    {
+        FILE_LOCK lock(folder / "a.txt");
+        status = env.file_system().rename(folder, env.root() / "renamed");
+    }
+    EXPECT_EQ(status.error, FS_ERROR::access_denied);
+    FILE_INFO info;
+    EXPECT_TRUE(env.file_system().get_info(folder, info).ok());
+}
+
+TEST(WIN_FILE_SYSTEM, renames_junction_itself)
+{
+    REAL_FS_ENV env;
+    const std::filesystem::path target = env.root() / "target";
+    const std::filesystem::path junction = env.root() / "junction";
+    const std::filesystem::path renamed = env.root() / "renamed";
+    env.make_folder(target);
+    env.make_file(target / "a.txt", 1);
+    const std::wstring command = L"mklink /J \"" + junction.native() + L"\" \""
+        + target.native() + L"\" >nul";
+    if (_wsystem(command.c_str()) != 0) {
+        GTEST_SKIP() << "junctions cannot be created";
+    }
+    FILE_INFO info;
+    ASSERT_TRUE(env.file_system().get_info(junction, info).ok());
+    const FS_STATUS status = env.file_system().rename(junction, renamed);
+    const bool through_link = std::filesystem::exists(renamed / "a.txt");
+    std::filesystem::remove(renamed);
+    EXPECT_EQ(status.error, FS_ERROR::none);
+    EXPECT_TRUE(through_link);
+    EXPECT_FALSE(std::filesystem::exists(junction));
+    EXPECT_TRUE(std::filesystem::exists(target / "a.txt"));
+}

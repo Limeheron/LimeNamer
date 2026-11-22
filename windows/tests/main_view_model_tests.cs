@@ -318,6 +318,70 @@ public sealed class MAIN_VIEW_MODEL_TESTS
     }
 
     [TestMethod]
+    public async Task refuses_to_rename_with_errors()
+    {
+        using MAIN_SCENARIO scenario = new("a.txt", "b.txt");
+        scenario.main.direct_edit(scenario.id("b.txt"), "b:c.txt");
+
+        await scenario.main.rename();
+
+        Assert.AreEqual("오류 1개가 있어 이름을 바꾸지 않았습니다. 첫 문제는 2번 항목입니다.",
+            scenario.message);
+        Assert.IsTrue(scenario.temp.exists("b.txt"));
+    }
+
+    [TestMethod]
+    public async Task reports_nothing_to_rename_or_undo()
+    {
+        using MAIN_SCENARIO scenario = new("a.txt");
+
+        await scenario.main.rename();
+        string rename = scenario.message;
+        scenario.add_mod(LIST_SCENARIO.INSERT_NEW);
+        await scenario.main.rename();
+        File.Delete(Path.Combine(scenario.temp.path, "new_a.txt"));
+        await scenario.main.rename_undo();
+
+        Assert.AreEqual("바뀔 항목이 없습니다.", rename);
+        Assert.AreEqual("되돌릴 수 있는 항목이 없습니다.", scenario.message);
+        Assert.AreEqual(0, scenario.dialogs.asked.Count);
+    }
+
+    [TestMethod]
+    public async Task keeps_names_when_undo_is_cancelled()
+    {
+        using MAIN_SCENARIO scenario = new("a.txt");
+        scenario.add_mod(LIST_SCENARIO.INSERT_NEW);
+        await scenario.main.rename();
+        scenario.dialogs.answers.Enqueue(false);
+
+        await scenario.main.rename_undo();
+
+        Assert.AreEqual(1, scenario.dialogs.asked.Count);
+        Assert.IsTrue(scenario.temp.exists("new_a.txt"));
+        Assert.IsTrue(scenario.main.rename_undo_command.CanExecute(null));
+    }
+
+    [TestMethod]
+    public async Task blocks_rename_undo_while_editing()
+    {
+        using MAIN_SCENARIO scenario = new("a.txt");
+        MAIN_VIEW_MODEL main = scenario.main;
+        scenario.add_mod(LIST_SCENARIO.INSERT_NEW);
+        await main.rename();
+        main.mods.open_add();
+        main.mods.add_kind = MOD_KIND.insert;
+        main.mods.choose_position(POSITION_TYPE.end);
+
+        await main.rename_undo();
+
+        Assert.AreEqual("편집 중에는 이름을 되돌릴 수 없습니다. 먼저 편집을 적용하거나 취소하세요.",
+            scenario.message);
+        Assert.AreEqual(0, scenario.dialogs.asked.Count);
+        Assert.IsTrue(scenario.temp.exists("new_a.txt"));
+    }
+
+    [TestMethod]
     public void sorts_and_moves_items()
     {
         using MAIN_SCENARIO scenario = new("a.txt", "b.txt", "c.txt");

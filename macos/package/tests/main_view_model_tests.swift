@@ -315,6 +315,77 @@ struct MAIN_VIEW_MODEL_TESTS
         #expect(scenario.temp.exists("new_a.txt") && scenario.temp.exists("b.txt"))
     }
 
+    @Test func refuses_to_rename_with_errors() async throws
+    {
+        let scenario = try MAIN_SCENARIO("a.txt", "b.txt")
+        defer {
+            scenario.close()
+        }
+        scenario.main.direct_edit(try scenario.id("b.txt"), new_name: "b:c.txt")
+
+        await scenario.main.rename()
+
+        #expect(scenario.message == "오류 1개가 있어 이름을 바꾸지 않았습니다. 첫 문제는 2번 항목입니다.")
+        #expect(scenario.temp.exists("b.txt"))
+    }
+
+    @Test func reports_nothing_to_rename_or_undo() async throws
+    {
+        let scenario = try MAIN_SCENARIO("a.txt")
+        defer {
+            scenario.close()
+        }
+
+        await scenario.main.rename()
+        let rename: String = scenario.message
+        try scenario.add_mod(TEST_MODS.INSERT_NEW)
+        await scenario.main.rename()
+        try FileManager.default.removeItem(atPath: scenario.temp.path + "/new_a.txt")
+        await scenario.main.rename_undo()
+
+        #expect(rename == "바뀔 항목이 없습니다.")
+        #expect(scenario.message == "되돌릴 수 있는 항목이 없습니다.")
+        #expect(scenario.dialogs.asked.isEmpty)
+    }
+
+    @Test func keeps_names_when_undo_is_cancelled() async throws
+    {
+        let scenario = try MAIN_SCENARIO("a.txt")
+        defer {
+            scenario.close()
+        }
+        try scenario.add_mod(TEST_MODS.INSERT_NEW)
+        await scenario.main.rename()
+        scenario.dialogs.answers = [false]
+
+        await scenario.main.rename_undo()
+
+        #expect(scenario.dialogs.asked.count == 1)
+        #expect(scenario.temp.exists("new_a.txt"))
+        #expect(scenario.main.can_rename_undo)
+    }
+
+    @Test func blocks_rename_undo_while_editing() async throws
+    {
+        let scenario = try MAIN_SCENARIO("a.txt")
+        defer {
+            scenario.close()
+        }
+        let main: MAIN_VIEW_MODEL = scenario.main
+        try scenario.add_mod(TEST_MODS.INSERT_NEW)
+        await main.rename()
+        main.mods.open_add()
+        main.mods.add_kind = .insert
+        main.mods.choose_position(.end)
+
+        await main.rename_undo()
+
+        #expect(scenario.message
+            == "편집 중에는 이름을 되돌릴 수 없습니다. 먼저 편집을 적용하거나 취소하세요.")
+        #expect(scenario.dialogs.asked.isEmpty)
+        #expect(scenario.temp.exists("new_a.txt"))
+    }
+
     @Test func sorts_and_moves_items() throws
     {
         let scenario = try MAIN_SCENARIO("a.txt", "b.txt", "c.txt")
