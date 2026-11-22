@@ -32,6 +32,21 @@
         <GradientStop Offset="1.0" Color="#0F000000" />
     </LinearGradientBrush>
 
+    <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillChecked" Color="#9CCF45" />
+    <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillCheckedPointerOver" Color="#9CCF45" Opacity="0.9" />
+    <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillCheckedPressed" Color="#9CCF45" Opacity="0.8" />
+    <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillIndeterminate" Color="#9CCF45" />
+    <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillIndeterminatePointerOver" Color="#9CCF45" Opacity="0.9" />
+    <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillIndeterminatePressed" Color="#9CCF45" Opacity="0.8" />
+    <SolidColorBrush x:Key="CheckBoxCheckBackgroundStrokeChecked" Color="#9CCF45" />
+    <SolidColorBrush x:Key="CheckBoxCheckBackgroundStrokeCheckedPointerOver" Color="#9CCF45" Opacity="0.9" />
+    <SolidColorBrush x:Key="CheckBoxCheckBackgroundStrokeCheckedPressed" Color="#9CCF45" Opacity="0.8" />
+    <SolidColorBrush x:Key="CheckBoxCheckBackgroundStrokeIndeterminate" Color="#9CCF45" />
+    <SolidColorBrush x:Key="CheckBoxCheckBackgroundStrokeIndeterminatePointerOver" Color="#9CCF45" Opacity="0.9" />
+    <SolidColorBrush x:Key="CheckBoxCheckBackgroundStrokeIndeterminatePressed" Color="#9CCF45" Opacity="0.8" />
+    <SolidColorBrush x:Key="CheckBoxCheckGlyphForeground" Color="#17210A" />
+    <SolidColorBrush x:Key="CheckBoxCheckGlyphForegroundPressed" Color="#17210A" Opacity="0.7" />
+
     <SolidColorBrush x:Key="accent_text_brush" Color="#4B7A10" />
     <SolidColorBrush x:Key="accent_fill_brush" Color="#9CCF45" />
     <SolidColorBrush x:Key="accent_on_brush" Color="#17210A" />

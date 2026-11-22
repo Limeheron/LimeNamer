@@ -364,7 +364,7 @@
         <value>전체나 일부를 새 텍스트로 바꾸기</value>
     </data>
     <data name="kind_format" xml:space="preserve">
-        <value>형식 맞추기</value>
+        <value>형식</value>
     </data>
     <data name="kind_format_desc" xml:space="preserve">
         <value>대소문자와 숫자 자릿수 맞추기</value>
@@ -991,7 +991,7 @@
         <value>수정이 없습니다</value>
     </data>
     <data name="mods_empty_text" xml:space="preserve">
-        <value>이름을 어떻게 바꿀지 수정을 추가하세요.</value>
+        <value>+ 단추로 수정을 추가하세요.</value>
     </data>
     <data name="mods_toggle_all_tip" xml:space="preserve">
         <value>모든 수정 켜기와 끄기</value>

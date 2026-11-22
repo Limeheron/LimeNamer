@@ -180,6 +180,7 @@
         </Style>
         <Style x:Key="position_tile" TargetType="Button">
             <Setter Property="Margin" Value="0,0,6,6" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Template">
                 <Setter.Value>
