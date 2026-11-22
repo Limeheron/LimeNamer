@@ -67,7 +67,9 @@ struct MAIN_TOOLBAR: ToolbarContent
             Menu {
                 FILTER_MENU(list: main.list)
             } label: {
-                Label(STRINGS.toolbar_filter, systemImage: "line.3.horizontal.decrease.circle")
+                Label(STRINGS.toolbar_filter, systemImage: main.list.filter == .all
+                    ? "line.3.horizontal.decrease.circle"
+                    : "line.3.horizontal.decrease.circle.fill")
             }
             .help(STRINGS.toolbar_filter)
             .disabled(!main.can_edit)

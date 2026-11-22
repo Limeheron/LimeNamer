@@ -249,7 +249,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn x:Name="index_column" Width="56" IsReadOnly="True"
+                <DataGridTemplateColumn x:Name="index_column" Width="64" IsReadOnly="True"
                                         Header="{x:Static vm:STRINGS.column_index}">
                     <DataGridTemplateColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader"
@@ -359,7 +359,8 @@
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn x:Name="folder_column" Width="200" IsReadOnly="True"
+                <DataGridTemplateColumn x:Name="folder_column" Width="0.8*" MinWidth="80"
+                                        IsReadOnly="True"
                                         Header="{x:Static vm:STRINGS.column_folder}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

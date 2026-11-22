@@ -11,6 +11,18 @@ struct BOTTOM_BAR: View
     {
         let status: STATUS_BAR_VIEW_MODEL = main.status
         HStack(spacing: 10) {
+            if !status.time_text.isEmpty {
+                Text(status.time_text)
+                    .font(.callout)
+                    .monospacedDigit()
+                    .foregroundStyle(.secondary)
+            }
+            Text(status.message)
+                .font(.callout)
+                .lineLimit(1)
+                .truncationMode(.tail)
+                .help(status.message)
+            Spacer(minLength: 0)
             if status.progress_visible {
                 Text(status.progress_label)
                     .font(.callout)
@@ -22,20 +34,7 @@ struct BOTTOM_BAR: View
                     .progressViewStyle(.linear)
                     .tint(Color(nsColor: PALETTE.ACCENT_TEXT))
                     .frame(width: 160)
-                Spacer(minLength: 0)
             } else {
-                if !status.time_text.isEmpty {
-                    Text(status.time_text)
-                        .font(.callout)
-                        .monospacedDigit()
-                        .foregroundStyle(.secondary)
-                }
-                Text(status.message)
-                    .font(.callout)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
-                    .help(status.message)
-                Spacer(minLength: 0)
                 pills
             }
             Button(STRINGS.button_rename_undo) {
@@ -44,19 +43,29 @@ struct BOTTOM_BAR: View
                 }
             }
             .disabled(!main.can_rename_undo)
-            Button(STRINGS.button_rename) {
-                Task {
-                    await main.rename()
-                }
-            }
-            .buttonStyle(.borderedProminent)
-            .disabled(!main.can_rename)
+            rename_button
         }
         .controlSize(.large)
         .padding(.leading, 16)
         .padding(.trailing, 12)
         .frame(height: 48)
         .background(Color(nsColor: .windowBackgroundColor))
+    }
+
+    @ViewBuilder private var rename_button: some View
+    {
+        let button: Button<Text> = Button(STRINGS.button_rename) {
+            Task {
+                await main.rename()
+            }
+        }
+        if main.can_rename {
+            button
+                .buttonStyle(.borderedProminent)
+        } else {
+            button
+                .disabled(true)
+        }
     }
 
     private var pills: some View

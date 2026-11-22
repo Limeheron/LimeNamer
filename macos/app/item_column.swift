@@ -51,7 +51,7 @@ enum ITEM_COLUMN: String, CaseIterable
         case .check:
             return 36
         case .index:
-            return 48
+            return 64
         case .status:
             return 104
         case .current, .new_name:
@@ -71,7 +71,7 @@ enum ITEM_COLUMN: String, CaseIterable
         case .check:
             return 36
         case .index:
-            return 40
+            return 56
         case .status:
             return 80
         case .current, .new_name:
@@ -87,7 +87,7 @@ enum ITEM_COLUMN: String, CaseIterable
 
     var flexible: Bool
     {
-        return self == .current || self == .new_name
+        return self == .current || self == .new_name || self == .folder
     }
 
     var alignment: NSTextAlignment
