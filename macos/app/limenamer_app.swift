@@ -5,7 +5,7 @@ import limenamer_view_model
 @main
 struct LIMENAMER_APP: App
 {
-    static let VERSION_TOKEN: String = "LIMENAMER_VERSION=0.1.0"
+    static let VERSION_TOKEN: String = "LIMENAMER_VERSION=1.0.0"
     static let WINDOW_ID: String = "main"
 
     @NSApplicationDelegateAdaptor(APP_DELEGATE.self) private var delegate: APP_DELEGATE

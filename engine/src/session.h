@@ -46,7 +46,7 @@
 class SESSION
 {
 public:
-    static constexpr const char VERSION_TOKEN[] = "LIMENAMER_VERSION=0.1.0";
+    static constexpr const char VERSION_TOKEN[] = "LIMENAMER_VERSION=1.0.0";
 
     SESSION(std::unique_ptr<TEXT_SERVICE> text_service, std::unique_ptr<FILE_SYSTEM> file_system,
         bool windows_host);

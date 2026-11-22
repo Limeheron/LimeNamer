@@ -10,7 +10,7 @@ check 'G34' (($saved -eq 'light') -and ($after -eq 'light')) "$saved / $after"
 press '정보'
 $dialog = wait_dialog
 $about = dialog_texts $dialog
-$passed = ($about -contains 'LimeNamer') -and ($about -contains '버전 0.1.0') -and
+$passed = ($about -contains 'LimeNamer') -and ($about -contains '버전 1.0.0') -and
     ($about -contains '오픈소스 라이선스') -and ($about -contains 'Limeheron')
 check 'G35' $passed ($about -join ' / ')
 press_in $dialog '확인'

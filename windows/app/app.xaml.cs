@@ -5,7 +5,7 @@ namespace limenamer;
 
 public partial class APP : Application
 {
-    public const string VERSION_TOKEN = "LIMENAMER_VERSION=0.1.0";
+    public const string VERSION_TOKEN = "LIMENAMER_VERSION=1.0.0";
 
     private ENGINE? engine_;
     private THEME_SWITCHER? theme_;
