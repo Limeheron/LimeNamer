@@ -807,6 +807,12 @@
     <data name="dialog_undo_result_message" xml:space="preserve">
         <value>{0}개 항목을 되돌렸습니다. 건너뛴 항목 {1}개, 실패한 항목 {2}개는 아래와 같습니다.</value>
     </data>
+    <data name="dialog_unexpected_title" xml:space="preserve">
+        <value>예상하지 못한 오류가 생겼습니다</value>
+    </data>
+    <data name="dialog_unexpected_message" xml:space="preserve">
+        <value>작업을 끝내지 못했습니다. 문제가 계속되면 앱을 다시 실행하세요.</value>
+    </data>
     <data name="dialog_line" xml:space="preserve">
         <value>{0} → {1}</value>
     </data>

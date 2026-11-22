@@ -222,7 +222,11 @@ public sealed class ITEM_LIST_VIEW_MODEL : OBSERVABLE
         if (!can_drag || ids.Contains(target_id)) {
             return false;
         }
-        return engine_.items_move(ids.ToArray(), target_id, after, true);
+        try {
+            return engine_.items_move(ids.ToArray(), target_id, after, true);
+        } catch (ENGINE_EXCEPTION) {
+            return false;
+        }
     }
 
     public bool drop(IReadOnlyList<ulong> ids, ulong target_id, bool after)
@@ -302,7 +306,12 @@ public sealed class ITEM_LIST_VIEW_MODEL : OBSERVABLE
     private void apply_number_text(string text)
     {
         assign(ref number_text_, text, nameof(number_text));
-        INDEX_LIST list = ENGINE.index_list_parse(text, (uint)all_rows_.Length);
+        INDEX_LIST list;
+        try {
+            list = ENGINE.index_list_parse(text, (uint)all_rows_.Length);
+        } catch (ENGINE_EXCEPTION) {
+            list = new INDEX_LIST([], INDEX_ERROR.syntax);
+        }
         if (list.error != INDEX_ERROR.none) {
             number_error = MESSAGES.index_error_text(list.error, (uint)all_rows_.Length);
             return;
@@ -333,8 +342,15 @@ public sealed class ITEM_LIST_VIEW_MODEL : OBSERVABLE
     private void write_number_text()
     {
         uint[] indices = live_checked().Select(row => row.index).ToArray();
-        assign(ref number_text_, designating_ ? ENGINE.index_list_format(indices) : "",
-            nameof(number_text));
+        string text = "";
+        if (designating_) {
+            try {
+                text = ENGINE.index_list_format(indices);
+            } catch (ENGINE_EXCEPTION) {
+                text = "";
+            }
+        }
+        assign(ref number_text_, text, nameof(number_text));
     }
 
     private IEnumerable<ITEM_ROW> live_checked()

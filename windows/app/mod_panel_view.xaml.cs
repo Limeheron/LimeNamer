@@ -130,7 +130,7 @@ public partial class MOD_PANEL_VIEW : UserControl
 
     private void toggle_all_click(object sender, RoutedEventArgs args)
     {
-        main.mods.toggle_all();
+        run(main.mods.toggle_all);
     }
 
     private void add_click(object sender, RoutedEventArgs args)
@@ -164,20 +164,20 @@ public partial class MOD_PANEL_VIEW : UserControl
     private void card_toggle_click(object sender, RoutedEventArgs args)
     {
         if (((FrameworkElement)sender).DataContext is MOD_CARD card) {
-            main.mods.set_enabled(card, !card.enabled);
+            run(() => main.mods.set_enabled(card, !card.enabled));
         }
     }
 
     private void card_remove_click(object sender, RoutedEventArgs args)
     {
         if (((FrameworkElement)sender).DataContext is MOD_CARD card) {
-            main.mods.remove(card);
+            run(() => main.mods.remove(card));
         }
     }
 
     private void apply_click(object sender, RoutedEventArgs args)
     {
-        main.mods.apply();
+        run(() => main.mods.apply());
     }
 
     private void cancel_click(object sender, RoutedEventArgs args)
@@ -259,7 +259,7 @@ public partial class MOD_PANEL_VIEW : UserControl
         bool valid = drop_valid_;
         end_card_drag();
         if (valid && slot != null) {
-            main.mods.drop(id, slot.Value.target_id, slot.Value.after);
+            run(() => main.mods.drop(id, slot.Value.target_id, slot.Value.after));
         }
         args.Handled = true;
     }
@@ -274,6 +274,15 @@ public partial class MOD_PANEL_VIEW : UserControl
         card_drop_layer.Visibility = Visibility.Collapsed;
         if (cards_view.IsMouseCaptured) {
             cards_view.ReleaseMouseCapture();
+        }
+    }
+
+    private void run(Action action)
+    {
+        try {
+            action();
+        } catch (ENGINE_EXCEPTION error) {
+            main.status.post(MESSAGES.result_text(error.result));
         }
     }
 

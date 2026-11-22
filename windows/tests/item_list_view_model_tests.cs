@@ -132,6 +132,21 @@ public sealed class ITEM_LIST_VIEW_MODEL_TESTS
     }
 
     [TestMethod]
+    public void treats_engine_errors_as_invalid_drops_and_numbers()
+    {
+        using LIST_SCENARIO scenario = new("a.txt", "b.txt");
+        ITEM_LIST_VIEW_MODEL list = scenario.list;
+        ulong a = scenario.id("a.txt");
+
+        bool missing = list.can_drop([a], 999, true);
+        list.begin_designation([a]);
+        list.number_text = "1\uD800";
+
+        Assert.IsFalse(missing);
+        Assert.AreEqual(MESSAGES.index_error_text(INDEX_ERROR.syntax, 2), list.number_error);
+    }
+
+    [TestMethod]
     public void designates_with_checks_and_numbers()
     {
         using LIST_SCENARIO scenario = new("a.txt", "b.txt", "c.txt", "d.txt", "e.txt");

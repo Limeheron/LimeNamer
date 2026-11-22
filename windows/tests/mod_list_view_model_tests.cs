@@ -72,6 +72,7 @@ public sealed class MOD_LIST_VIEW_MODEL_TESTS
         MOD_LIST_VIEW_MODEL mods = scenario.mods;
 
         Assert.IsFalse(mods.can_drop(first, first, true));
+        Assert.IsFalse(mods.can_drop(first, 999, true));
         Assert.IsFalse(mods.can_drop(first, second, false));
         Assert.IsTrue(mods.drop(second, first, false));
 

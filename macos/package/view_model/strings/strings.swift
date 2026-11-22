@@ -278,6 +278,8 @@ public enum STRINGS
     public static let dialog_undo_action: String = text("dialog_undo_action")
     public static let dialog_undo_result_title: String = text("dialog_undo_result_title")
     public static let dialog_undo_result_message: String = text("dialog_undo_result_message")
+    public static let dialog_unexpected_title: String = text("dialog_unexpected_title")
+    public static let dialog_unexpected_message: String = text("dialog_unexpected_message")
     public static let dialog_line: String = text("dialog_line")
     public static let line_current: String = text("line_current")
     public static let toolbar_add: String = text("toolbar_add")

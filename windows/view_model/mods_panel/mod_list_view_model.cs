@@ -253,7 +253,14 @@ public sealed class MOD_LIST_VIEW_MODEL : OBSERVABLE
 
     public bool can_drop(ulong id, ulong target_id, bool after)
     {
-        return id != target_id && engine_.mod_move(id, target_id, after, true);
+        if (id == target_id) {
+            return false;
+        }
+        try {
+            return engine_.mod_move(id, target_id, after, true);
+        } catch (ENGINE_EXCEPTION) {
+            return false;
+        }
     }
 
     public bool drop(ulong id, ulong target_id, bool after)

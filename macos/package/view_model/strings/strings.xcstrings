@@ -628,6 +628,28 @@
         }
       }
     },
+    "dialog_unexpected_message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "작업을 끝내지 못했습니다. 문제가 계속되면 앱을 다시 실행하세요."
+          }
+        }
+      }
+    },
+    "dialog_unexpected_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "예상하지 못한 오류가 생겼습니다"
+          }
+        }
+      }
+    },
     "dialog_warning_message" : {
       "extractionState" : "manual",
       "localizations" : {

@@ -94,7 +94,7 @@ internal sealed class POSITION_SAMPLES
         return new POSITION_CHOICE(type, label(type), description, before, changed, tile);
     }
 
-    private EXAMPLE sample(MOD_KIND kind, POSITION_TYPE type)
+    private EXAMPLE? sample(MOD_KIND kind, POSITION_TYPE type)
     {
         MOD mod = new() {
             kind = kind,
@@ -102,7 +102,11 @@ internal sealed class POSITION_SAMPLES
             position = position(type),
             value = kind == MOD_KIND.insert ? [new VALUE_PIECE { text = INSERT_VALUE }] : null,
         };
-        return engine_.mod_sample(MOD_JSON.write(mod));
+        try {
+            return engine_.mod_sample(MOD_JSON.write(mod));
+        } catch (ENGINE_EXCEPTION) {
+            return null;
+        }
     }
 
     private static POSITION position(POSITION_TYPE type)
@@ -122,8 +126,11 @@ internal sealed class POSITION_SAMPLES
         };
     }
 
-    private static (string head, string mark, string tail) parts(EXAMPLE example, bool after)
+    private static (string head, string mark, string tail) parts(EXAMPLE? example, bool after)
     {
+        if (example == null) {
+            return ("", "", "");
+        }
         return ITEM_ROW.split(after ? example.after : example.before, example.prefix_len,
             example.suffix_len);
     }

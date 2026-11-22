@@ -586,7 +586,11 @@ public sealed class MOD_EDITOR_VIEW_MODEL : OBSERVABLE
         summary = MOD_SUMMARY.describe(build(), 0, target_count());
         refresh_example();
         if (tried_) {
-            check();
+            try {
+                check();
+            } catch (ENGINE_EXCEPTION) {
+                return;
+            }
         }
     }
 
