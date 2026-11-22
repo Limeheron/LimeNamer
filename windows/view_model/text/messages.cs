@@ -62,10 +62,11 @@ public static class MESSAGES
         };
     }
 
-    public static string failure_text(FAILURE failure, int os_error)
+    public static string failure_text(FAILURE failure, int os_error, bool folder = false)
     {
         return failure switch {
             FAILURE.in_use => STRINGS.failure_in_use,
+            FAILURE.access_denied when folder => STRINGS.failure_access_denied_folder,
             FAILURE.access_denied => STRINGS.failure_access_denied,
             FAILURE.not_found => STRINGS.failure_not_found,
             FAILURE.already_exists => STRINGS.failure_already_exists,

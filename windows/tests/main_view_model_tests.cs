@@ -241,6 +241,24 @@ public sealed class MAIN_VIEW_MODEL_TESTS
     }
 
     [TestMethod]
+    public async Task explains_folders_blocked_by_open_files()
+    {
+        using MAIN_SCENARIO scenario = new("b.txt");
+        string folder = scenario.temp.folder("a");
+        scenario.temp.file(Path.Combine("a", "inner.txt"));
+        scenario.main.add_paths([folder], ADD_MODE.as_items);
+        scenario.add_mod(LIST_SCENARIO.INSERT_NEW);
+        scenario.dialogs.answers.Enqueue(false);
+
+        using (FileStream locked = open_locked(scenario, Path.Combine("a", "inner.txt"))) {
+            await scenario.main.rename();
+        }
+
+        Assert.AreEqual("접근 권한이 없거나 폴더 안의 파일을 다른 프로그램이 사용하고 있습니다.",
+            scenario.dialogs.asked[0].lines[0].reason);
+    }
+
+    [TestMethod]
     public async Task reveals_problems_found_when_running()
     {
         using MAIN_SCENARIO scenario = new("a.txt");

@@ -13,6 +13,7 @@ public sealed class THEME_SWITCHER : IDisposable
     private readonly Application app_;
     private readonly SETTINGS settings_;
     private ResourceDictionary? colors_;
+    private bool dark_;
 
     public THEME_SWITCHER(Application app, SETTINGS settings)
     {
@@ -37,6 +38,7 @@ public sealed class THEME_SWITCHER : IDisposable
             _ => ThemeMode.System,
         };
         bool dark = mode == THEME_MODE.dark || (mode == THEME_MODE.system && system_is_dark());
+        dark_ = dark;
         ResourceDictionary colors = new() {
             Source = new Uri($"pack://application:,,,/themes/{(dark ? "dark" : "light")}.xaml"),
         };
@@ -62,7 +64,7 @@ public sealed class THEME_SWITCHER : IDisposable
 
     private void on_preference_changed(object sender, UserPreferenceChangedEventArgs args)
     {
-        if (settings_.theme_mode == THEME_MODE.system) {
+        if (settings_.theme_mode == THEME_MODE.system && system_is_dark() != dark_) {
             app_.Dispatcher.BeginInvoke(apply);
         }
     }

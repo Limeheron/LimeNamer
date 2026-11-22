@@ -596,7 +596,8 @@ public sealed class MAIN_VIEW_MODEL : OBSERVABLE
     {
         string text = JOSA_FORMATTER.format(STRINGS.dialog_line, Path.GetFileName(item.from_path),
             Path.GetFileName(item.to_path));
-        string reason = MESSAGES.failure_text(item.failure, item.os_error);
+        string reason = MESSAGES.failure_text(item.failure, item.os_error,
+            Directory.Exists(item.from_path));
         if (item.stage == STAGE.revert) {
             reason += " " + JOSA_FORMATTER.format(STRINGS.line_current, item.current_path);
         }

@@ -36,6 +36,7 @@ public enum STRINGS
     public static let adjusted: String = text("adjusted")
     public static let failure_in_use: String = text("failure_in_use")
     public static let failure_access_denied: String = text("failure_access_denied")
+    public static let failure_access_denied_folder: String = text("failure_access_denied_folder")
     public static let failure_not_found: String = text("failure_not_found")
     public static let failure_already_exists: String = text("failure_already_exists")
     public static let failure_replaced: String = text("failure_replaced")
