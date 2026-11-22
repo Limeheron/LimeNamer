@@ -36,7 +36,7 @@ winget install Microsoft.DotNet.DesktopRuntime.10 --architecture x64
 
 #### 설치
 
-1. [릴리스](https://github.com/Limeheron/LimeNamer/releases)에서 LimeNamer-버전-win-x64.zip을 받는다.
+1. [릴리즈](https://github.com/Limeheron/LimeNamer/releases)에서 LimeNamer-버전-win-x64.zip을 받는다.
 2. 원하는 위치에 압축을 푼다. 이때 만들어지는 LimeNamer 폴더가 설치 폴더다.
 3. LimeNamer 폴더의 LimeNamer.exe를 실행한다.
 
@@ -54,7 +54,7 @@ winget install Microsoft.DotNet.DesktopRuntime.10 --architecture x64
 
 #### 설치
 
-1. [릴리스](https://github.com/Limeheron/LimeNamer/releases)에서 LimeNamer-버전-mac-arm64.dmg를 받아 연다.
+1. [릴리즈](https://github.com/Limeheron/LimeNamer/releases)에서 LimeNamer-버전-mac-arm64.dmg를 받아 연다.
 2. LimeNamer를 응용 프로그램 폴더로 끌어다 놓는다.
 3. 처음 열 때 열 수 없다는 안내가 뜨면, 시스템 설정의 개인정보 보호 및 보안에서 "그래도 열기"를 누른다.
 
