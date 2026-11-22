@@ -19,6 +19,8 @@ struct MAIN_VIEW_MODEL_TESTS
 
         main.add_paths([a, b, a, scenario.temp.path + "/bad\u{0}.txt"], mode: .as_items)
         let added: String = scenario.message
+        main.add_paths([a], mode: .as_items)
+        let none: String = scenario.message
         let could_remove: Bool = main.can_remove
         main.list.set_selection([try scenario.id("a.txt")])
         let can_remove: Bool = main.can_remove
@@ -31,6 +33,7 @@ struct MAIN_VIEW_MODEL_TESTS
 
         #expect(added == "2개 항목을 추가했습니다. 이미 목록에 있는 1개는 건너뛰었습니다. "
             + "1개는 추가하지 못했습니다.")
+        #expect(none == "추가한 항목이 없습니다. 이미 목록에 있는 1개는 건너뛰었습니다.")
         #expect(!could_remove)
         #expect(can_remove)
         #expect(removed == "1개 항목을 목록에서 뺐습니다. 실행 취소로 되돌릴 수 있습니다.")
@@ -423,7 +426,7 @@ struct MAIN_VIEW_MODEL_TESTS
 
         #expect(edited == "2번 항목을 직접 수정했습니다.")
         #expect(problems == "2번 항목: macOS에서 쓸 수 없는 문자(/ :)가 있습니다. "
-            + "Windows에서는 쓸 수 없는 문자가 있습니다.")
+            + "Windows에서는 쓸 수 없는 문자(\\ / : * ? \" < > |)가 있습니다.")
         #expect(missing == nil)
         #expect(scenario.message == "항목을 찾을 수 없습니다.")
         #expect(main.location_of(b) == scenario.temp.path + "/b.txt")

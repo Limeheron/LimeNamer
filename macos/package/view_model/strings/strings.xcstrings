@@ -447,7 +447,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "임시 이름 상태로 남은 항목은 이미 원래 이름으로 되돌렸습니다."
+            "value" : "바꾸지 못한 항목은 원래 이름 그대로 있습니다."
           }
         }
       }
@@ -1745,7 +1745,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "macOS에서는 쓸 수 없는 문자가 있습니다."
+            "value" : "macOS에서는 쓸 수 없는 문자(/ :)가 있습니다."
           }
         }
       }
@@ -1767,7 +1767,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Windows에서는 쓸 수 없는 문자가 있습니다."
+            "value" : "Windows에서는 쓸 수 없는 문자(\\ / : * ? \" < > |)가 있습니다."
           }
         }
       }
@@ -1834,6 +1834,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : " {0}개는 추가하지 못했습니다."
+          }
+        }
+      }
+    },
+    "items_added_none" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "추가한 항목이 없습니다."
           }
         }
       }

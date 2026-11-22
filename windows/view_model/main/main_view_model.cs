@@ -207,7 +207,9 @@ public sealed class MAIN_VIEW_MODEL : OBSERVABLE
             return;
         }
         refresh();
-        string text = JOSA_FORMATTER.format(STRINGS.items_added, result.added);
+        string text = result.added == 0
+            ? STRINGS.items_added_none
+            : JOSA_FORMATTER.format(STRINGS.items_added, result.added);
         if (result.skipped > 0) {
             text += JOSA_FORMATTER.format(STRINGS.items_added_skipped, result.skipped);
         }
@@ -570,7 +572,10 @@ public sealed class MAIN_VIEW_MODEL : OBSERVABLE
         return new DIALOG_CONTENT(DIALOG_KIND.choice, STRINGS.dialog_choice_title,
             JOSA_FORMATTER.format(STRINGS.dialog_choice_message, report.total, report.succeeded,
                 report.failed),
-            report.problems.Select(report_line).ToArray(), STRINGS.dialog_choice_note,
+            report.problems.Select(report_line).ToArray(),
+            report.problems.Any(item => item.stage == STAGE.revert)
+                ? ""
+                : STRINGS.dialog_choice_note,
             STRINGS.dialog_revert_all, STRINGS.dialog_keep);
     }
 

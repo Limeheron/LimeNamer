@@ -216,6 +216,7 @@ public enum STRINGS
     public static let undone: String = text("undone")
     public static let redone: String = text("redone")
     public static let items_added: String = text("items_added")
+    public static let items_added_none: String = text("items_added_none")
     public static let items_added_skipped: String = text("items_added_skipped")
     public static let items_added_failed: String = text("items_added_failed")
     public static let items_removed: String = text("items_removed")

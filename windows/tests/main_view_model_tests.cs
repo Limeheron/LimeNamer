@@ -20,6 +20,8 @@ public sealed class MAIN_VIEW_MODEL_TESTS
         main.add_paths([a, b, a, Path.Combine(scenario.temp.path, "\uD800.txt")],
             ADD_MODE.as_items);
         string added = scenario.message;
+        main.add_paths([a], ADD_MODE.as_items);
+        string none = scenario.message;
         bool could_remove = main.remove_command.CanExecute(null);
         main.list.set_selection([scenario.id("a.txt")]);
         bool can_remove = main.remove_command.CanExecute(null);
@@ -32,6 +34,7 @@ public sealed class MAIN_VIEW_MODEL_TESTS
 
         Assert.AreEqual("2개 항목을 추가했습니다. 이미 목록에 있는 1개는 건너뛰었습니다. "
             + "1개는 추가하지 못했습니다.", added);
+        Assert.AreEqual("추가한 항목이 없습니다. 이미 목록에 있는 1개는 건너뛰었습니다.", none);
         Assert.IsFalse(could_remove);
         Assert.IsTrue(can_remove);
         Assert.AreEqual("1개 항목을 목록에서 뺐습니다. 실행 취소로 되돌릴 수 있습니다.", removed);

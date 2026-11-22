@@ -215,7 +215,9 @@ public final class MAIN_VIEW_MODEL
             return
         }
         refresh()
-        var text: String = JOSA_FORMATTER.format(STRINGS.items_added, result.added)
+        var text: String = result.added == 0
+            ? STRINGS.items_added_none
+            : JOSA_FORMATTER.format(STRINGS.items_added, result.added)
         if result.skipped > 0 {
             text += JOSA_FORMATTER.format(STRINGS.items_added_skipped, result.skipped)
         }
@@ -623,7 +625,9 @@ public final class MAIN_VIEW_MODEL
         return DIALOG_CONTENT(kind: .choice, title: STRINGS.dialog_choice_title,
             message: JOSA_FORMATTER.format(STRINGS.dialog_choice_message, report.total,
                 report.succeeded, report.failed),
-            lines: report.problems.map { report_line($0) }, note: STRINGS.dialog_choice_note,
+            lines: report.problems.map { report_line($0) },
+            note: report.problems.contains { $0.stage == .revert }
+                ? "" : STRINGS.dialog_choice_note,
             primary: STRINGS.dialog_revert_all, secondary: STRINGS.dialog_keep)
     }
 
