@@ -219,6 +219,28 @@ public sealed class MAIN_VIEW_MODEL_TESTS
     }
 
     [TestMethod]
+    public async Task blocks_close_while_choosing()
+    {
+        using MAIN_SCENARIO scenario = new("a.txt", "b.txt");
+        scenario.add_mod(LIST_SCENARIO.INSERT_NEW);
+        scenario.dialogs.answers.Enqueue(false);
+        bool allowed = true;
+        string message = "";
+        scenario.dialogs.on_ask = _ => {
+            allowed = scenario.main.allow_close();
+            message = scenario.message;
+        };
+
+        using (FileStream locked = open_locked(scenario, "a.txt")) {
+            await scenario.main.rename();
+        }
+
+        Assert.IsFalse(allowed);
+        Assert.AreEqual("이름을 바꾸거나 되돌리는 중에는 닫을 수 없습니다.", message);
+        Assert.IsTrue(scenario.main.allow_close());
+    }
+
+    [TestMethod]
     public async Task reveals_problems_found_when_running()
     {
         using MAIN_SCENARIO scenario = new("a.txt");

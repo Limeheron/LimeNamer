@@ -36,8 +36,14 @@ public partial class MAIN_WINDOW : Window
         PreviewKeyDown += on_key_down;
         main_.list.PropertyChanged += on_list_changed;
         Loaded += on_loaded;
+        Closing += on_closing;
         SizeChanged += (_, _) => update_panel_limit();
         toolbar.SizeChanged += (_, size) => update_toolbar(size.NewSize.Width);
+    }
+
+    public bool allow_close()
+    {
+        return main_.allow_close();
     }
 
     private void on_loaded(object sender, RoutedEventArgs args)
@@ -46,6 +52,13 @@ public partial class MAIN_WINDOW : Window
         apply_panel();
         update_panel_limit();
         update_toolbar(toolbar.ActualWidth);
+    }
+
+    private void on_closing(object? sender, CancelEventArgs args)
+    {
+        if (!allow_close()) {
+            args.Cancel = true;
+        }
     }
 
     private void on_list_changed(object? sender, PropertyChangedEventArgs args)

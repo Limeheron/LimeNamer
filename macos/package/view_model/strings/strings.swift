@@ -211,6 +211,7 @@ public enum STRINGS
     public static let blocked_rename_undo: String = text("blocked_rename_undo")
     public static let blocked_panel: String = text("blocked_panel")
     public static let blocked_direct: String = text("blocked_direct")
+    public static let blocked_close: String = text("blocked_close")
     public static let undone: String = text("undone")
     public static let redone: String = text("redone")
     public static let items_added: String = text("items_added")

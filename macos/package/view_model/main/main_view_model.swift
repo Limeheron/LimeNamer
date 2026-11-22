@@ -370,6 +370,15 @@ public final class MAIN_VIEW_MODEL
         }
     }
 
+    public func allow_close() -> Bool
+    {
+        if is_running || choosing {
+            status.post(STRINGS.blocked_close)
+            return false
+        }
+        return true
+    }
+
     public func set_theme(_ mode: THEME_MODE)
     {
         settings.theme_mode = mode

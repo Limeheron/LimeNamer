@@ -225,6 +225,28 @@ struct MAIN_VIEW_MODEL_TESTS
         #expect(message == "2개 중 1개 항목의 이름을 바꾸지 못했습니다. 처리 방식을 고르세요.")
     }
 
+    @Test func blocks_close_while_choosing() async throws
+    {
+        let scenario = try MAIN_SCENARIO("a.txt", "b.txt")
+        defer {
+            scenario.close()
+        }
+        try scenario.add_mod(TEST_MODS.INSERT_NEW)
+        scenario.dialogs.answers = [false]
+        var allowed: Bool = true
+        var message: String = ""
+        scenario.dialogs.on_ask = { _ in
+            allowed = scenario.main.allow_close()
+            message = scenario.message
+        }
+
+        try await rename_locked(scenario, "a.txt")
+
+        #expect(!allowed)
+        #expect(message == "이름을 바꾸거나 되돌리는 중에는 닫을 수 없습니다.")
+        #expect(scenario.main.allow_close())
+    }
+
     @Test func reveals_problems_found_when_running() async throws
     {
         let scenario = try MAIN_SCENARIO("a.txt")

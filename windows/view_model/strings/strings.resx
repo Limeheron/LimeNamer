@@ -606,6 +606,9 @@
     <data name="blocked_direct" xml:space="preserve">
         <value>편집 중에는 이름을 직접 수정할 수 없습니다. 먼저 편집을 적용하거나 취소하세요.</value>
     </data>
+    <data name="blocked_close" xml:space="preserve">
+        <value>이름을 바꾸거나 되돌리는 중에는 닫을 수 없습니다.</value>
+    </data>
     <data name="undone" xml:space="preserve">
         <value>실행 취소했습니다.</value>
     </data>

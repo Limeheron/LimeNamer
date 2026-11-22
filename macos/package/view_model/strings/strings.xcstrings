@@ -133,6 +133,17 @@
         }
       }
     },
+    "blocked_close" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름을 바꾸거나 되돌리는 중에는 닫을 수 없습니다."
+          }
+        }
+      }
+    },
     "blocked_direct" : {
       "extractionState" : "manual",
       "localizations" : {

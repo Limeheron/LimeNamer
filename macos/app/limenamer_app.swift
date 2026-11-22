@@ -8,6 +8,7 @@ struct LIMENAMER_APP: App
     static let VERSION_TOKEN: String = "LIMENAMER_VERSION=0.1.0"
     static let WINDOW_ID: String = "main"
 
+    @NSApplicationDelegateAdaptor(APP_DELEGATE.self) private var delegate: APP_DELEGATE
     @State private var dialogs: SHEET_DIALOGS
     @State private var main: MAIN_VIEW_MODEL
     @State private var state: WINDOW_STATE = WINDOW_STATE()
@@ -24,6 +25,9 @@ struct LIMENAMER_APP: App
     {
         Window("LimeNamer", id: LIMENAMER_APP.WINDOW_ID) {
             MAIN_WINDOW(main: main, dialogs: dialogs, state: state)
+                .onAppear {
+                    delegate.main = main
+                }
         }
         .defaultSize(width: 1280, height: 800)
         .windowResizability(.contentMinSize)

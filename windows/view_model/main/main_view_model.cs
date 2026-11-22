@@ -338,6 +338,15 @@ public sealed class MAIN_VIEW_MODEL : OBSERVABLE
         }
     }
 
+    public bool allow_close()
+    {
+        if (running_ || choosing_) {
+            status.post(STRINGS.blocked_close);
+            return false;
+        }
+        return true;
+    }
+
     public void set_theme(THEME_MODE mode)
     {
         settings.theme_mode = mode;

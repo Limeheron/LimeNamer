@@ -57,6 +57,9 @@ struct MAIN_WINDOW: View
             for: NSApplication.didBecomeActiveNotification)) { _ in
             main.activated()
         }
+        .onChange(of: main.is_running) { _, running in
+            state.set_closable(!running)
+        }
         .task(id: main.is_running) {
             while main.is_running && !Task.isCancelled {
                 main.status.poll_progress()

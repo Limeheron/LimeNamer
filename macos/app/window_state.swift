@@ -42,6 +42,15 @@ final class WINDOW_STATE: NSObject
         schedule_refresh()
     }
 
+    func set_closable(_ closable: Bool)
+    {
+        if closable {
+            window?.styleMask.insert(.closable)
+        } else {
+            window?.styleMask.remove(.closable)
+        }
+    }
+
     func undo_text()
     {
         WINDOW_STATE.editing_text()?.undoManager?.undo()

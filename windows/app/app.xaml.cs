@@ -21,6 +21,14 @@ public partial class APP : Application
         window.Show();
     }
 
+    protected override void OnSessionEnding(SessionEndingCancelEventArgs args)
+    {
+        base.OnSessionEnding(args);
+        if (MainWindow is MAIN_WINDOW window && !window.allow_close()) {
+            args.Cancel = true;
+        }
+    }
+
     protected override void OnExit(ExitEventArgs args)
     {
         theme_?.Dispose();
