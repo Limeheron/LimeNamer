@@ -1552,28 +1552,6 @@
         }
       }
     },
-    "info_description" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "여러 파일과 폴더의 이름을 한 번에 바꿉니다."
-          }
-        }
-      }
-    },
-    "info_license" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "LimeNamer는 MIT 라이선스로 배포합니다."
-          }
-        }
-      }
-    },
     "info_notices" : {
       "extractionState" : "manual",
       "localizations" : {

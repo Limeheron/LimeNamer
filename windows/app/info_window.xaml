@@ -12,34 +12,46 @@
         <Border DockPanel.Dock="Bottom" Padding="24,16" BorderThickness="0,1,0,0"
                 BorderBrush="{DynamicResource DividerStrokeColorDefaultBrush}"
                 Background="{DynamicResource LayerFillColorDefaultBrush}">
-            <Button Style="{StaticResource accent_button}" HorizontalAlignment="Right"
-                    MinWidth="120" IsDefault="True" IsCancel="True"
-                    Content="{x:Static vm:STRINGS.dialog_ok}" Click="close_click" />
+            <DockPanel>
+                <Button DockPanel.Dock="Right" Style="{StaticResource accent_button}"
+                        VerticalAlignment="Center" MinWidth="120" IsDefault="True"
+                        IsCancel="True" Content="{x:Static vm:STRINGS.dialog_ok}"
+                        Click="close_click" />
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="48" Height="48" Source="images/profile.png"
+                           RenderOptions.BitmapScalingMode="HighQuality" />
+                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="Limeheron" FontWeight="SemiBold" />
+                        <TextBlock>
+                            <Hyperlink NavigateUri="https://github.com/Limeheron"
+                                       RequestNavigate="link_navigate">
+                                <Run Text="github.com/Limeheron" />
+                            </Hyperlink>
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </DockPanel>
         </Border>
 
         <DockPanel Margin="24,16,24,16">
             <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                <Border Width="48" Height="48" CornerRadius="10"
-                        Background="{DynamicResource accent_fill_brush}">
-                    <TextBlock Text="L" FontSize="26" FontWeight="Bold"
-                               HorizontalAlignment="Center" VerticalAlignment="Center"
-                               Foreground="{DynamicResource accent_on_brush}" />
-                </Border>
+                <Image Width="48" Height="48" Source="images/app_icon.png"
+                       RenderOptions.BitmapScalingMode="HighQuality" />
                 <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
                     <TextBlock Text="LimeNamer" FontSize="20" FontWeight="SemiBold" />
                     <TextBlock x:Name="version_text" Style="{StaticResource secondary_text}" />
                 </StackPanel>
             </StackPanel>
-            <TextBlock DockPanel.Dock="Top" Margin="0,14,0,0" TextWrapping="Wrap"
-                       Text="{x:Static vm:STRINGS.info_description}" />
-            <TextBlock DockPanel.Dock="Top" Margin="0,4,0,0" TextWrapping="Wrap"
-                       Style="{StaticResource secondary_text}"
-                       Text="{x:Static vm:STRINGS.info_license}" />
             <TextBlock DockPanel.Dock="Top" Margin="0,18,0,6" FontWeight="SemiBold"
                        Text="{x:Static vm:STRINGS.info_notices}" />
-            <TextBox x:Name="notices_text" IsReadOnly="True" TextWrapping="Wrap"
-                     VerticalScrollBarVisibility="Auto" FontFamily="{StaticResource name_font}"
-                     FontSize="12" />
+            <Border CornerRadius="6" BorderThickness="1"
+                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <TextBlock x:Name="notices_text" Margin="12,8" TextWrapping="Wrap"
+                               FontSize="12" />
+                </ScrollViewer>
+            </Border>
         </DockPanel>
     </DockPanel>
 </Window>

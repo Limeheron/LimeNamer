@@ -1101,14 +1101,8 @@
     <data name="info_title" xml:space="preserve">
         <value>LimeNamer 정보</value>
     </data>
-    <data name="info_description" xml:space="preserve">
-        <value>여러 파일과 폴더의 이름을 한 번에 바꿉니다.</value>
-    </data>
     <data name="info_version" xml:space="preserve">
         <value>버전 {0}</value>
-    </data>
-    <data name="info_license" xml:space="preserve">
-        <value>LimeNamer는 MIT 라이선스로 배포합니다.</value>
     </data>
     <data name="info_notices" xml:space="preserve">
         <value>오픈소스 라이선스</value>
