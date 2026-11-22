@@ -101,15 +101,9 @@ public partial class ITEM_LIST_VIEW : UserControl
     {
         syncing_ = true;
         try {
-            grid.SelectedItems.Clear();
-            if (ids.Count > 0) {
-                HashSet<ulong> wanted = ids.ToHashSet();
-                foreach (ITEM_ROW row in main.list.rows) {
-                    if (wanted.Contains(row.item_id)) {
-                        grid.SelectedItems.Add(row);
-                    }
-                }
-            }
+            HashSet<ulong> wanted = ids.ToHashSet();
+            grid.select_items(main.list.rows.Where(row => wanted.Contains(row.item_id))
+                .ToArray());
         } finally {
             syncing_ = false;
         }

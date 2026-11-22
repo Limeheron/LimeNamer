@@ -1,6 +1,7 @@
 <UserControl x:Class="limenamer.ITEM_LIST_VIEW"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:limenamer"
              xmlns:vm="clr-namespace:limenamer;assembly=limenamer_view_model"
              AllowDrop="True">
     <UserControl.Resources>
@@ -219,7 +220,7 @@
     </UserControl.Resources>
 
     <Grid x:Name="root">
-        <DataGrid x:Name="grid" AutoGenerateColumns="False" CanUserAddRows="False"
+        <local:ITEM_GRID x:Name="grid" AutoGenerateColumns="False" CanUserAddRows="False"
                   CanUserDeleteRows="False" CanUserSortColumns="False"
                   CanUserReorderColumns="False"
                   CanUserResizeRows="False" CanUserResizeColumns="True"
@@ -428,7 +429,7 @@
                               Click="row_open_location_click" />
                 </ContextMenu>
             </DataGrid.ContextMenu>
-        </DataGrid>
+        </local:ITEM_GRID>
 
         <Canvas x:Name="drop_layer" IsHitTestVisible="False" Visibility="Collapsed">
             <Border x:Name="drop_line" Height="2" CornerRadius="1"
