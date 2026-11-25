@@ -67,7 +67,7 @@ public partial class ITEM_LIST_VIEW : UserControl
 
     public void select_all()
     {
-        grid.SelectAll();
+        grid.select_all_items();
     }
 
     public void edit_selected()
@@ -90,7 +90,8 @@ public partial class ITEM_LIST_VIEW : UserControl
     {
         syncing_ = true;
         try {
-            grid.ItemsSource = main.list.rows;
+            grid.UnselectAllCells();
+            grid.ItemsSource = new INDEXED_ROWS(main.list.rows);
         } finally {
             syncing_ = false;
         }
@@ -167,6 +168,10 @@ public partial class ITEM_LIST_VIEW : UserControl
     {
         if (args.Key == Key.F2 && grid.SelectedItem is ITEM_ROW row && !is_editing()) {
             begin_direct_edit(row);
+            args.Handled = true;
+        } else if (args.Key == Key.A && Keyboard.Modifiers == ModifierKeys.Control
+                && !is_editing()) {
+            select_all();
             args.Handled = true;
         }
     }

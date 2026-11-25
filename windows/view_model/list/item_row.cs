@@ -8,12 +8,28 @@ namespace limenamer;
 
 public sealed class ITEM_ROW : OBSERVABLE
 {
+    private ROW row_;
     private bool is_checked_;
     private bool is_dimmed_;
 
     public ITEM_ROW(ROW row, uint index)
     {
         item_id = row.item_id;
+        fill(row, index);
+    }
+
+    internal void update(ROW row, uint index)
+    {
+        if (row == row_ && index == this.index) {
+            return;
+        }
+        fill(row, index);
+        notify(null);
+    }
+
+    private void fill(ROW row, uint index)
+    {
+        row_ = row;
         this.index = index;
         folder = row.folder;
         name = row.name;
@@ -34,30 +50,30 @@ public sealed class ITEM_ROW : OBSERVABLE
     }
 
     public ulong item_id { get; }
-    public uint index { get; }
-    public string folder { get; }
-    public string name { get; }
-    public string full_path { get; }
-    public string new_name { get; }
-    public string new_name_head { get; }
-    public string new_name_mark { get; }
-    public string new_name_tail { get; }
-    public STATUS status { get; }
-    public string status_text { get; }
-    public bool changed { get; }
-    public bool direct { get; }
-    public bool is_dir { get; }
-    public IReadOnlyList<string> problems { get; }
-    public string problem_text { get; }
+    public uint index { get; private set; }
+    public string folder { get; private set; } = "";
+    public string name { get; private set; } = "";
+    public string full_path { get; private set; } = "";
+    public string new_name { get; private set; } = "";
+    public string new_name_head { get; private set; } = "";
+    public string new_name_mark { get; private set; } = "";
+    public string new_name_tail { get; private set; } = "";
+    public STATUS status { get; private set; }
+    public string status_text { get; private set; } = "";
+    public bool changed { get; private set; }
+    public bool direct { get; private set; }
+    public bool is_dir { get; private set; }
+    public IReadOnlyList<string> problems { get; private set; } = [];
+    public string problem_text { get; private set; } = "";
 
     public bool has_problems
     {
         get { return problems.Count > 0; }
     }
 
-    public string modified_text { get; }
-    public string created_text { get; }
-    public string size_text { get; }
+    public string modified_text { get; private set; } = "";
+    public string created_text { get; private set; } = "";
+    public string size_text { get; private set; } = "";
 
     public bool is_checked
     {

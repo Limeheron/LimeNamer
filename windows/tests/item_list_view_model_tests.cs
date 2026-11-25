@@ -37,6 +37,56 @@ public sealed class ITEM_LIST_VIEW_MODEL_TESTS
     }
 
     [TestMethod]
+    public void updates_rows_in_place_when_items_stay()
+    {
+        using LIST_SCENARIO scenario = new("a.txt", "b.txt");
+        IReadOnlyList<ITEM_ROW> before = scenario.list.rows;
+        ITEM_ROW first = before[0];
+        List<string?> changes = [];
+        bool rows_changed = false;
+        first.PropertyChanged += (_, args) => changes.Add(args.PropertyName);
+        scenario.list.PropertyChanged += (_, args) =>
+            rows_changed |= args.PropertyName == nameof(ITEM_LIST_VIEW_MODEL.rows);
+
+        scenario.load();
+        int unchanged = changes.Count;
+        scenario.engine.mod_add(LIST_SCENARIO.INSERT_NEW);
+        scenario.load();
+
+        Assert.AreSame(before, scenario.list.rows);
+        Assert.AreSame(first, scenario.list.rows[0]);
+        Assert.IsFalse(rows_changed);
+        Assert.AreEqual(0, unchanged);
+        CollectionAssert.AreEqual(new string?[] { null }, changes);
+        Assert.AreEqual("new_a.txt", first.new_name);
+    }
+
+    [TestMethod]
+    public void rebuilds_rows_when_order_changes()
+    {
+        using LIST_SCENARIO scenario = new("a.txt", "b.txt");
+        ITEM_ROW first = scenario.list.rows[0];
+
+        scenario.engine.items_sort(SORT_KEY.name_natural, true);
+        scenario.load();
+
+        Assert.AreNotSame(first, scenario.list.rows[0]);
+        CollectionAssert.AreEqual(new[] { "b.txt", "a.txt" }, scenario.visible_names());
+    }
+
+    [TestMethod]
+    public void keeps_filtered_rows_when_matches_stay()
+    {
+        using LIST_SCENARIO scenario = STATUS_SCENARIO.create();
+        scenario.list.filter = VIEW_FILTER.error;
+        IReadOnlyList<ITEM_ROW> shown = scenario.list.rows;
+
+        scenario.load();
+
+        Assert.AreSame(shown, scenario.list.rows);
+    }
+
+    [TestMethod]
     public void filters_rows_by_status()
     {
         using LIST_SCENARIO scenario = STATUS_SCENARIO.create();

@@ -161,12 +161,19 @@ public sealed class ITEM_LIST_VIEW_MODEL : OBSERVABLE
     public void load(PREVIEW preview)
     {
         preview_ = preview;
-        all_rows_ = new ITEM_ROW[preview.rows.Count];
+        bool same = same_items(preview.rows);
+        if (!same) {
+            all_rows_ = new ITEM_ROW[preview.rows.Count];
+        }
         for (int index = 0; index < all_rows_.Length; index++) {
-            ITEM_ROW row = new(preview.rows[index], (uint)index + 1);
+            if (same) {
+                all_rows_[index].update(preview.rows[index], (uint)index + 1);
+            } else {
+                all_rows_[index] = new ITEM_ROW(preview.rows[index], (uint)index + 1);
+            }
+            ITEM_ROW row = all_rows_[index];
             row.is_checked = checked_ids_.Contains(row.item_id);
             row.is_dimmed = designating_ && !row.is_checked;
-            all_rows_[index] = row;
         }
         HashSet<ulong> live = all_rows_.Select(row => row.item_id).ToHashSet();
         selected_ids_.IntersectWith(live);
@@ -358,11 +365,27 @@ public sealed class ITEM_LIST_VIEW_MODEL : OBSERVABLE
         return all_rows_.Where(row => checked_ids_.Contains(row.item_id));
     }
 
+    private bool same_items(IReadOnlyList<ROW> preview_rows)
+    {
+        if (preview_rows.Count != all_rows_.Length) {
+            return false;
+        }
+        for (int index = 0; index < all_rows_.Length; index++) {
+            if (all_rows_[index].item_id != preview_rows[index].item_id) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private void apply_filter()
     {
-        rows = filter_ == VIEW_FILTER.all
+        ITEM_ROW[] shown = filter_ == VIEW_FILTER.all
             ? all_rows_
             : all_rows_.Where(row => matches(row, filter_)).ToArray();
+        if (!shown.SequenceEqual(rows_, ReferenceEqualityComparer.Instance)) {
+            rows = shown;
+        }
         notify(nameof(can_drag));
         notify(nameof(header_text));
         notify(nameof(shows_empty_list));

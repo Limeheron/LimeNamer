@@ -41,3 +41,11 @@ send_keys '^a'
 Start-Sleep -Seconds 2
 step 'all-off' '수정을 껐습니다.'
 step 'all-on' '수정을 켰습니다.'
+$grid.SetFocus()
+send_keys '^{HOME}'
+send_keys '{DOWN}'
+send_keys '+^{END}'
+Start-Sleep -Seconds 2
+write_log "P06 part selected $(header_text)"
+step 'part-off' '수정을 껐습니다.'
+step 'part-on' '수정을 켰습니다.'
