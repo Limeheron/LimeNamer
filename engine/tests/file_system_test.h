@@ -10,6 +10,7 @@
 #include "fake_fs_env.h"
 #include "file_info.h"
 #include "file_system.h"
+#include "folder_entry.h"
 #include "fs_error_output.h"
 #include "fs_status.h"
 #include "real_fs_env.h"

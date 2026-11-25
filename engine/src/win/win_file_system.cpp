@@ -72,6 +72,15 @@ FS_STATUS WIN_FILE_SYSTEM::list_names(const std::filesystem::path &folder,
     return {};
 }
 
+FS_STATUS WIN_FILE_SYSTEM::list_entries(const std::filesystem::path &folder,
+    std::vector<FOLDER_ENTRY> &entries) const
+{
+    if (read_entries(folder, entries)) {
+        return {};
+    }
+    return FILE_SYSTEM::list_entries(folder, entries);
+}
+
 FS_STATUS WIN_FILE_SYSTEM::rename(const std::filesystem::path &from,
     const std::filesystem::path &to)
 {
@@ -79,6 +88,71 @@ FS_STATUS WIN_FILE_SYSTEM::rename(const std::filesystem::path &from,
         return from_error(GetLastError());
     }
     return {};
+}
+
+bool WIN_FILE_SYSTEM::read_entries(const std::filesystem::path &folder,
+    std::vector<FOLDER_ENTRY> &entries)
+{
+    const HANDLE raw = CreateFileW(extended(folder).c_str(), FILE_LIST_DIRECTORY,
+        FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, nullptr, OPEN_EXISTING,
+        FILE_FLAG_BACKUP_SEMANTICS, nullptr);
+    if (raw == INVALID_HANDLE_VALUE) {
+        return false;
+    }
+    const SCOPED_HANDLE handle(raw, &CloseHandle);
+    FILE_ID_INFO volume {};
+    if (!GetFileInformationByHandleEx(handle.get(), FileIdInfo, &volume, sizeof(volume))) {
+        return false;
+    }
+
+    std::vector<uint64_t> buffer(ENTRY_BUFFER_WORDS);
+    const DWORD buffer_size = static_cast<DWORD>(buffer.size() * sizeof(uint64_t));
+    const std::byte *start = reinterpret_cast<const std::byte *>(buffer.data());
+    FILE_INFO_BY_HANDLE_CLASS kind = FileIdExtdDirectoryRestartInfo;
+    std::vector<FOLDER_ENTRY> result;
+    while (true) {
+        if (!GetFileInformationByHandleEx(handle.get(), kind, buffer.data(), buffer_size)) {
+            if (GetLastError() != ERROR_NO_MORE_FILES) {
+                return false;
+            }
+            break;
+        }
+        kind = FileIdExtdDirectoryInfo;
+        size_t offset = 0;
+        while (true) {
+            const FILE_ID_EXTD_DIR_INFO *source =
+                reinterpret_cast<const FILE_ID_EXTD_DIR_INFO *>(start + offset);
+            const std::wstring_view name(source->FileName,
+                source->FileNameLength / sizeof(wchar_t));
+            if (name != L"." && name != L"..") {
+                result.push_back(to_entry(*source, name, volume.VolumeSerialNumber));
+            }
+            if (source->NextEntryOffset == 0) {
+                break;
+            }
+            offset += source->NextEntryOffset;
+        }
+    }
+    entries = std::move(result);
+    return true;
+}
+
+FOLDER_ENTRY WIN_FILE_SYSTEM::to_entry(const FILE_ID_EXTD_DIR_INFO &source,
+    std::wstring_view name, uint64_t volume)
+{
+    FOLDER_ENTRY entry;
+    entry.name = std::wstring(name);
+    FILE_INFO &info = entry.info;
+    info.is_dir = (source.FileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
+    info.hidden = (source.FileAttributes & (FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM)) != 0;
+    info.size = info.is_dir ? 0 : source.EndOfFile.QuadPart;
+    info.modified_ms = to_ms(source.LastWriteTime.QuadPart);
+    info.created_ms = to_ms(source.CreationTime.QuadPart);
+    info.id.volume = volume;
+    std::memcpy(&info.id.low, source.FileId.Identifier, sizeof(uint64_t));
+    std::memcpy(&info.id.high, source.FileId.Identifier + sizeof(uint64_t), sizeof(uint64_t));
+    info.id.valid = info.id.high != 0 || info.id.low != 0;
+    return entry;
 }
 
 std::wstring WIN_FILE_SYSTEM::extended(const std::filesystem::path &path)
@@ -145,5 +219,10 @@ int64_t WIN_FILE_SYSTEM::to_ms(const FILETIME &time)
     ULARGE_INTEGER ticks {};
     ticks.LowPart = time.dwLowDateTime;
     ticks.HighPart = time.dwHighDateTime;
-    return (static_cast<int64_t>(ticks.QuadPart) - EPOCH_TICKS) / 10000;
+    return to_ms(static_cast<int64_t>(ticks.QuadPart));
+}
+
+int64_t WIN_FILE_SYSTEM::to_ms(int64_t ticks)
+{
+    return (ticks - EPOCH_TICKS) / 10000;
 }

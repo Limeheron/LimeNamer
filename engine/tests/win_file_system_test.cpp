@@ -40,6 +40,10 @@ TEST(WIN_FILE_SYSTEM, handles_long_paths)
     ASSERT_TRUE(env.file_system().list_names(folder, names).ok());
     const std::vector<std::filesystem::path> expected = {"a.txt"};
     EXPECT_EQ(names, expected);
+    std::vector<FOLDER_ENTRY> entries;
+    ASSERT_TRUE(env.file_system().list_entries(folder, entries).ok());
+    ASSERT_EQ(entries.size(), 1u);
+    EXPECT_EQ(entries[0].info.size, 3);
     EXPECT_TRUE(env.file_system().rename(file, folder / "b.txt").ok());
     EXPECT_TRUE(env.file_system().get_info(folder / "b.txt", info).ok());
 }
@@ -99,6 +103,12 @@ TEST(WIN_FILE_SYSTEM, reads_hidden_flag)
     ASSERT_TRUE(env.file_system().get_info(env.root() / "hidden.txt", hidden).ok());
     EXPECT_FALSE(shown.hidden);
     EXPECT_TRUE(hidden.hidden);
+    std::vector<FOLDER_ENTRY> entries;
+    ASSERT_TRUE(env.file_system().list_entries(env.root(), entries).ok());
+    ASSERT_EQ(entries.size(), 2u);
+    for (const FOLDER_ENTRY &entry : entries) {
+        EXPECT_EQ(entry.info.hidden, entry.name == "hidden.txt");
+    }
 }
 
 TEST(WIN_FILE_SYSTEM, renames_read_only_entries)

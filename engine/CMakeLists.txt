@@ -48,6 +48,7 @@ set(LN_CORE_SOURCES
     src/c_results.cpp
     src/conflict_resolver.cpp
     src/example_finder.cpp
+    src/file_system.cpp
     src/folder_cache.cpp
     src/folder_moves.cpp
     src/history.cpp

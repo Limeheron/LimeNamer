@@ -312,15 +312,15 @@ void ITEM_STORE::add_contents(const std::filesystem::path &raw, ADD_RESULT &resu
         ++result.failed;
         return;
     }
-    std::vector<std::filesystem::path> names;
-    if (!file_system_.list_names(*folder, names).ok()) {
+    std::vector<FOLDER_ENTRY> entries;
+    if (!file_system_.list_entries(*folder, entries).ok()) {
         ++result.failed;
         return;
     }
 
-    std::vector<std::pair<std::u32string, std::filesystem::path>> children;
-    for (const std::filesystem::path &name : names) {
-        const std::optional<std::u32string> text = UTF::path_to_u32(name);
+    std::vector<std::pair<std::u32string, const FOLDER_ENTRY *>> children;
+    for (const FOLDER_ENTRY &entry : entries) {
+        const std::optional<std::u32string> text = UTF::path_to_u32(entry.name);
         if (!text) {
             ++result.failed;
             continue;
@@ -328,13 +328,14 @@ void ITEM_STORE::add_contents(const std::filesystem::path &raw, ADD_RESULT &resu
         if (!text->empty() && text->front() == U'.') {
             continue;
         }
-        children.emplace_back(text_service_.to_nfc(*text), *folder / name);
+        children.emplace_back(text_service_.to_nfc(*text), &entry);
     }
     std::sort(children.begin(), children.end(), [this](const auto &a, const auto &b) {
         return compare_.compare(a.first, b.first, true) < 0;
     });
 
-    for (const auto &[name, path] : children) {
+    for (const auto &[name, entry] : children) {
+        const std::filesystem::path path = *folder / entry->name;
         std::optional<std::u32string> key = key_of(path);
         if (!key) {
             ++result.failed;
@@ -344,11 +345,11 @@ void ITEM_STORE::add_contents(const std::filesystem::path &raw, ADD_RESULT &resu
             ++result.skipped;
             continue;
         }
-        FILE_INFO info;
-        if (!file_system_.get_info(path, info).ok()) {
+        if (!entry->status.ok()) {
             ++result.failed;
             continue;
         }
+        const FILE_INFO &info = entry->info;
         if ((info.is_dir && !info.package) || info.hidden) {
             continue;
         }

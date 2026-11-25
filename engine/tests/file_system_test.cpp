@@ -72,6 +72,40 @@ TYPED_TEST(FILE_SYSTEM_TEST, list_names_reports_missing_folder)
     EXPECT_EQ(this->fs().list_names(this->at("a.txt"), names).error, FS_ERROR::not_found);
 }
 
+TYPED_TEST(FILE_SYSTEM_TEST, list_entries_match_get_info)
+{
+    this->env_.make_file(this->at("a.txt"), 5);
+    this->env_.make_folder(this->at("c"));
+    std::vector<FOLDER_ENTRY> entries;
+    ASSERT_TRUE(this->fs().list_entries(this->env_.root(), entries).ok());
+    ASSERT_EQ(entries.size(), 2u);
+    for (const FOLDER_ENTRY &entry : entries) {
+        FILE_INFO expected;
+        ASSERT_TRUE(this->fs().get_info(this->at(entry.name), expected).ok());
+        EXPECT_TRUE(entry.status.ok());
+        EXPECT_EQ(entry.info.is_dir, expected.is_dir);
+        EXPECT_EQ(entry.info.hidden, expected.hidden);
+        EXPECT_EQ(entry.info.size, expected.size);
+        EXPECT_EQ(entry.info.modified_ms, expected.modified_ms);
+        EXPECT_EQ(entry.info.created_ms, expected.created_ms);
+        EXPECT_TRUE(entry.info.id == expected.id);
+    }
+}
+
+TYPED_TEST(FILE_SYSTEM_TEST, list_entries_of_empty_folder)
+{
+    this->env_.make_folder(this->at("empty"));
+    std::vector<FOLDER_ENTRY> entries;
+    ASSERT_TRUE(this->fs().list_entries(this->at("empty"), entries).ok());
+    EXPECT_TRUE(entries.empty());
+}
+
+TYPED_TEST(FILE_SYSTEM_TEST, list_entries_reports_missing_folder)
+{
+    std::vector<FOLDER_ENTRY> entries;
+    EXPECT_EQ(this->fs().list_entries(this->at("missing"), entries).error, FS_ERROR::not_found);
+}
+
 TYPED_TEST(FILE_SYSTEM_TEST, rename_moves_file)
 {
     this->env_.make_file(this->at("a.txt"), 7);
